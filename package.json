@@ -1,0 +1,96 @@
+{
+  "name": "@ckeditor/ckeditor5-integrations-common",
+  "version": "1.0.0",
+  "description": "This package implements common utility modules for integration projects.",
+  "keywords": [
+    "wysiwyg",
+    "rich text",
+    "editor",
+    "html",
+    "contentEditable",
+    "editing",
+    "ckeditor",
+    "ckeditor5",
+    "ckeditor 5"
+  ],
+  "author": "CKSource (http://cksource.com/)",
+  "license": "GPL-2.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ckeditor/ckeditor5-integrations-common.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ckeditor/ckeditor5-integrations-common/issues"
+  },
+  "homepage": "https://github.com/ckeditor/ckeditor5-integrations-common",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "lint": "eslint --quiet \"**/*.{ts,tsx}\"",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest --ui --watch",
+    "postinstall": "node ./scripts/postinstall.js",
+    "changelog": "node ./scripts/changelog.js",
+    "release:prepare-packages": "node ./scripts/preparepackages.js",
+    "release:publish-packages": "node ./scripts/publishpackages.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE.md"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "ckeditor5": ">=42.0.0 || ^0.0.0-nightly",
+    "ckeditor5-premium-features": ">=42.0.0 || ^0.0.0-nightly"
+  },
+  "type": "module",
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.umd.cjs"
+      }
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix"
+    ]
+  },
+  "devDependencies": {
+    "@ckeditor/ckeditor5-dev-bump-year": "^42.0.0",
+    "@ckeditor/ckeditor5-dev-ci": "^42.0.0",
+    "@ckeditor/ckeditor5-dev-release-tools": "^42.0.0",
+    "@ckeditor/ckeditor5-dev-utils": "^42.0.0",
+    "@vitest/coverage-istanbul": "^2.0.5",
+    "@vitest/ui": "^2.0.5",
+    "ckeditor5": "^43.0.0",
+    "ckeditor5-premium-features": "^43.0.0",
+    "coveralls": "^3.1.1",
+    "eslint": "^7.19.0",
+    "eslint-config-ckeditor5": "^6.0.0",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.9",
+    "minimist": "^1.2.8",
+    "semver": "^7.6.3",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.0",
+    "vite-plugin-dts": "^4.0.2",
+    "vitest": "^2.0.5",
+    "webdriverio": "^8.40.2"
+  },
+  "overrides": {
+    "ws": "^7.0.0"
+  }
+}
