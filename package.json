@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/ckeditor/ckeditor5-integrations-common",
   "scripts": {
-    "build": "npm run build:lib && npm run build:test-utils",
+    "build": "yarn build:lib && yarn build:test-utils",
     "build:lib": "vite build",
     "build:test-utils": "vite build --config vite.test-utils.config.ts",
     "dev": "vite",

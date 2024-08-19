@@ -17,7 +17,6 @@ declare global {
 	interface Window {
 		CKEDITOR_VERSION?: string;
 		CKEDITOR?: typeof CKEditor;
-		ckeditor5?: Window['CKEDITOR'];
 	}
 }
 
@@ -76,7 +75,7 @@ export function createCKCdnBaseBundlePack(
 
 		// Pick the exported global variables from the window object.
 		getExportedEntries: async () =>
-			waitForWindowEntry( [ 'ckeditor5', 'CKEDITOR' ] )
+			waitForWindowEntry( [ 'CKEDITOR' ] )
 	};
 }
 

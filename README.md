@@ -9,7 +9,7 @@ Official [CKEditor 5](https://ckeditor.com/ckeditor-5/) common integration utils
 
 ## Contributing
 
-After cloning this repository, install necessary dependencies:
+After cloning this repository, install the necessary dependencies:
 
 ```bash
 npm install

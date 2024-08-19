@@ -16,7 +16,7 @@ export function preloadResource( url: string ): void {
 
 	const link = document.createElement( 'link' );
 
-	link.setAttribute( 'injected-by', 'ck-editor-react' );
+	link.setAttribute( 'injected-by', 'ckeditor-integration' );
 	link.rel = 'preload';
 	link.as = detectTypeOfResource( url );
 	link.href = url;

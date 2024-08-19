@@ -39,7 +39,7 @@ export function injectScript( src: string ): Promise<void> {
 			resolve();
 		};
 
-		script.setAttribute( 'injected-by', 'ck-editor-react' );
+		script.setAttribute( 'injected-by', 'ckeditor-integration' );
 		script.type = 'text/javascript';
 		script.async = true;
 		script.src = src;

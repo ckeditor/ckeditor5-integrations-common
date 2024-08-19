@@ -18,7 +18,6 @@ import { injectScriptsInParallel } from '../../utils/injectScript';
 declare global {
 	interface Window {
 		CKEDITOR_PREMIUM_FEATURES?: typeof CKEditorPremiumFeatures;
-		'ckeditor5-premium-features'?: Window['CKEDITOR_PREMIUM_FEATURES'];
 	}
 }
 
@@ -77,7 +76,7 @@ export function createCKCdnPremiumBundlePack(
 
 		// Pick the exported global variables from the window object.
 		getExportedEntries: async () =>
-			waitForWindowEntry( [ 'ckeditor5-premium-features', 'CKEDITOR_PREMIUM_FEATURES' ] )
+			waitForWindowEntry( [ 'CKEDITOR_PREMIUM_FEATURES' ] )
 	};
 }
 
