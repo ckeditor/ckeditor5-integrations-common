@@ -36,7 +36,7 @@ describe( 'loadCKEditorCloud', () => {
 	it( 'should be possible to load ckeditor with premium features', async () => {
 		const { CKEditor, CKEditorPremiumFeatures } = await loadCKEditorCloud( {
 			version: '43.0.0',
-			withPremiumFeatures: true
+			premium: true
 		} );
 
 		expect( window.CKEDITOR_VERSION ).toBe( '43.0.0' );
@@ -47,7 +47,7 @@ describe( 'loadCKEditorCloud', () => {
 	it( 'should be possible to load ckbox with base features', async () => {
 		const { CKEditor, CKBox, CKEditorPremiumFeatures } = await loadCKEditorCloud( {
 			version: '43.0.0',
-			withCKBox: {
+			ckbox: {
 				version: '2.5.1'
 			}
 		} );

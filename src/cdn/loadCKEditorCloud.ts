@@ -30,7 +30,7 @@ import {
  * const { CKEditor, CKEditorPremiumFeatures } = await loadCKEditorCloud( {
  * 	version: '43.0.0',
  * 	languages: [ 'en', 'de' ],
- * 	withPremiumFeatures: true
+ * 	premium: true
  * } );
  *
  * const { Paragraph } = CKEditor;
@@ -42,7 +42,7 @@ export function loadCKEditorCloud<A extends CKExternalPluginsMap>(
 ): Promise<CKEditorCloudResult<A>> {
 	const {
 		version, languages, plugins,
-		withPremiumFeatures, withCKBox
+		premium, ckbox
 	} = config;
 
 	const pack = combineCKCdnBundlesPacks( {
@@ -51,15 +51,15 @@ export function loadCKEditorCloud<A extends CKExternalPluginsMap>(
 			languages
 		} ),
 
-		...withPremiumFeatures && {
+		...premium && {
 			CKEditorPremiumFeatures: createCKCdnPremiumBundlePack( {
 				version,
 				languages
 			} )
 		},
 
-		...withCKBox && {
-			CKBox: createCKBoxBundlePack( withCKBox )
+		...ckbox && {
+			CKBox: createCKBoxBundlePack( ckbox )
 		},
 
 		...plugins && {
@@ -125,12 +125,12 @@ export type CKEditorCloudConfig<A extends CKExternalPluginsMap = CKExternalPlugi
 	/**
 	 * If `true` then the premium features will be loaded.
 	 */
-	withPremiumFeatures?: boolean;
+	premium?: boolean;
 
 	/**
 	 * CKBox bundle configuration.
 	 */
-	withCKBox?: CKBoxCdnBundlePackConfig;
+	ckbox?: CKBoxCdnBundlePackConfig;
 
 	/**
 	 * Additional resources to load.
