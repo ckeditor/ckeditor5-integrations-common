@@ -31,8 +31,8 @@ export function combineCKCdnBundlesPacks<P extends CKCdnBundlesPacks>( packs: P 
 	const allPacks = (
 		Object
 			.values( packs )
-			.filter( Boolean )
-	) as Array<CKCdnResourcesPack<any>>;
+			.filter( pack => pack !== undefined )
+	);
 
 	return {
 		// Combine all preloads from all packs into a single array.
