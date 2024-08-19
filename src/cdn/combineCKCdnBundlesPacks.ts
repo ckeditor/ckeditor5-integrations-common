@@ -28,11 +28,9 @@ import type { CKCdnResourcesPack, InferCKCdnResourcesPackExportsType } from './l
  * ```
  */
 export function combineCKCdnBundlesPacks<P extends CKCdnBundlesPacks>( packs: P ): CKCdnCombinedBundlePack<P> {
-	const allPacks = (
-		Object
-			.values( packs )
-			.filter( pack => pack !== undefined )
-	);
+	const allPacks = Object
+		.values( packs )
+		.filter( pack => pack !== undefined );
 
 	return {
 		// Combine all preloads from all packs into a single array.
