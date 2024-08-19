@@ -13,17 +13,17 @@ export default defineConfig( {
 	build: {
 		target: 'esnext',
 		lib: {
-			entry: 'src/index',
-			fileName: 'index',
-			formats: [ 'es', 'umd' ],
-			name: 'CKEDITOR_INTEGRATIONS_COMMON'
+			entry: 'tests/_utils/index',
+			fileName: 'tests/_utils/index',
+			formats: [ 'es' ]
 		},
 		sourcemap: true,
-		emptyOutDir: true
+		emptyOutDir: false
 	},
 	plugins: [
 		tsconfigPaths(),
 		dts( {
+			include: [ 'tests/_utils/**/*', 'src/**/*' ],
 			exclude: [ '**/*.test.ts', '**/*.test.tsx' ],
 			copyDtsFiles: true,
 			clearPureImport: false
