@@ -4,6 +4,8 @@
  */
 
 import './globals.d';
+import './cdn/ck/globals.d';
+import './cdn/ckbox/globals.d';
 
 export type { Awaitable } from './types/Awaitable';
 

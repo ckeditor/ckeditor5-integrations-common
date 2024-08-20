@@ -3,22 +3,13 @@
  * For licensing, see LICENSE.md.
  */
 
-import type * as CKEditor from 'ckeditor5';
 import type { CKCdnResourcesPack } from '../loadCKCdnResourcesPack';
 
 import { createCKCdnUrl, type CKCdnVersion } from './createCKCdnUrl';
 import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
 import { injectScriptsInParallel } from '../../utils/injectScript';
 
-/**
- * Type of the exported global variables of the base CKEditor bundle.
- */
-declare global {
-	interface Window {
-		CKEDITOR_VERSION?: string;
-		CKEDITOR?: typeof CKEditor;
-	}
-}
+import './globals.d';
 
 /**
  * Creates a pack of resources for the base CKEditor bundle.

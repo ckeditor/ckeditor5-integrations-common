@@ -8,14 +8,7 @@ import type { CKCdnResourcesPack } from '../loadCKCdnResourcesPack';
 import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
 import { createCKBoxCdnUrl, type CKBoxCdnVersion } from './createCKBoxCdnUrl';
 
-/**
- * Type of the exported global variables of the base CKBox bundle.
- */
-declare global {
-	interface Window {
-		CKBox?: unknown;
-	}
-}
+import './globals.d';
 
 /**
  * Creates a pack of resources for the base CKBox bundle.
