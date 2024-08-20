@@ -6,11 +6,11 @@
 import type { CKCdnResourcesPack } from '../loadCKCdnResourcesPack';
 import type { CKCdnBaseBundlePackConfig } from './createCKCdnBaseBundlePack';
 
-import './globals.d';
-
 import { createCKCdnUrl } from './createCKCdnUrl';
 import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
 import { injectScriptsInParallel } from '../../utils/injectScript';
+
+import './globals.d';
 
 /**
  * Creates a pack of resources for the CKEditor Premium Features.
