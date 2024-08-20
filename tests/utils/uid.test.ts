@@ -3,10 +3,14 @@
  * For licensing, see LICENSE.md.
  */
 
-import { it, expect, describe } from 'vitest';
+import { it, expect, describe, vi, afterEach } from 'vitest';
 import { uid } from '@/utils/uid';
 
 describe( 'uid', () => {
+	afterEach( () => {
+		vi.restoreAllMocks();
+	} );
+
 	it( 'uid should return a string starting with "e"', () => {
 		const id = uid();
 		expect( id.startsWith( 'e' ) ).toBe( true );
@@ -27,5 +31,11 @@ describe( 'uid', () => {
 		const id = uid();
 		const hexRegex = /^[a-fA-F0-9]+$/;
 		expect( hexRegex.test( id.substring( 1 ) ) ).toBe( true );
+	} );
+
+	it( 'uid should not use Math.random', () => {
+		const randomSpy = vi.spyOn( Math, 'random' );
+		uid();
+		expect( randomSpy ).not.toHaveBeenCalled();
 	} );
 } );
