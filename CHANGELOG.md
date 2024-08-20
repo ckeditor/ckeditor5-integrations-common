@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## [0.1.1](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v0.1.0...v0.1.1) (2024-08-20)
+
+Internal changes only (updated dependencies, documentation, etc.).
+
+
 ## [0.1.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v0.0.1...v0.1.0) (2024-08-20)
 
 ### Features
