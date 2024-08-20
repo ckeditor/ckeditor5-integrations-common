@@ -3,23 +3,14 @@
  * For licensing, see LICENSE.md.
  */
 
-import type * as CKEditorPremiumFeatures from 'ckeditor5-premium-features';
-
 import type { CKCdnResourcesPack } from '../loadCKCdnResourcesPack';
 import type { CKCdnBaseBundlePackConfig } from './createCKCdnBaseBundlePack';
+
+import './globals.d';
 
 import { createCKCdnUrl } from './createCKCdnUrl';
 import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
 import { injectScriptsInParallel } from '../../utils/injectScript';
-
-/**
- * Type of the exported global variables of the CKEditor Premium Features.
- */
-declare global {
-	interface Window {
-		CKEDITOR_PREMIUM_FEATURES?: typeof CKEditorPremiumFeatures;
-	}
-}
 
 /**
  * Creates a pack of resources for the CKEditor Premium Features.
