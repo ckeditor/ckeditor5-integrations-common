@@ -17,6 +17,6 @@ declare global {
 	}
 }
 
-// Expose CKBox to the global scope, avoid using `export declare` because it's not supported by the older TypeScript compilers.
+// Expose CKEditor to the global scope, avoid using `export declare` because it's not supported by the older TypeScript compilers.
 // Although it's supported by the TypeScript language service.
 export {};
