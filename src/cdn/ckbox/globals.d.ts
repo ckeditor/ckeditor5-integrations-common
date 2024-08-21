@@ -6,8 +6,12 @@
 /**
  * Exported global variables of the CKBox.
  */
-export declare global {
+declare global {
 	interface Window {
 		CKBox?: any;
 	}
 }
+
+// Expose CKBox to the global scope, avoid using `export declare` because it's not supported by the older TypeScript compilers.
+// Although it's supported by the TypeScript language service.
+export {};
