@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { CKCdnResourcesPack } from '../loadCKCdnResourcesPack';
+import type { CKCdnResourcesAdvancedPack } from '../loadCKCdnResourcesPack';
 import type { CKCdnBaseBundlePackConfig } from './createCKCdnBaseBundlePack';
 
 import { createCKCdnUrl } from './createCKCdnUrl';
@@ -33,7 +33,7 @@ export function createCKCdnPremiumBundlePack(
 		version,
 		languages
 	}: CKCdnPremiumBundlePackConfig
-): CKCdnResourcesPack<Window['CKEDITOR_PREMIUM_FEATURES']> {
+): CKCdnResourcesAdvancedPack<Window['CKEDITOR_PREMIUM_FEATURES']> {
 	const urls = {
 		scripts: [
 			// Load the main script of the premium features.

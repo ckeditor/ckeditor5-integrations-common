@@ -7,11 +7,14 @@ import { describe, it, vi, expect, vitest, beforeEach, afterEach } from 'vitest'
 
 import { loadCKCdnResourcesPack } from '@/cdn/loadCKCdnResourcesPack';
 import {
+	queryScript,
+	queryStylesheet,
+	queryPreload,
 	removeCkCdnLinks,
 	removeCkCdnScripts,
 	CDN_MOCK_SCRIPT_URL,
 	CDN_MOCK_STYLESHEET_URL
-} from 'tests/_utils/ckCdnMocks';
+} from 'tests/_utils';
 
 describe( 'loadCKCdnResourcesPack', () => {
 	beforeEach( () => {
@@ -69,6 +72,25 @@ describe( 'loadCKCdnResourcesPack', () => {
 		expect( loaded ).toEqual( window.CKEDITOR );
 	} );
 
+	it( 'should be possible to define pack using plain array of scripts and stylesheets', async () => {
+		expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).toBeNull();
+		expect( queryStylesheet( CDN_MOCK_STYLESHEET_URL ) ).toBeNull();
+
+		await loadCKCdnResourcesPack( [
+			CDN_MOCK_SCRIPT_URL,
+			CDN_MOCK_STYLESHEET_URL
+		] );
+
+		expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
+		expect( queryStylesheet( CDN_MOCK_STYLESHEET_URL ) ).not.toBeNull();
+	} );
+
+	it( 'should be possible to define pack using plain async function', async () => {
+		const pack = await loadCKCdnResourcesPack( async () => ( { a: 2 } ) );
+
+		expect( pack ).toEqual( { a: 2 } );
+	} );
+
 	it( 'should use preload property instead default one if passed', async () => {
 		const loaded = await loadCKCdnResourcesPack( {
 			preload: [ CDN_MOCK_SCRIPT_URL ],
@@ -78,7 +100,7 @@ describe( 'loadCKCdnResourcesPack', () => {
 		} );
 
 		expect( loaded ).toBeDefined();
-		expect( document.querySelector( `link[rel="preload"][href="${ CDN_MOCK_SCRIPT_URL }"]` ) ).not.toBeNull();
+		expect( queryPreload( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
 	} );
 
 	it( 'should automatically preload all resources if preload property is not defined', async () => {
@@ -93,7 +115,7 @@ describe( 'loadCKCdnResourcesPack', () => {
 		expect( loaded ).toBeDefined();
 
 		for ( const link of [ CDN_MOCK_SCRIPT_URL, CDN_MOCK_STYLESHEET_URL ] ) {
-			expect( document.querySelector( `link[rel="preload"][href="${ link }"]` ) ).not.toBeNull();
+			expect( queryPreload( link ) ).not.toBeNull();
 		}
 	} );
 

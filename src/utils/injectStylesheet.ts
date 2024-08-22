@@ -34,7 +34,7 @@ export function injectStylesheet( href: string ): Promise<void> {
 	const promise = new Promise<void>( ( resolve, reject ) => {
 		const link = document.createElement( 'link' );
 
-		link.setAttribute( 'injected-by', 'ckeditor-integration' );
+		link.setAttribute( 'data-injected-by', 'ckeditor-integration' );
 		link.rel = 'stylesheet';
 		link.href = href;
 

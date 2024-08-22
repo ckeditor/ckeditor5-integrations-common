@@ -6,3 +6,4 @@
 export * from './ckBoxCdnMocks';
 export * from './ckCdnMocks';
 export * from './removeAllCkCdnResources';
+export * from './queryHeadElement';
