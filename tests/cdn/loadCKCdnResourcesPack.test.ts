@@ -29,14 +29,14 @@ describe( 'loadCKCdnResourcesPack', () => {
 	} );
 
 	it( 'should return the exported global variables', async () => {
-		const getExportedEntries = vitest.fn( () => ( {
+		const confirmPluginReady = vitest.fn( () => ( {
 			ClassicEditor: {
 				version: '30.0.0'
 			}
 		} ) );
 
 		const result = await loadCKCdnResourcesPack( {
-			getExportedEntries
+			confirmPluginReady
 		} );
 
 		expect( result ).toEqual( {
@@ -45,7 +45,7 @@ describe( 'loadCKCdnResourcesPack', () => {
 			}
 		} );
 
-		expect( getExportedEntries ).toHaveBeenCalled();
+		expect( confirmPluginReady ).toHaveBeenCalled();
 	} );
 
 	it( 'should not inject any script if the pack does not contain any', async () => {
@@ -56,7 +56,7 @@ describe( 'loadCKCdnResourcesPack', () => {
 		};
 
 		const loaded = await loadCKCdnResourcesPack( {
-			getExportedEntries: () => result
+			confirmPluginReady: () => result
 		} );
 
 		expect( result ).toEqual( loaded );
@@ -65,7 +65,7 @@ describe( 'loadCKCdnResourcesPack', () => {
 	it( 'should inject the script if the pack contains one', async () => {
 		const loaded = await loadCKCdnResourcesPack( {
 			scripts: [ CDN_MOCK_SCRIPT_URL ],
-			getExportedEntries: () => window.CKEDITOR!
+			confirmPluginReady: () => window.CKEDITOR!
 		} );
 
 		expect( loaded ).toBeDefined();
@@ -94,7 +94,7 @@ describe( 'loadCKCdnResourcesPack', () => {
 	it( 'should use preload property instead default one if passed', async () => {
 		const loaded = await loadCKCdnResourcesPack( {
 			preload: [ CDN_MOCK_SCRIPT_URL ],
-			getExportedEntries: () => ( {
+			confirmPluginReady: () => ( {
 				result: 2
 			} )
 		} );
@@ -107,7 +107,7 @@ describe( 'loadCKCdnResourcesPack', () => {
 		const loaded = await loadCKCdnResourcesPack( {
 			scripts: [ CDN_MOCK_SCRIPT_URL ],
 			stylesheets: [ CDN_MOCK_STYLESHEET_URL ],
-			getExportedEntries: () => ( {
+			confirmPluginReady: () => ( {
 				result: 2
 			} )
 		} );
@@ -124,7 +124,7 @@ describe( 'loadCKCdnResourcesPack', () => {
 
 		await loadCKCdnResourcesPack( {
 			scripts: [ customFunction ],
-			getExportedEntries: () => ( {
+			confirmPluginReady: () => ( {
 				result: 2
 			} )
 		} );

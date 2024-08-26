@@ -12,14 +12,14 @@ describe( 'combineCKCdnBundlesPacks', () => {
 			preload: [ 'preload1' ],
 			scripts: [ 'script1' ],
 			stylesheets: [ 'stylesheet1' ],
-			getExportedEntries: async () => ( { exported1: 'value1' } )
+			confirmPluginReady: async () => ( { exported1: 'value1' } )
 		};
 
 		const pack2 = {
 			preload: [ 'preload2' ],
 			scripts: [ 'script2' ],
 			stylesheets: [ 'stylesheet2' ],
-			getExportedEntries: async () => ( { exported2: 'value2' } )
+			confirmPluginReady: async () => ( { exported2: 'value2' } )
 		};
 
 		const combinedPack = combineCKCdnBundlesPacks( {
@@ -33,7 +33,7 @@ describe( 'combineCKCdnBundlesPacks', () => {
 			stylesheets: [ 'stylesheet1', 'stylesheet2' ]
 		} );
 
-		const exportedEntries = await combinedPack.getExportedEntries!();
+		const exportedEntries = await combinedPack.confirmPluginReady!();
 
 		expect( exportedEntries ).toEqual( {
 			Pack1: { exported1: 'value1' },
@@ -46,7 +46,7 @@ describe( 'combineCKCdnBundlesPacks', () => {
 			preload: [ 'preload1' ],
 			scripts: [ 'script1' ],
 			stylesheets: [ 'stylesheet1' ],
-			getExportedEntries: async () => ( { exported1: 'value1' } )
+			confirmPluginReady: async () => ( { exported1: 'value1' } )
 		};
 
 		const combinedPack = combineCKCdnBundlesPacks( {
@@ -60,7 +60,7 @@ describe( 'combineCKCdnBundlesPacks', () => {
 			stylesheets: [ 'stylesheet1' ]
 		} );
 
-		const exportedEntries = await combinedPack.getExportedEntries!();
+		const exportedEntries = await combinedPack.confirmPluginReady!();
 
 		expect( exportedEntries ).toEqual( {
 			Pack1: { exported1: 'value1' },
@@ -77,7 +77,7 @@ describe( 'combineCKCdnBundlesPacks', () => {
 			stylesheets: []
 		} );
 
-		const exportedEntries = await combinedPack.getExportedEntries!();
+		const exportedEntries = await combinedPack.confirmPluginReady!();
 
 		expect( exportedEntries ).toEqual( {} );
 	} );
@@ -86,13 +86,13 @@ describe( 'combineCKCdnBundlesPacks', () => {
 		const pack1 = {
 			preload: [ 'preload1' ],
 			stylesheets: [ 'stylesheet1' ],
-			getExportedEntries: async () => ( { exported1: 'value1' } )
+			confirmPluginReady: async () => ( { exported1: 'value1' } )
 		};
 
 		const pack2 = {
 			preload: [ 'preload2' ],
 			stylesheets: [ 'stylesheet2' ],
-			getExportedEntries: async () => ( { exported2: 'value2' } )
+			confirmPluginReady: async () => ( { exported2: 'value2' } )
 		};
 
 		const combinedPack = combineCKCdnBundlesPacks( {
@@ -105,7 +105,7 @@ describe( 'combineCKCdnBundlesPacks', () => {
 			stylesheets: [ 'stylesheet1', 'stylesheet2' ]
 		} );
 
-		const exportedEntries = await combinedPack.getExportedEntries!();
+		const exportedEntries = await combinedPack.confirmPluginReady!();
 
 		expect( exportedEntries ).toEqual( {
 			Pack1: { exported1: 'value1' },
@@ -117,13 +117,13 @@ describe( 'combineCKCdnBundlesPacks', () => {
 		const pack1 = {
 			preload: [ 'preload1' ],
 			scripts: [ 'script1' ],
-			getExportedEntries: async () => ( { exported1: 'value1' } )
+			confirmPluginReady: async () => ( { exported1: 'value1' } )
 		};
 
 		const pack2 = {
 			preload: [ 'preload2' ],
 			scripts: [ 'script2' ],
-			getExportedEntries: async () => ( { exported2: 'value2' } )
+			confirmPluginReady: async () => ( { exported2: 'value2' } )
 		};
 
 		const combinedPack = combineCKCdnBundlesPacks( {
@@ -136,7 +136,7 @@ describe( 'combineCKCdnBundlesPacks', () => {
 			scripts: [ 'script1', 'script2' ]
 		} );
 
-		const exportedEntries = await combinedPack.getExportedEntries!();
+		const exportedEntries = await combinedPack.confirmPluginReady!();
 
 		expect( exportedEntries ).toEqual( {
 			Pack1: { exported1: 'value1' },
@@ -148,13 +148,13 @@ describe( 'combineCKCdnBundlesPacks', () => {
 		const pack1 = {
 			scripts: [ 'script1' ],
 			stylesheets: [ 'stylesheet1' ],
-			getExportedEntries: async () => ( { exported1: 'value1' } )
+			confirmPluginReady: async () => ( { exported1: 'value1' } )
 		};
 
 		const pack2 = {
 			scripts: [ 'script2' ],
 			stylesheets: [ 'stylesheet2' ],
-			getExportedEntries: async () => ( { exported2: 'value2' } )
+			confirmPluginReady: async () => ( { exported2: 'value2' } )
 		};
 
 		const combinedPack = combineCKCdnBundlesPacks( {
@@ -167,7 +167,7 @@ describe( 'combineCKCdnBundlesPacks', () => {
 			stylesheets: [ 'stylesheet1', 'stylesheet2' ]
 		} );
 
-		const exportedEntries = await combinedPack.getExportedEntries!();
+		const exportedEntries = await combinedPack.confirmPluginReady!();
 
 		expect( exportedEntries ).toEqual( {
 			Pack1: { exported1: 'value1' },

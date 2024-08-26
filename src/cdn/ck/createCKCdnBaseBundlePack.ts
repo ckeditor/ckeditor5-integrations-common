@@ -65,7 +65,7 @@ export function createCKCdnBaseBundlePack(
 		stylesheets: urls.stylesheets,
 
 		// Pick the exported global variables from the window object.
-		getExportedEntries: async () =>
+		confirmPluginReady: async () =>
 			waitForWindowEntry( [ 'CKEDITOR' ] )
 	};
 }

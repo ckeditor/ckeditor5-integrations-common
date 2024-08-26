@@ -64,13 +64,13 @@ import {
  * 			stylesheets: [ 'https://cdn.example.com/plugin3.css' ],
  *
  * 			// Optional, if it's not passed then the type of `Plugin3` will be picked from `Window`
- * 			getExportedEntries: () => ( window as any ).Plugin3
+ * 			confirmPluginReady: () => ( window as any ).Plugin3
  * 		}
  * 	}
  * } );
  * ```
  *
- * Type of plugins can be inferred if `getExportedEntries` is not provided: In this case,
+ * Type of plugins can be inferred if `confirmPluginReady` is not provided: In this case,
  * the type of the plugin will be picked from the global window scope.
  */
 export function loadCKEditorCloud<Plugins extends CKCdnBundlesPacks>(

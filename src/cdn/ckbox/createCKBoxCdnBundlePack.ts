@@ -45,7 +45,7 @@ export function createCKBoxBundlePack(
 		},
 
 		// Pick the exported global variables from the window object.
-		getExportedEntries: async () =>
+		confirmPluginReady: async () =>
 			waitForWindowEntry( [ 'CKBox' ] )
 	};
 }
