@@ -5,7 +5,12 @@
 
 import { createCKCdnBaseBundlePack } from './ck/createCKCdnBaseBundlePack';
 import { createCKCdnPremiumBundlePack } from './ck/createCKCdnPremiumBundlePack';
-import { combineCKCdnBundlesPacks } from './combineCKCdnBundlesPacks';
+
+import {
+	combineCKCdnBundlesPacks,
+	type CKCdnBundlesPacks
+} from './combineCKCdnBundlesPacks';
+
 import {
 	createCKBoxBundlePack,
 	type CKBoxCdnBundlePackConfig
@@ -14,9 +19,13 @@ import {
 import type { CKCdnVersion } from './ck/createCKCdnUrl';
 import {
 	loadCKCdnResourcesPack,
-	type CKCdnResourcesPack,
 	type InferCKCdnResourcesPackExportsType
 } from './loadCKCdnResourcesPack';
+
+import {
+	combineCdnPluginsPacks,
+	type CombinedPluginsPackWithFallbackScope
+} from './plugins/combineCdnPluginsPacks';
 
 /**
  * A composable function that loads CKEditor Cloud Services bundles.
@@ -24,8 +33,10 @@ import {
  *
  * @param config The configuration of the CKEditor Cloud Services bundles to load.
  * @returns The result of the loaded CKEditor Cloud Services bundles.
- * @template A The type of the additional resources to load.
  * @example
+ *
+ * Example of loading CKEditor Cloud Services with the premium features and CKBox:
+ *
  * ```ts
  * const { CKEditor, CKEditorPremiumFeatures } = await loadCKEditorCloud( {
  * 	version: '43.0.0',
@@ -36,10 +47,35 @@ import {
  * const { Paragraph } = CKEditor;
  * const { SlashCommands } = CKEditorPremiumFeatures;
  * ```
+ *
+ * Example of loading CKEditor Cloud Services with custom plugins:
+ *
+ * ```ts
+ * const { CKEditor, loadedPlugins } = await loadCKEditorCloud( {
+ * 	version: '43.0.0',
+ * 	plugins: {
+ * 		Plugin1: async () => import( './your-local-import.umd.js' ),
+ * 		Plugin2: [
+ * 			'https://cdn.example.com/plugin2.js',
+ * 			'https://cdn.example.com/plugin2.css'
+ * 		],
+ * 		Plugin3: {
+ * 			scripts: [ 'https://cdn.example.com/plugin3.js' ],
+ * 			stylesheets: [ 'https://cdn.example.com/plugin3.css' ],
+ *
+ * 			// Optional, if it's not passed then the type of `Plugin3` will be picked from `Window`
+ * 			confirmPluginReady: () => ( window as any ).Plugin3
+ * 		}
+ * 	}
+ * } );
+ * ```
+ *
+ * Type of plugins can be inferred if `confirmPluginReady` is not provided: In this case,
+ * the type of the plugin will be picked from the global window scope.
  */
-export function loadCKEditorCloud<A extends CKExternalPluginsMap>(
-	config: CKEditorCloudConfig<A>
-): Promise<CKEditorCloudResult<A>> {
+export function loadCKEditorCloud<Plugins extends CKCdnBundlesPacks>(
+	config: CKEditorCloudConfig<Plugins>
+): Promise<CKEditorCloudResult<Plugins>> {
 	const {
 		version, languages, plugins,
 		premium, ckbox
@@ -62,25 +98,16 @@ export function loadCKEditorCloud<A extends CKExternalPluginsMap>(
 			CKBox: createCKBoxBundlePack( ckbox )
 		},
 
-		...plugins && {
-			CKPlugins: combineCKCdnBundlesPacks( plugins )
-		}
+		loadedPlugins: combineCdnPluginsPacks( plugins ?? {} )
 	} );
 
-	return loadCKCdnResourcesPack( pack ) as Promise<CKEditorCloudResult<A>>;
+	return loadCKCdnResourcesPack( pack ) as Promise<CKEditorCloudResult<Plugins>>;
 }
 
 /**
- * `plugins` property of the `CKEditorCloudConfig`.
- */
-export type CKExternalPluginsMap = Record<string, CKCdnResourcesPack<any>>;
-
-/**
  * The result of the resolved bundles from CKEditor Cloud Services.
- *
- * @template A The type of the additional resources to load.
  */
-export type CKEditorCloudResult<A extends CKExternalPluginsMap = any> = {
+export type CKEditorCloudResult<Plugins extends CKCdnBundlesPacks = any> = {
 
 	/**
 	 * The base CKEditor bundle exports.
@@ -100,17 +127,15 @@ export type CKEditorCloudResult<A extends CKExternalPluginsMap = any> = {
 	/**
 	 * The additional resources exports.
 	 */
-	CKPlugins?: {
-		[ K in keyof A ]: InferCKCdnResourcesPackExportsType<A[K]>
-	};
+	loadedPlugins: InferCKCdnResourcesPackExportsType<
+		CombinedPluginsPackWithFallbackScope<Plugins>
+	>;
 };
 
 /**
  * The configuration of the `useCKEditorCloud` hook.
- *
- * @template A The type of the additional resources to load.
  */
-export type CKEditorCloudConfig<A extends CKExternalPluginsMap = CKExternalPluginsMap> = {
+export type CKEditorCloudConfig<Plugins extends CKCdnBundlesPacks = CKCdnBundlesPacks> = {
 
 	/**
 	 * The version of CKEditor Cloud Services to use.
@@ -135,5 +160,5 @@ export type CKEditorCloudConfig<A extends CKExternalPluginsMap = CKExternalPlugi
 	/**
 	 * Additional resources to load.
 	 */
-	plugins?: A;
+	plugins?: Plugins;
 };

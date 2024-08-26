@@ -3,11 +3,15 @@
  * For licensing, see LICENSE.md.
  */
 
-import { describe, it, vi, expect, beforeEach, afterEach } from 'vitest';
+import {
+	describe, it, vi, expect,
+	expectTypeOf, beforeEach, afterEach
+} from 'vitest';
 
 import { loadCKEditorCloud } from '@/cdn/loadCKEditorCloud';
 import { createCKBoxBundlePack } from '@/cdn/ckbox/createCKBoxCdnBundlePack';
 import { removeCkCdnLinks, removeCkCdnScripts } from 'tests/_utils/ckCdnMocks';
+import { createCKBoxCdnUrl } from '@/src/cdn/ckbox/createCKBoxCdnUrl';
 
 describe( 'loadCKEditorCloud', () => {
 	beforeEach( () => {
@@ -15,6 +19,7 @@ describe( 'loadCKEditorCloud', () => {
 		removeCkCdnLinks();
 
 		vi.spyOn( console, 'error' ).mockImplementation( () => undefined );
+		window.FakePlugin = { fake: 'fake' };
 	} );
 
 	afterEach( () => {
@@ -58,7 +63,7 @@ describe( 'loadCKEditorCloud', () => {
 	} );
 
 	it( 'should be possible to load custom plugins', async () => {
-		const { CKEditor, CKPlugins } = await loadCKEditorCloud( {
+		const { CKEditor, loadedPlugins } = await loadCKEditorCloud( {
 			version: '43.0.0',
 			plugins: {
 				Plugin: createCKBoxBundlePack( {
@@ -68,6 +73,48 @@ describe( 'loadCKEditorCloud', () => {
 		} );
 
 		expect( CKEditor.ClassicEditor ).toBeDefined();
-		expect( CKPlugins?.Plugin ).toBeDefined();
+		expect( loadedPlugins?.Plugin ).toBeDefined();
+	} );
+
+	describe( 'plugins', () => {
+		it( 'should properly infer type of global variable if confirmPluginReady is not provided', async () => {
+			const { loadedPlugins } = await loadCKEditorCloud( {
+				version: '43.0.0',
+				plugins: {
+					FakePlugin: [ createCKBoxCdnUrl( 'ckbox', 'ckbox.js', '2.5.1' ) ]
+				}
+			} );
+
+			expectTypeOf( loadedPlugins.FakePlugin ).toEqualTypeOf<FakePlugin>();
+		} );
+
+		it( 'should properly infer type of global variable if confirmPluginReady is provided', async () => {
+			const { loadedPlugins } = await loadCKEditorCloud( {
+				version: '43.0.0',
+				plugins: {
+					FakePlugin: {
+						scripts: [ createCKBoxCdnUrl( 'ckbox', 'ckbox.js', '2.5.1' ) ],
+						confirmPluginReady: () => window.FakePlugin2
+					}
+				}
+			} );
+
+			expectTypeOf( loadedPlugins.FakePlugin ).toEqualTypeOf<FakePlugin2>();
+		} );
 	} );
 } );
+
+type FakePlugin = {
+	fake: string;
+};
+
+type FakePlugin2 = {
+	abc: number;
+};
+
+declare global {
+	interface Window {
+		FakePlugin: FakePlugin;
+		FakePlugin2: FakePlugin2;
+	}
+}

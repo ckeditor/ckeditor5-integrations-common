@@ -22,7 +22,7 @@ describe( 'preloadResource', () => {
 		const linkElement = document.head.querySelector( `link[href="${ CDN_MOCK_STYLESHEET_URL }"][rel="preload"]` );
 
 		expect( linkElement ).toBeTruthy();
-		expect( linkElement!.getAttribute( 'injected-by' ) ).toBe( 'ckeditor-integration' );
+		expect( linkElement!.getAttribute( 'data-injected-by' ) ).toBe( 'ckeditor-integration' );
 		expect( linkElement!.getAttribute( 'as' ) ).toBe( 'style' );
 		expect( linkElement!.getAttribute( 'href' ) ).toBe( CDN_MOCK_STYLESHEET_URL );
 	} );

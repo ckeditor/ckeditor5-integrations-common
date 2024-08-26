@@ -22,6 +22,9 @@ export { shallowCompareArrays } from './utils/shallowCompareArrays';
 export { uid } from './utils/uid';
 export { uniq } from './utils/uniq';
 export { waitForWindowEntry } from './utils/waitForWindowEntry';
+export { filterObjectValues } from './utils/filterObjectValues';
+export { filterBlankObjectValues } from './utils/filterBlankObjectValues';
+export { mapObjectValues } from './utils/mapObjectValues';
 
 export {
 	CK_CDN_URL,
@@ -36,6 +39,5 @@ export {
 export {
 	loadCKEditorCloud,
 	type CKEditorCloudConfig,
-	type CKEditorCloudResult,
-	type CKExternalPluginsMap
+	type CKEditorCloudResult
 } from './cdn/loadCKEditorCloud';

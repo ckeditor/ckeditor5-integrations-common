@@ -115,6 +115,9 @@ jobs:
           name: Run build
           command: yarn build
       - run:
+          name: Check types of tests
+          command: yarn test:check:types
+      - run:
           name: Run unit tests
           command: yarn test
       - run:

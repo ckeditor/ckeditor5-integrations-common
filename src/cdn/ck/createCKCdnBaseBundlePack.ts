@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { CKCdnResourcesPack } from '../loadCKCdnResourcesPack';
+import type { CKCdnResourcesAdvancedPack } from '../loadCKCdnResourcesPack';
 
 import { createCKCdnUrl, type CKCdnVersion } from './createCKCdnUrl';
 import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
@@ -32,7 +32,7 @@ export function createCKCdnBaseBundlePack(
 		version,
 		languages
 	}: CKCdnBaseBundlePackConfig
-): CKCdnResourcesPack<Window['CKEDITOR']> {
+): CKCdnResourcesAdvancedPack<Window['CKEDITOR']> {
 	const urls = {
 		scripts: [
 			// Load the main script of the base features.
@@ -65,7 +65,7 @@ export function createCKCdnBaseBundlePack(
 		stylesheets: urls.stylesheets,
 
 		// Pick the exported global variables from the window object.
-		getExportedEntries: async () =>
+		confirmPluginReady: async () =>
 			waitForWindowEntry( [ 'CKEDITOR' ] )
 	};
 }

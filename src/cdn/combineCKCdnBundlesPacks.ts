@@ -3,7 +3,14 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { CKCdnResourcesPack, InferCKCdnResourcesPackExportsType } from './loadCKCdnResourcesPack';
+import { filterBlankObjectValues } from '../utils/filterBlankObjectValues';
+import { mapObjectValues } from '../utils/mapObjectValues';
+import {
+	normalizeCKCdnResourcesPack,
+	type CKCdnResourcesPack,
+	type InferCKCdnResourcesPackExportsType,
+	type CKCdnResourcesAdvancedPack
+} from './loadCKCdnResourcesPack';
 
 /**
  * Combines multiple CKEditor CDN bundles packs into a single pack.
@@ -28,43 +35,56 @@ import type { CKCdnResourcesPack, InferCKCdnResourcesPackExportsType } from './l
  * ```
  */
 export function combineCKCdnBundlesPacks<P extends CKCdnBundlesPacks>( packs: P ): CKCdnCombinedBundlePack<P> {
-	const allPacks = Object
-		.values( packs )
-		.filter( pack => pack !== undefined );
+	const normalizedPacks = mapObjectValues(
+		filterBlankObjectValues( packs ),
+		normalizeCKCdnResourcesPack
+	);
+
+	// Merge all scripts, stylesheets and preload resources from all packs.
+	const mergedPacks = Object
+		.values( normalizedPacks )
+		.reduce(
+			( acc, pack ) => {
+				acc.scripts!.push( ...( pack.scripts ?? [] ) );
+				acc.stylesheets!.push( ...( pack.stylesheets ?? [] ) );
+				acc.preload!.push( ...( pack.preload ?? [] ) );
+
+				return acc;
+			},
+			{
+				preload: [],
+				scripts: [],
+				stylesheets: []
+			}
+		);
+
+	// Get exported entries from all packs.
+	const confirmPluginReady = async () => {
+		// Use Object.create() to create an object without a prototype to avoid prototype pollution.
+		const exportedGlobalVariables: Record<string, unknown> = Object.create( null );
+
+		// It can be done sequentially because scripts *should* be loaded at this point and the whole execution should be quite fast.
+		for ( const [ name, pack ] of Object.entries( normalizedPacks ) ) {
+			exportedGlobalVariables[ name ] = await pack?.confirmPluginReady?.();
+		}
+
+		return exportedGlobalVariables as any;
+	};
 
 	return {
-		// Combine all preloads from all packs into a single array.
-		preload: allPacks.flatMap( pack => pack.preload ?? [] ),
-
-		// Combine all scripts from all packs into a single array and preserve order.
-		scripts: allPacks.flatMap( pack => pack.scripts ?? [] ),
-
-		// Combine all stylesheets from all packs into a single array and preserve order.
-		stylesheets: allPacks.flatMap( pack => pack.stylesheets ?? [] ),
-
-		// Map all exports into one big object.
-		getExportedEntries: async () => {
-			// Use Object.create() to create an object without a prototype to avoid prototype pollution.
-			const exportedGlobalVariables: Record<string, unknown> = Object.create( {} );
-
-			// It can be done sequentially because scripts *should* be loaded at this point and the whole execution should be quite fast.
-			for ( const [ name, pack ] of Object.entries( packs ) ) {
-				exportedGlobalVariables[ name ] = await pack?.getExportedEntries?.();
-			}
-
-			return exportedGlobalVariables as any;
-		}
+		...mergedPacks,
+		confirmPluginReady
 	};
 }
 
 /**
  * A map of CKEditor CDN bundles packs.
  */
-type CKCdnBundlesPacks = Record<string, CKCdnResourcesPack<any> | undefined>;
+export type CKCdnBundlesPacks = Record<string, CKCdnResourcesPack<any> | undefined>;
 
 /**
  * A combined pack of resources for multiple CKEditor CDN bundles.
  */
-type CKCdnCombinedBundlePack<P extends CKCdnBundlesPacks> = CKCdnResourcesPack<{
-	[ K in keyof P ]: InferCKCdnResourcesPackExportsType<P[K]>;
+export type CKCdnCombinedBundlePack<P extends CKCdnBundlesPacks> = CKCdnResourcesAdvancedPack<{
+	[ K in keyof P ]: InferCKCdnResourcesPackExportsType<P[K]>
 }>;

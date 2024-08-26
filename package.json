@@ -31,6 +31,7 @@
     "lint": "eslint --quiet \"**/*.{ts,tsx}\"",
     "test": "vitest run --coverage",
     "test:watch": "vitest --ui --watch",
+    "test:check:types": "tsc --noEmit -p ./tsconfig.test.json",
     "changelog": "node ./scripts/changelog.js",
     "release:prepare-packages": "node ./scripts/preparepackages.js",
     "release:publish-packages": "node ./scripts/publishpackages.js"
