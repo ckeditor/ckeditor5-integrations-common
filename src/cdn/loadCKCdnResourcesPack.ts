@@ -8,6 +8,7 @@ import type { Awaitable } from '../types/Awaitable';
 import { injectScript } from '../utils/injectScript';
 import { injectStylesheet } from '../utils/injectStylesheet';
 import { preloadResource } from '../utils/preloadResource';
+import { uniq } from '../utils/uniq';
 
 /**
  * Loads pack of resources (scripts and stylesheets) and returns the exported global variables (if any).
@@ -35,10 +36,10 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 
 	// If preload is not defined, use all stylesheets and scripts as preload resources.
 	if ( !preload ) {
-		preload = [
+		preload = uniq( [
 			...stylesheets.filter( item => typeof item === 'string' ),
 			...scripts.filter( item => typeof item === 'string' )
-		];
+		] );
 	}
 
 	// Preload resources specified in the pack.
@@ -46,11 +47,11 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 
 	// Load stylesheet tags before scripts to avoid flash of unstyled content.
 	await Promise.all(
-		stylesheets.map( injectStylesheet )
+		uniq( stylesheets ).map( injectStylesheet )
 	);
 
 	// Load script tags.
-	for ( const script of scripts ) {
+	for ( const script of uniq( scripts ) ) {
 		if ( typeof script === 'string' ) {
 			await injectScript( script );
 		} else {
