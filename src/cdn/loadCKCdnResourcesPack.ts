@@ -47,7 +47,10 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 
 	// Load stylesheet tags before scripts to avoid flash of unstyled content.
 	await Promise.all(
-		uniq( stylesheets ).map( injectStylesheet )
+		uniq( stylesheets ).map( href => injectStylesheet( {
+			href,
+			headPlacement: 'start'
+		} ) )
 	);
 
 	// Load script tags.

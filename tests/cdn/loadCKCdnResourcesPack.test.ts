@@ -6,6 +6,7 @@
 import { describe, it, vi, expect, vitest, beforeEach, afterEach } from 'vitest';
 
 import { loadCKCdnResourcesPack } from '@/cdn/loadCKCdnResourcesPack';
+import { createCKCdnUrl } from '@/src/cdn/ck/createCKCdnUrl';
 import {
 	queryScript,
 	queryStylesheet,
@@ -130,5 +131,28 @@ describe( 'loadCKCdnResourcesPack', () => {
 		} );
 
 		expect( customFunction ).toHaveBeenCalled();
+	} );
+
+	it( 'should inject the stylesheet at the start of the head', async () => {
+		// Manually inject the stylesheet into the document.
+		const stylesheet1 = document.createElement( 'link' );
+		stylesheet1.rel = 'stylesheet';
+		stylesheet1.href = createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.0' );
+		document.head.appendChild( stylesheet1 );
+
+		// Inject the stylesheet using the loadCKCdnResourcesPack function.
+		await loadCKCdnResourcesPack( {
+			stylesheets: [ CDN_MOCK_STYLESHEET_URL ]
+		} );
+
+		// Verify that the stylesheet are injected at the start of the head.
+		const injectedStylesheets = [ ...document.head.querySelectorAll( 'link[rel="stylesheet"]' ) ].map(
+			link => link.getAttribute( 'href' )!
+		);
+
+		expect( injectedStylesheets ).toEqual( [
+			CDN_MOCK_STYLESHEET_URL,
+			createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.0' )
+		] );
 	} );
 } );
