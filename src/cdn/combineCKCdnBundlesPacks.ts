@@ -59,13 +59,13 @@ export function combineCKCdnBundlesPacks<P extends CKCdnBundlesPacks>( packs: P 
 		);
 
 	// Get exported entries from all packs.
-	const confirmPluginReady = async () => {
+	const checkPluginLoaded = async () => {
 		// Use Object.create() to create an object without a prototype to avoid prototype pollution.
 		const exportedGlobalVariables: Record<string, unknown> = Object.create( null );
 
 		// It can be done sequentially because scripts *should* be loaded at this point and the whole execution should be quite fast.
 		for ( const [ name, pack ] of Object.entries( normalizedPacks ) ) {
-			exportedGlobalVariables[ name ] = await pack?.confirmPluginReady?.();
+			exportedGlobalVariables[ name ] = await pack?.checkPluginLoaded?.();
 		}
 
 		return exportedGlobalVariables as any;
@@ -73,7 +73,7 @@ export function combineCKCdnBundlesPacks<P extends CKCdnBundlesPacks>( packs: P 
 
 	return {
 		...mergedPacks,
-		confirmPluginReady
+		checkPluginLoaded
 	};
 }
 

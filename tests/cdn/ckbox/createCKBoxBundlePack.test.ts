@@ -19,7 +19,7 @@ describe( 'createCKBoxBundlePack', () => {
 			stylesheets: [
 				'https://cdn.ckbox.io/ckbox/2.5.1/styles/themes/lark.css'
 			],
-			confirmPluginReady: expect.any( Function )
+			checkPluginLoaded: expect.any( Function )
 		} );
 	} );
 } );

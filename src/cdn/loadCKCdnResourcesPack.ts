@@ -22,7 +22,7 @@ import { uniq } from '../utils/uniq';
  * 	scripts: [
  * 		'https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js'
  * 	],
- * 	confirmPluginReady: () => ( window as any ).ClassicEditor
+ * 	checkPluginLoaded: () => ( window as any ).ClassicEditor
  * } );
  * ```
  */
@@ -31,7 +31,7 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 		scripts = [],
 		stylesheets = [],
 		preload,
-		confirmPluginReady
+		checkPluginLoaded
 	} = normalizeCKCdnResourcesPack( pack );
 
 	// If preload is not defined, use all stylesheets and scripts as preload resources.
@@ -60,7 +60,7 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 	}
 
 	// Wait for execution all injected scripts.
-	return confirmPluginReady?.();
+	return checkPluginLoaded?.();
 }
 
 /**
@@ -86,7 +86,7 @@ export function normalizeCKCdnResourcesPack<R = any>( pack: CKCdnResourcesPack<R
 	// Check if it is a local import function, if so, convert it to the advanced format.
 	if ( typeof pack === 'function' ) {
 		return {
-			confirmPluginReady: pack
+			checkPluginLoaded: pack
 		};
 	}
 
@@ -134,7 +134,7 @@ type CKCdnResourcesBasicUrlsPack = Array<string>;
  * 	scripts: [
  * 		'https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js'
  * 	],
- * 	confirmPluginReady: () => ( window as any ).ClassicEditor
+ * 	checkPluginLoaded: () => ( window as any ).ClassicEditor
  * };
  * ```
  */
@@ -158,7 +158,7 @@ export type CKCdnResourcesAdvancedPack<R> = {
 	/**
 	 * Get JS object with global variables exported by scripts.
 	 */
-	confirmPluginReady?: () => Awaitable<R>;
+	checkPluginLoaded?: () => Awaitable<R>;
 };
 
 /**
