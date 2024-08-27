@@ -32,7 +32,7 @@ describe( 'createCKCdnBaseBundlePack', () => {
 			'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css'
 		] );
 
-		expect( pack.confirmPluginReady ).toBeInstanceOf( Function );
+		expect( pack.checkPluginLoaded ).toBeInstanceOf( Function );
 	} );
 
 	it( 'should not load any language if not provided', () => {
@@ -41,7 +41,7 @@ describe( 'createCKCdnBaseBundlePack', () => {
 		} );
 
 		expect( pack ).to.toMatchObject( {
-			confirmPluginReady: expect.any( Function ),
+			checkPluginLoaded: expect.any( Function ),
 			stylesheets: [
 				'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css'
 			],

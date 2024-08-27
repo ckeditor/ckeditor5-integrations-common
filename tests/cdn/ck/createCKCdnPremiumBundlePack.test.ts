@@ -25,7 +25,7 @@ describe( 'createCKCdnPremiumBundlePack', () => {
 			'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/ckeditor5-premium-features.css'
 		] );
 
-		expect( pack.confirmPluginReady ).toBeInstanceOf( Function );
+		expect( pack.checkPluginLoaded ).toBeInstanceOf( Function );
 	} );
 
 	it( 'should not load any language if not provided', () => {
@@ -34,7 +34,7 @@ describe( 'createCKCdnPremiumBundlePack', () => {
 		} );
 
 		expect( pack ).to.toMatchObject( {
-			confirmPluginReady: expect.any( Function ),
+			checkPluginLoaded: expect.any( Function ),
 			stylesheets: [
 				'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/ckeditor5-premium-features.css'
 			],

@@ -51,7 +51,7 @@ export function combineCdnPluginsPacks<Plugins extends CKCdnBundlesPacks>(
 
 		return {
 			// Provide default window accessor object if the plugin pack does not define it.
-			confirmPluginReady: async (): Promise<unknown> =>
+			checkPluginLoaded: async (): Promise<unknown> =>
 				waitForWindowEntry( [ pluginName as any ] ),
 
 			// Transform the plugin pack to a normalized advanced pack.
@@ -67,7 +67,7 @@ export function combineCdnPluginsPacks<Plugins extends CKCdnBundlesPacks>(
 
 /**
  * A combined pack of plugins. It picks the type of the plugin from the global scope if
- * `CKCdnCombinedBundlePack` does not define it in the `confirmPluginReady` method.
+ * `CKCdnCombinedBundlePack` does not define it in the `checkPluginLoaded` method.
  */
 export type CombinedPluginsPackWithFallbackScope<P extends CKCdnBundlesPacks> = CKCdnResourcesAdvancedPack<{
 	[ K in keyof P ]: FallbackIfUnknown<

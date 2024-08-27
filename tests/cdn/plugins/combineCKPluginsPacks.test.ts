@@ -19,7 +19,7 @@ describe( 'combineCdnPluginsPacks', () => {
 		delete window.ScreenReader;
 	} );
 
-	it( 'should define default `confirmPluginReady` if not present', async () => {
+	it( 'should define default `checkPluginLoaded` if not present', async () => {
 		const combinedPack = combineCdnPluginsPacks( {
 			ScreenReader: [ 'https://example.org/screen-reader.js' ],
 			AccessibilityChecker: undefined
@@ -29,15 +29,15 @@ describe( 'combineCdnPluginsPacks', () => {
 			scripts: [ 'https://example.org/screen-reader.js' ],
 			preload: [],
 			stylesheets: [],
-			confirmPluginReady: expect.any( Function )
+			checkPluginLoaded: expect.any( Function )
 		} );
 
-		expectTypeOf( combinedPack.confirmPluginReady!()! ).toEqualTypeOf<Awaitable<{
+		expectTypeOf( combinedPack.checkPluginLoaded!()! ).toEqualTypeOf<Awaitable<{
 			ScreenReader: ScreenReader | undefined;
 			AccessibilityChecker: never;
 		}>>();
 
-		await expect( combinedPack.confirmPluginReady!() ).resolves.toEqual( {
+		await expect( combinedPack.checkPluginLoaded!() ).resolves.toEqual( {
 			ScreenReader: {
 				test: 123
 			}

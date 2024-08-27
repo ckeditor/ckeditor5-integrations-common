@@ -77,7 +77,7 @@ describe( 'loadCKEditorCloud', () => {
 	} );
 
 	describe( 'plugins', () => {
-		it( 'should properly infer type of global variable if confirmPluginReady is not provided', async () => {
+		it( 'should properly infer type of global variable if checkPluginLoaded is not provided', async () => {
 			const { loadedPlugins } = await loadCKEditorCloud( {
 				version: '43.0.0',
 				plugins: {
@@ -88,13 +88,13 @@ describe( 'loadCKEditorCloud', () => {
 			expectTypeOf( loadedPlugins.FakePlugin ).toEqualTypeOf<FakePlugin>();
 		} );
 
-		it( 'should properly infer type of global variable if confirmPluginReady is provided', async () => {
+		it( 'should properly infer type of global variable if checkPluginLoaded is provided', async () => {
 			const { loadedPlugins } = await loadCKEditorCloud( {
 				version: '43.0.0',
 				plugins: {
 					FakePlugin: {
 						scripts: [ createCKBoxCdnUrl( 'ckbox', 'ckbox.js', '2.5.1' ) ],
-						confirmPluginReady: () => window.FakePlugin2
+						checkPluginLoaded: () => window.FakePlugin2
 					}
 				}
 			} );

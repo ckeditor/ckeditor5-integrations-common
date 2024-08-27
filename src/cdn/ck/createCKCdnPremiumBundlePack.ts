@@ -66,7 +66,7 @@ export function createCKCdnPremiumBundlePack(
 		stylesheets: urls.stylesheets,
 
 		// Pick the exported global variables from the window object.
-		confirmPluginReady: async () =>
+		checkPluginLoaded: async () =>
 			waitForWindowEntry( [ 'CKEDITOR_PREMIUM_FEATURES' ] )
 	};
 }
