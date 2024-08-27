@@ -5,8 +5,11 @@ Changelog
 
 ### Bug fixes
 
-* No longer raise export modifier cannot be applied to ambient modules error on older TS versions. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/15bca0a5f559738558dde08603d16445cb91d349))
+* No longer raise `export modifier cannot be applied to ambient modules` error on older TS versions. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/15bca0a5f559738558dde08603d16445cb91d349))
 
+### Features
+
+The API interface of the `loadCKEditorCloud` method has been simplified, and the ability to specify the `CKBox` theme has been added. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/tree/e45c569661b1686d153e12a31c146c46751396e6))
 
 ## [0.1.1](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v0.1.0...v0.1.1) (2024-08-20)
 
