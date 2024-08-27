@@ -41,3 +41,7 @@ export {
 	type CKEditorCloudConfig,
 	type CKEditorCloudResult
 } from './cdn/loadCKEditorCloud';
+
+export type {
+	CdnPluginsPacks
+} from './cdn/plugins/combineCdnPluginsPacks';

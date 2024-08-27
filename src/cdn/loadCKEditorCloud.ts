@@ -6,11 +6,7 @@
 import { createCKCdnBaseBundlePack } from './ck/createCKCdnBaseBundlePack';
 import { createCKCdnPremiumBundlePack } from './ck/createCKCdnPremiumBundlePack';
 
-import {
-	combineCKCdnBundlesPacks,
-	type CKCdnBundlesPacks
-} from './combineCKCdnBundlesPacks';
-
+import { combineCKCdnBundlesPacks } from './combineCKCdnBundlesPacks';
 import {
 	createCKBoxBundlePack,
 	type CKBoxCdnBundlePackConfig
@@ -24,7 +20,8 @@ import {
 
 import {
 	combineCdnPluginsPacks,
-	type CombinedPluginsPackWithFallbackScope
+	type CombinedPluginsPackWithFallbackScope,
+	type CdnPluginsPacks
 } from './plugins/combineCdnPluginsPacks';
 
 /**
@@ -73,7 +70,7 @@ import {
  * Type of plugins can be inferred if `checkPluginLoaded` is not provided: In this case,
  * the type of the plugin will be picked from the global window scope.
  */
-export function loadCKEditorCloud<Plugins extends CKCdnBundlesPacks>(
+export function loadCKEditorCloud<Plugins extends CdnPluginsPacks>(
 	config: CKEditorCloudConfig<Plugins>
 ): Promise<CKEditorCloudResult<Plugins>> {
 	const {
@@ -107,7 +104,7 @@ export function loadCKEditorCloud<Plugins extends CKCdnBundlesPacks>(
 /**
  * The result of the resolved bundles from CKEditor Cloud Services.
  */
-export type CKEditorCloudResult<Plugins extends CKCdnBundlesPacks = any> = {
+export type CKEditorCloudResult<Plugins extends CdnPluginsPacks = any> = {
 
 	/**
 	 * The base CKEditor bundle exports.
@@ -135,7 +132,7 @@ export type CKEditorCloudResult<Plugins extends CKCdnBundlesPacks = any> = {
 /**
  * The configuration of the `useCKEditorCloud` hook.
  */
-export type CKEditorCloudConfig<Plugins extends CKCdnBundlesPacks = CKCdnBundlesPacks> = {
+export type CKEditorCloudConfig<Plugins extends CdnPluginsPacks = CdnPluginsPacks> = {
 
 	/**
 	 * The version of CKEditor Cloud Services to use.

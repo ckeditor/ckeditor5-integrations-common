@@ -39,7 +39,7 @@ import {
  * In example above, `ScreenReader` and `AccessibilityChecker` are the plugins names and
  * the type of the exported entries will be picked from the global (Window) scope.
  */
-export function combineCdnPluginsPacks<Plugins extends CKCdnBundlesPacks>(
+export function combineCdnPluginsPacks<Plugins extends CdnPluginsPacks>(
 	pluginsPacks: Plugins
 ): CombinedPluginsPackWithFallbackScope<Plugins> {
 	const normalizedPluginsPacks = mapObjectValues( pluginsPacks, ( pluginPack, pluginName ) => {
@@ -66,10 +66,15 @@ export function combineCdnPluginsPacks<Plugins extends CKCdnBundlesPacks>(
 }
 
 /**
+ * A map of CKEditor plugins packs.
+ */
+export type CdnPluginsPacks = CKCdnBundlesPacks;
+
+/**
  * A combined pack of plugins. It picks the type of the plugin from the global scope if
  * `CKCdnCombinedBundlePack` does not define it in the `checkPluginLoaded` method.
  */
-export type CombinedPluginsPackWithFallbackScope<P extends CKCdnBundlesPacks> = CKCdnResourcesAdvancedPack<{
+export type CombinedPluginsPackWithFallbackScope<P extends CdnPluginsPacks> = CKCdnResourcesAdvancedPack<{
 	[ K in keyof P ]: FallbackIfUnknown<
 		InferCKCdnResourcesPackExportsType<P[K]>,
 		K extends keyof Window ? Window[ K ] : unknown
