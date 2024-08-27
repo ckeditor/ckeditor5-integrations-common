@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## [0.2.1](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v0.2.0...v0.2.1) (2024-08-27)
+
+### Bug fixes
+
+* Export missing CdnPluginsPacks typing, which is used in integrations. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/43e7c51e0e3d79ae27bf3edef77a4c2991880801))
+
+
 ## [0.2.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v0.1.1...v0.2.0) (2024-08-27)
 
 ### Bug fixes
