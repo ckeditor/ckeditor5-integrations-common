@@ -13,10 +13,10 @@ export const INJECTED_STYLESHEETS = new Map<string, Promise<void>>();
  * Injects a stylesheet into the document.
  *
  * @param props.href The URL of the stylesheet to be injected.
- * @param props.headPlacement The placement of the stylesheet in the head.
+ * @param props.placementInHead The placement of the stylesheet in the head.
  * @returns A promise that resolves when the stylesheet is loaded.
  */
-export function injectStylesheet( { href, headPlacement = 'start' }: InjectStylesheetProps ): Promise<void> {
+export function injectStylesheet( { href, placementInHead = 'start' }: InjectStylesheetProps ): Promise<void> {
 	// Return the promise if the stylesheet is already injected by this function.
 	if ( INJECTED_STYLESHEETS.has( href ) ) {
 		return INJECTED_STYLESHEETS.get( href )!;
@@ -33,22 +33,22 @@ export function injectStylesheet( { href, headPlacement = 'start' }: InjectStyle
 
 	// Append the link tag to the head.
 	const appendLinkTagToHead = ( link: HTMLLinkElement ) => {
-		const previouslyInsertedStylesheets = Array.from(
+		const previouslyInjectedStylesheets = Array.from(
 			document.head.querySelectorAll( 'link[data-injected-by="ckeditor-integration"][rel="stylesheet"]' )
 		);
 
-		switch ( headPlacement ) {
+		switch ( placementInHead ) {
 			// It'll append styles *before* the stylesheets that are already present in the head
 			// but after the ones that are injected by this function.
 			case 'start':
-				if ( previouslyInsertedStylesheets.length ) {
-					previouslyInsertedStylesheets.slice( -1 )[ 0 ].after( link );
+				if ( previouslyInjectedStylesheets.length ) {
+					previouslyInjectedStylesheets.slice( -1 )[ 0 ].after( link );
 				} else {
 					document.head.insertBefore( link, document.head.firstChild );
 				}
 				break;
 
-			// It'll append styles *after* the stylesheets that are already present in the head.
+			// It'll append styles *after* the stylesheets already in the head.
 			case 'end':
 				document.head.appendChild( link );
 				break;
@@ -105,5 +105,5 @@ type InjectStylesheetProps = {
 	 * The placement of the stylesheet in the head. It can be either at the start or at the end
 	 * of the head. Default is 'start' because it allows user to override the styles easily.
 	 */
-	headPlacement?: 'start' | 'end';
+	placementInHead?: 'start' | 'end';
 };

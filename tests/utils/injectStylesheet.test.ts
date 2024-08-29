@@ -80,7 +80,7 @@ describe( 'injectStylesheet', () => {
 		const appendChildSpy = vi.spyOn( document.head, 'appendChild' );
 
 		// Call the injectStylesheet function with headPlacement = 'end'
-		const promise = injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL, headPlacement: 'end' } );
+		const promise = injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL, placementInHead: 'end' } );
 
 		// Verify that the stylesheet element is created and appended to the document
 		expect( createElementSpy ).toHaveBeenCalledWith( 'link' );
@@ -96,7 +96,7 @@ describe( 'injectStylesheet', () => {
 		const insertBeforeSpy = vi.spyOn( document.head, 'insertBefore' );
 
 		// Call the injectStylesheet function with headPlacement = 'start'
-		const promise = injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL, headPlacement: 'start' } );
+		const promise = injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL, placementInHead: 'start' } );
 
 		// Verify that the stylesheet element is created and appended to the document
 		expect( createElementSpy ).toHaveBeenCalledWith( 'link' );
@@ -116,12 +116,12 @@ describe( 'injectStylesheet', () => {
 		// Call the injectStylesheet function with headPlacement = 'start'
 		await injectStylesheet( {
 			href: CDN_MOCK_STYLESHEET_URL,
-			headPlacement: 'start'
+			placementInHead: 'start'
 		} );
 
 		await injectStylesheet( {
 			href: createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.1' ),
-			headPlacement: 'start'
+			placementInHead: 'start'
 		} );
 
 		// Verify that the stylesheet is injected after the previously injected stylesheet
