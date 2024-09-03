@@ -7,8 +7,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { CDN_MOCK_STYLESHEET_URL, removeCkCdnLinks } from 'tests/_utils/ckCdnMocks';
 import { injectStylesheet } from '@/utils/injectStylesheet';
-import { preloadResource } from '@/src/utils/preloadResource';
-import { createCKCdnUrl } from '@/src/cdn/ck/createCKCdnUrl';
+import { preloadResource } from '@/utils/preloadResource';
+import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl';
 
 describe( 'injectStylesheet', () => {
 	beforeEach( () => {

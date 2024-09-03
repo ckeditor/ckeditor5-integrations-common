@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { filterObjectValues } from '@/src/utils/filterObjectValues';
+import { filterObjectValues } from '@/utils/filterObjectValues';
 
 describe( 'filterObjectValues', () => {
 	it( 'should filter object values using the provided filter function', () => {
