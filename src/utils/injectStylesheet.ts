@@ -33,9 +33,9 @@ export function injectStylesheet( { href, placementInHead = 'start' }: InjectSty
 
 	// Append the link tag to the head.
 	const appendLinkTagToHead = ( link: HTMLLinkElement ) => {
-		// Prefer to inject styles after the stylesheets that are already present in the head.
-		// Do not specify `rel` attribute because we want to inject the stylesheet even after
-		// preload link tags.
+		// Inject styles after the stylesheets that are already present in the head.
+		// Do not specify the `rel` attribute because we want to inject the stylesheet even after
+		// preloading link tags.
 		const previouslyInjectedLinks = Array.from(
 			document.head.querySelectorAll( 'link[data-injected-by="ckeditor-integration"]' )
 		);
