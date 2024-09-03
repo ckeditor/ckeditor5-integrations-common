@@ -5,6 +5,7 @@ Changelog
 
 ### Features
 
+* The API has been stabilized and the package is now considered stable.
 * CSS scripts are now injected at the beginning of the document head, allowing for easier overriding of editor styles. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/cd61e7ce7baad29adefd275661c9ca7ef5006095))
 
 ### Bug fixes
