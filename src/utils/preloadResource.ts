@@ -21,7 +21,7 @@ export function preloadResource( url: string ): void {
 	link.as = detectTypeOfResource( url );
 	link.href = url;
 
-	document.head.appendChild( link );
+	document.head.insertBefore( link, document.head.firstChild );
 }
 
 /**
