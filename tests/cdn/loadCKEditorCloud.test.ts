@@ -11,7 +11,7 @@ import {
 import { loadCKEditorCloud } from '@/cdn/loadCKEditorCloud';
 import { createCKBoxBundlePack } from '@/cdn/ckbox/createCKBoxCdnBundlePack';
 import { removeCkCdnLinks, removeCkCdnScripts } from 'tests/_utils/ckCdnMocks';
-import { createCKBoxCdnUrl } from '@/src/cdn/ckbox/createCKBoxCdnUrl';
+import { createCKBoxCdnUrl } from '@/cdn/ckbox/createCKBoxCdnUrl';
 
 describe( 'loadCKEditorCloud', () => {
 	beforeEach( () => {

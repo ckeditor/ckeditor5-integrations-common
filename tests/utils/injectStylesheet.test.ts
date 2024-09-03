@@ -7,7 +7,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { CDN_MOCK_STYLESHEET_URL, removeCkCdnLinks } from 'tests/_utils/ckCdnMocks';
 import { injectStylesheet } from '@/utils/injectStylesheet';
-import { createCKCdnUrl } from '@/src/cdn/ck/createCKCdnUrl';
+import { preloadResource } from '@/utils/preloadResource';
+import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl';
 
 describe( 'injectStylesheet', () => {
 	beforeEach( () => {
@@ -133,6 +134,24 @@ describe( 'injectStylesheet', () => {
 			CDN_MOCK_STYLESHEET_URL,
 			createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.1' ),
 			createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.0' )
+		] );
+	} );
+
+	it( 'should inject the stylesheet after preload tags', async () => {
+		preloadResource( CDN_MOCK_STYLESHEET_URL );
+
+		await injectStylesheet( {
+			href: CDN_MOCK_STYLESHEET_URL,
+			placementInHead: 'start'
+		} );
+
+		const injectedLinks = [ ...document.head.querySelectorAll( 'link[rel="stylesheet"], link[rel="preload"]' ) ].map(
+			link => [ link.getAttribute( 'rel' ), link.getAttribute( 'href' ) ]
+		);
+
+		expect( injectedLinks ).toEqual( [
+			[ 'preload', CDN_MOCK_STYLESHEET_URL ],
+			[ 'stylesheet', CDN_MOCK_STYLESHEET_URL ]
 		] );
 	} );
 } );

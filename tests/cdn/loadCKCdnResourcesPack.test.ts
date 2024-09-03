@@ -6,7 +6,7 @@
 import { describe, it, vi, expect, vitest, beforeEach, afterEach } from 'vitest';
 
 import { loadCKCdnResourcesPack } from '@/cdn/loadCKCdnResourcesPack';
-import { createCKCdnUrl } from '@/src/cdn/ck/createCKCdnUrl';
+import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl';
 import {
 	queryScript,
 	queryStylesheet,
