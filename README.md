@@ -5,7 +5,15 @@
 [![Coverage Status](https://coveralls.io/repos/github/ckeditor/ckeditor5-integrations-common/badge.svg?branch=master)](https://coveralls.io/github/ckeditor/ckeditor5-integrations-common?branch=master)
 ![Dependency Status](https://img.shields.io/librariesio/release/npm/@ckeditor/ckeditor5-integrations-common)
 
-Official [CKEditor 5](https://ckeditor.com/ckeditor-5/) common integration utils.
+Official [CKEditor 5](https://ckeditor.com/ckeditor-5/) common integration utils. This package contains a set of utilities that are shared between CKEditor 5 framework integrations such like:
+
+- [CKEditor 5 Vue integration](https://github.com/ckeditor/ckeditor5-vue)
+- [CKEditor 5 React integration](https://github.com/ckeditor/ckeditor5-react)
+- [CKEditor 5 Angular integration](https://github.com/ckeditor/ckeditor5-angular)
+
+The prime example of such shared utility might be the CKEditor 5 Cloud integration loader that is used by all integrations to dynamically load the editor from the CDN.
+
+It's highly recommended to not use this package directly in your application because it's intended to be used by through the integrations listed above. However, if you need to use it directly (because you are using framework that is not supported by the integrations), you can use it as a standalone package, but keep in mind that the API is designed to be used by the integrations and might not be user-friendly.
 
 ## Contributing
 

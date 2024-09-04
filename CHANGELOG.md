@@ -1,6 +1,21 @@
 Changelog
 =========
 
+## [1.0.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v0.2.1...v1.0.0) (2024-09-04)
+
+We are happy to announce the first stable release of `@ckeditor/ckeditor5-integrations-common`, a package containing utility modules for integrating with CKEditor 5.
+
+Below, you can find changes compared to the latest non-stable release.
+
+### Features
+
+* CSS scripts are now injected at the beginning of the document head, allowing for easier overriding of editor styles. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/cd61e7ce7baad29adefd275661c9ca7ef5006095))
+
+### Bug fixes
+
+* Ensure that preload link tags are injected before stylesheet link tags. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/d61b83e8ffede29debcc11c4be2798ad30d527e4))
+
+
 ## [0.2.1](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v0.2.0...v0.2.1) (2024-08-27)
 
 ### Bug fixes
