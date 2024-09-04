@@ -6,7 +6,7 @@ Changelog
 ### Features
 
 * The API has been stabilized and the package is now considered stable.
-* Adjust `README.md` to better describe the package and its purpose. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/pull/23/commits/7eac80561cf4d72ecc0eb50ebb7977ddfd440e10))
+* Adjust `README.md` to better describe the package and its purpose. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/7eac80561cf4d72ecc0eb50ebb7977ddfd440e10))
 * CSS scripts are now injected at the beginning of the document head, allowing for easier overriding of editor styles. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/cd61e7ce7baad29adefd275661c9ca7ef5006095))
 
 ### Bug fixes
