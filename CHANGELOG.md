@@ -3,10 +3,12 @@ Changelog
 
 ## [1.0.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v0.2.1...v1.0.0) (2024-09-04)
 
+We are happy to announce the first stable release of `@ckeditor/ckeditor5-integrations-common`, a package containing utility modules for integrating with CKEditor 5.
+
+Below, you can find changes compared to the latest non-stable release.
+
 ### Features
 
-* The API has been stabilized and the package is now considered stable.
-* Adjust `README.md` to better describe the package and its purpose. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/7eac80561cf4d72ecc0eb50ebb7977ddfd440e10))
 * CSS scripts are now injected at the beginning of the document head, allowing for easier overriding of editor styles. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/cd61e7ce7baad29adefd275661c9ca7ef5006095))
 
 ### Bug fixes
