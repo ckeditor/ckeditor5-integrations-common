@@ -12,7 +12,9 @@ import {
 	type CKBoxCdnBundlePackConfig
 } from './ckbox/createCKBoxCdnBundlePack';
 
+import type { ConditionalBlank } from '../types/ConditionalBlank';
 import type { CKCdnVersion } from './ck/createCKCdnUrl';
+
 import {
 	loadCKCdnResourcesPack,
 	type InferCKCdnResourcesPackExportsType
@@ -70,9 +72,9 @@ import {
  * Type of plugins can be inferred if `checkPluginLoaded` is not provided: In this case,
  * the type of the plugin will be picked from the global window scope.
  */
-export function loadCKEditorCloud<Plugins extends CdnPluginsPacks>(
-	config: CKEditorCloudConfig<Plugins>
-): Promise<CKEditorCloudResult<Plugins>> {
+export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
+	config: Config
+): Promise<CKEditorCloudResult<Config>> {
 	const {
 		version, languages, plugins,
 		premium, ckbox
@@ -98,13 +100,13 @@ export function loadCKEditorCloud<Plugins extends CdnPluginsPacks>(
 		loadedPlugins: combineCdnPluginsPacks( plugins ?? {} )
 	} );
 
-	return loadCKCdnResourcesPack( pack ) as Promise<CKEditorCloudResult<Plugins>>;
+	return loadCKCdnResourcesPack( pack ) as Promise<CKEditorCloudResult<Config>>;
 }
 
 /**
  * The result of the resolved bundles from CKEditor Cloud Services.
  */
-export type CKEditorCloudResult<Plugins extends CdnPluginsPacks = any> = {
+export type CKEditorCloudResult<Config extends CKEditorCloudConfig> = {
 
 	/**
 	 * The base CKEditor bundle exports.
@@ -112,20 +114,28 @@ export type CKEditorCloudResult<Plugins extends CdnPluginsPacks = any> = {
 	CKEditor: NonNullable<Window['CKEDITOR']>;
 
 	/**
-	 * The CKEditor Premium Features bundle exports.
+	 * The CKBox bundle exports.
+	 * It's available only if the `ckbox` configuration is provided.
 	 */
-	CKEditorPremiumFeatures?: Window['CKEDITOR_PREMIUM_FEATURES'];
+	CKBox: ConditionalBlank<
+		Config['ckbox'],
+		Window['CKBox']
+	>;
 
 	/**
-	 * The CKBox bundle exports.
+	 * The CKEditor Premium Features bundle exports.
+	 * It's available only if the `premium` configuration is provided.
 	 */
-	CKBox?: Window['CKBox'];
+	CKEditorPremiumFeatures: ConditionalBlank<
+		Config['premium'],
+		Window['CKEDITOR_PREMIUM_FEATURES']
+	>;
 
 	/**
 	 * The additional resources exports.
 	 */
 	loadedPlugins: InferCKCdnResourcesPackExportsType<
-		CombinedPluginsPackWithFallbackScope<Plugins>
+		CombinedPluginsPackWithFallbackScope<NonNullable<Config['plugins']>>
 	>;
 };
 

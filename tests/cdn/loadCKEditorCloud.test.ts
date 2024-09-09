@@ -8,6 +8,8 @@ import {
 	expectTypeOf, beforeEach, afterEach
 } from 'vitest';
 
+import type { AIAdapter } from 'ckeditor5-premium-features';
+
 import { loadCKEditorCloud } from '@/cdn/loadCKEditorCloud';
 import { createCKBoxBundlePack } from '@/cdn/ckbox/createCKBoxCdnBundlePack';
 import { removeCkCdnLinks, removeCkCdnScripts } from 'tests/_utils/ckCdnMocks';
@@ -76,7 +78,7 @@ describe( 'loadCKEditorCloud', () => {
 		expect( loadedPlugins?.Plugin ).toBeDefined();
 	} );
 
-	describe( 'plugins', () => {
+	describe( 'typings', () => {
 		it( 'should properly infer type of global variable if checkPluginLoaded is not provided', async () => {
 			const { loadedPlugins } = await loadCKEditorCloud( {
 				version: '43.0.0',
@@ -100,6 +102,49 @@ describe( 'loadCKEditorCloud', () => {
 			} );
 
 			expectTypeOf( loadedPlugins.FakePlugin ).toEqualTypeOf<FakePlugin2>();
+		} );
+
+		it( 'should set CKBox result type as non-nullable if ckbox config is provided', async () => {
+			const { CKBox } = await loadCKEditorCloud( {
+				version: '43.0.0',
+				ckbox: {
+					version: '2.5.1'
+				}
+			} );
+
+			expectTypeOf( CKBox ).not.toBeNullable();
+		} );
+
+		it( 'should set CKBox result type as nullable if ckbox config is not provided', async () => {
+			const { CKBox } = await loadCKEditorCloud( {
+				version: '43.0.0'
+			} );
+
+			expectTypeOf( CKBox ).toBeUndefined();
+		} );
+
+		it( 'should set CKEditorPremiumFeatures type as non-nullable if premium=true config is provided', async () => {
+			const { CKEditorPremiumFeatures } = await loadCKEditorCloud( {
+				version: '43.0.0',
+				premium: true,
+				ckbox: {
+					version: '2.5.1'
+				}
+			} );
+
+			expectTypeOf( CKEditorPremiumFeatures ).not.toBeNullable();
+			expectTypeOf( CKEditorPremiumFeatures.AIAdapter ).toEqualTypeOf<typeof AIAdapter>();
+		} );
+
+		it( 'should set CKEditorPremiumFeatures type as nullable if premium=true config is not provided', async () => {
+			const { CKEditorPremiumFeatures } = await loadCKEditorCloud( {
+				version: '43.0.0',
+				ckbox: {
+					version: '2.5.1'
+				}
+			} );
+
+			expectTypeOf( CKEditorPremiumFeatures ).toBeUndefined();
 		} );
 	} );
 } );
