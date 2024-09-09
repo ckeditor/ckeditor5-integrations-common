@@ -8,6 +8,6 @@
  * It's useful in case when we provided config and depending on the config we want to set a value or leave it blank.
  */
 export type ConditionalBlank<Condition, Value> =
-	Condition extends true ? NonNullable<Value> :
+	Condition extends true | object ? NonNullable<Value> :
 	Condition extends boolean ? NonNullable<Value> | undefined :
 	undefined;

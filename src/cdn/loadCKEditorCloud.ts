@@ -120,7 +120,7 @@ export type CKEditorCloudResult<Config extends CKEditorCloudConfig> = {
 	 * It's available only if the `ckbox` configuration is provided.
 	 */
 	CKBox: ConditionalBlank<
-		Config extends { ckbox: CKBoxCdnBundlePackConfig } ? true : undefined,
+		Config['ckbox'],
 		Window['CKBox']
 	>;
 
