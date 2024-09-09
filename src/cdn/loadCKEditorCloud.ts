@@ -108,8 +108,6 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
  */
 export type CKEditorCloudResult<Config extends CKEditorCloudConfig> = {
 
-	abc: Config['ckbox'];
-
 	/**
 	 * The base CKEditor bundle exports.
 	 */
