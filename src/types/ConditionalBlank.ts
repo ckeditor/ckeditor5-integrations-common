@@ -4,8 +4,8 @@
  */
 
 /**
- * A type that allows to conditionally set a value or leave it blank.
- * It's useful in case when we provided config and depending on the config we want to set a value or leave it blank.
+ * A type that allows to set a value or leave it blank conditionally.
+ * It's useful when we provide config, and depending on the config, we want to set a value or leave it blank.
  */
 export type ConditionalBlank<Condition, Value> =
 	Condition extends true | object ? NonNullable<Value> :
