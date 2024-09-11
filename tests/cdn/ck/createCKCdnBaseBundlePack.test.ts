@@ -13,7 +13,7 @@ describe( 'createCKCdnBaseBundlePack', () => {
 	it( 'should create a pack of resources for the base CKEditor bundle', () => {
 		const config: CKCdnBaseBundlePackConfig = {
 			version: '43.0.0',
-			languages: [ 'en', 'de' ]
+			translations: [ 'en', 'de' ]
 		};
 
 		const pack = createCKCdnBaseBundlePack( config );

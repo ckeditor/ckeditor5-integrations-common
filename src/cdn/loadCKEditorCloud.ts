@@ -39,7 +39,7 @@ import {
  * ```ts
  * const { CKEditor, CKEditorPremiumFeatures } = await loadCKEditorCloud( {
  * 	version: '43.0.0',
- * 	languages: [ 'en', 'de' ],
+ * 	translations: [ 'en', 'de' ],
  * 	premium: true
  * } );
  *
@@ -76,20 +76,20 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 	config: Config
 ): Promise<CKEditorCloudResult<Config>> {
 	const {
-		version, languages, plugins,
+		version, translations, plugins,
 		premium, ckbox
 	} = config;
 
 	const pack = combineCKCdnBundlesPacks( {
 		CKEditor: createCKCdnBaseBundlePack( {
 			version,
-			languages
+			translations
 		} ),
 
 		...premium && {
 			CKEditorPremiumFeatures: createCKCdnPremiumBundlePack( {
 				version,
-				languages
+				translations
 			} )
 		},
 
@@ -150,9 +150,9 @@ export type CKEditorCloudConfig<Plugins extends CdnPluginsPacks = CdnPluginsPack
 	version: CKCdnVersion;
 
 	/**
-	 * The languages to load.
+	 * The translations to load.
 	 */
-	languages?: Array<string>;
+	translations?: Array<string>;
 
 	/**
 	 * If `true` then the premium features will be loaded.

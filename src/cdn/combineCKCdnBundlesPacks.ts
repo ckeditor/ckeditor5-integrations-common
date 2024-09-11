@@ -24,11 +24,11 @@ import {
  * 	combineCKCdnBundlesPacks( {
  * 		Base: createCKCdnBaseBundlePack( {
  * 			version: '43.0.0',
- * 			languages: [ 'en', 'de' ]
+ * 			translations: [ 'en', 'de' ]
  * 		} ),
  * 		Premium: createCKCdnPremiumBundlePack( {
  * 			version: '43.0.0',
- * 			languages: [ 'en', 'de' ]
+ * 			translations: [ 'en', 'de' ]
  * 		} )
  * 	} )
  * );

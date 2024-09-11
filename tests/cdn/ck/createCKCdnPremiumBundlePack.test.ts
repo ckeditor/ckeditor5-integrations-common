@@ -10,7 +10,7 @@ describe( 'createCKCdnPremiumBundlePack', () => {
 	it( 'should return a pack of resources for the CKEditor Premium Features', () => {
 		const pack = createCKCdnPremiumBundlePack( {
 			version: '43.0.0',
-			languages: [ 'en', 'de' ]
+			translations: [ 'en', 'de' ]
 		} );
 
 		expect( pack.preload ).toEqual( [

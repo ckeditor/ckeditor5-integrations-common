@@ -22,7 +22,7 @@ import './globals.d';
  * const { Paragraph } = await loadCKCdnResourcesPack(
  * 	createCKCdnBaseBundlePack( {
  * 		version: '43.0.0',
- * 		languages: [ 'en', 'de' ]
+ * 		translations: [ 'en', 'de' ]
  * 	} )
  * );
  * ```
@@ -30,7 +30,7 @@ import './globals.d';
 export function createCKCdnBaseBundlePack(
 	{
 		version,
-		languages
+		translations
 	}: CKCdnBaseBundlePackConfig
 ): CKCdnResourcesAdvancedPack<Window['CKEDITOR']> {
 	const urls = {
@@ -39,8 +39,8 @@ export function createCKCdnBaseBundlePack(
 			createCKCdnUrl( 'ckeditor5', 'ckeditor5.umd.js', version ),
 
 			// Load all JavaScript files from the base features.
-			...( languages || [] ).map( language =>
-				createCKCdnUrl( 'ckeditor5', `translations/${ language }.umd.js`, version )
+			...( translations || [] ).map( translation =>
+				createCKCdnUrl( 'ckeditor5', `translations/${ translation }.umd.js`, version )
 			)
 		],
 
@@ -81,7 +81,7 @@ export type CKCdnBaseBundlePackConfig = {
 	version: CKCdnVersion;
 
 	/**
-	 * The list of languages to load.
+	 * The list of translations to load.
 	 */
-	languages?: Array<string>;
+	translations?: Array<string>;
 };
