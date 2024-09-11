@@ -6,7 +6,7 @@
 import { createCKCdnBaseBundlePack } from './ck/createCKCdnBaseBundlePack';
 import { createCKCdnPremiumBundlePack } from './ck/createCKCdnPremiumBundlePack';
 
-import { combineCKCdnBundlesPacks } from './combineCKCdnBundlesPacks';
+import { combineCKCdnBundlesPacks } from './utils/combineCKCdnBundlesPacks';
 import {
 	createCKBoxBundlePack,
 	type CKBoxCdnBundlePackConfig
@@ -18,7 +18,7 @@ import type { CKCdnVersion } from './ck/createCKCdnUrl';
 import {
 	loadCKCdnResourcesPack,
 	type InferCKCdnResourcesPackExportsType
-} from './loadCKCdnResourcesPack';
+} from './utils/loadCKCdnResourcesPack';
 
 import {
 	combineCdnPluginsPacks,

@@ -10,12 +10,12 @@ import {
 	normalizeCKCdnResourcesPack,
 	type InferCKCdnResourcesPackExportsType,
 	type CKCdnResourcesAdvancedPack
-} from '../loadCKCdnResourcesPack';
+} from '../utils/loadCKCdnResourcesPack';
 
 import {
 	combineCKCdnBundlesPacks,
 	type CKCdnBundlesPacks
-} from '../combineCKCdnBundlesPacks';
+} from '../utils/combineCKCdnBundlesPacks';
 
 /**
  * This function is similar to `combineCKCdnBundlesPacks` but it provides global scope

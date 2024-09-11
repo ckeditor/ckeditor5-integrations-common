@@ -13,7 +13,7 @@ describe( 'createCKCdnBaseBundlePack', () => {
 	it( 'should create a pack of resources for the base CKEditor bundle', () => {
 		const config: CKCdnBaseBundlePackConfig = {
 			version: '43.0.0',
-			translations: [ 'en', 'de' ]
+			translations: [ 'pl', 'de' ]
 		};
 
 		const pack = createCKCdnBaseBundlePack( config );
@@ -21,7 +21,7 @@ describe( 'createCKCdnBaseBundlePack', () => {
 		expect( pack.preload ).toEqual( [
 			'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css',
 			'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.umd.js',
-			'https://cdn.ckeditor.com/ckeditor5/43.0.0/translations/en.umd.js',
+			'https://cdn.ckeditor.com/ckeditor5/43.0.0/translations/pl.umd.js',
 			'https://cdn.ckeditor.com/ckeditor5/43.0.0/translations/de.umd.js'
 		] );
 
@@ -33,6 +33,28 @@ describe( 'createCKCdnBaseBundlePack', () => {
 		] );
 
 		expect( pack.checkPluginLoaded ).toBeInstanceOf( Function );
+	} );
+
+	it( 'should not load default EN translation script as it is already bundled', () => {
+		const pack = createCKCdnBaseBundlePack( {
+			version: '43.0.0',
+			translations: [ 'en', 'en-GB' ]
+		} );
+
+		expect( pack ).to.toMatchObject( {
+			checkPluginLoaded: expect.any( Function ),
+			stylesheets: [
+				'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css'
+			],
+			scripts: [
+				expect.any( Function )
+			],
+			preload: [
+				'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css',
+				'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.umd.js',
+				'https://cdn.ckeditor.com/ckeditor5/43.0.0/translations/en-GB.umd.js'
+			]
+		} );
 	} );
 
 	it( 'should not load any language if not provided', () => {

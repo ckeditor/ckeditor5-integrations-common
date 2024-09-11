@@ -3,12 +3,13 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { CKCdnResourcesAdvancedPack } from '../loadCKCdnResourcesPack';
+import type { CKCdnResourcesAdvancedPack } from '../utils/loadCKCdnResourcesPack';
 import type { CKCdnBaseBundlePackConfig } from './createCKCdnBaseBundlePack';
 
 import { createCKCdnUrl } from './createCKCdnUrl';
 import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
 import { injectScriptsInParallel } from '../../utils/injectScript';
+import { without } from '../../utils/without';
 
 import './globals.d';
 
@@ -40,7 +41,8 @@ export function createCKCdnPremiumBundlePack(
 			createCKCdnUrl( 'ckeditor5-premium-features', 'ckeditor5-premium-features.umd.js', version ),
 
 			// Load all JavaScript files from the premium features.
-			...( translations || [] ).map( translation =>
+			// EN bundle is prebuilt into the main script, so we don't need to load it separately.
+			...without( [ 'en' ], translations || [] ).map( translation =>
 				createCKCdnUrl( 'ckeditor5-premium-features', `translations/${ translation }.umd.js`, version )
 			)
 		],

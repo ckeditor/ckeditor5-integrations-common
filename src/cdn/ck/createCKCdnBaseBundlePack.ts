@@ -3,11 +3,12 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { CKCdnResourcesAdvancedPack } from '../loadCKCdnResourcesPack';
+import type { CKCdnResourcesAdvancedPack } from '../utils/loadCKCdnResourcesPack';
 
 import { createCKCdnUrl, type CKCdnVersion } from './createCKCdnUrl';
 import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
 import { injectScriptsInParallel } from '../../utils/injectScript';
+import { without } from '../../utils/without';
 
 import './globals.d';
 
@@ -39,7 +40,8 @@ export function createCKCdnBaseBundlePack(
 			createCKCdnUrl( 'ckeditor5', 'ckeditor5.umd.js', version ),
 
 			// Load all JavaScript files from the base features.
-			...( translations || [] ).map( translation =>
+			// EN bundle is prebuilt into the main script, so we don't need to load it separately.
+			...without( [ 'en' ], translations || [] ).map( translation =>
 				createCKCdnUrl( 'ckeditor5', `translations/${ translation }.umd.js`, version )
 			)
 		],
