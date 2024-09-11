@@ -3,8 +3,8 @@
  * For licensing, see LICENSE.md.
  */
 
-import { filterBlankObjectValues } from '../utils/filterBlankObjectValues';
-import { mapObjectValues } from '../utils/mapObjectValues';
+import { filterBlankObjectValues } from '../../utils/filterBlankObjectValues';
+import { mapObjectValues } from '../../utils/mapObjectValues';
 import {
 	normalizeCKCdnResourcesPack,
 	type CKCdnResourcesPack,
@@ -24,11 +24,11 @@ import {
  * 	combineCKCdnBundlesPacks( {
  * 		Base: createCKCdnBaseBundlePack( {
  * 			version: '43.0.0',
- * 			languages: [ 'en', 'de' ]
+ * 			translations: [ 'es', 'de' ]
  * 		} ),
  * 		Premium: createCKCdnPremiumBundlePack( {
  * 			version: '43.0.0',
- * 			languages: [ 'en', 'de' ]
+ * 			translations: [ 'es', 'de' ]
  * 		} )
  * 	} )
  * );

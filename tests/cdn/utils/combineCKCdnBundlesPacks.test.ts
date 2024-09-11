@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { combineCKCdnBundlesPacks } from '@/cdn/combineCKCdnBundlesPacks';
+import { combineCKCdnBundlesPacks } from '@/cdn/utils/combineCKCdnBundlesPacks';
 
 describe( 'combineCKCdnBundlesPacks', () => {
 	it( 'should combine multiple CKEditor CDN bundles packs into a single pack', async () => {

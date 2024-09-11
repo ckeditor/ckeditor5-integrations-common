@@ -25,6 +25,7 @@ export { waitForWindowEntry } from './utils/waitForWindowEntry';
 export { filterObjectValues } from './utils/filterObjectValues';
 export { filterBlankObjectValues } from './utils/filterBlankObjectValues';
 export { mapObjectValues } from './utils/mapObjectValues';
+export { without } from './utils/without';
 
 export {
 	CK_CDN_URL,

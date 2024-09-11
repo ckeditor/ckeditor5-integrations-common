@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { CKCdnResourcesAdvancedPack } from '../loadCKCdnResourcesPack';
+import type { CKCdnResourcesAdvancedPack } from '../utils/loadCKCdnResourcesPack';
 
 import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
 import { createCKBoxCdnUrl, type CKBoxCdnVersion } from './createCKBoxCdnUrl';
