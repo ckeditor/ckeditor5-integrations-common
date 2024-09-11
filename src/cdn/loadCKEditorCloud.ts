@@ -39,7 +39,7 @@ import {
  * ```ts
  * const { CKEditor, CKEditorPremiumFeatures } = await loadCKEditorCloud( {
  * 	version: '43.0.0',
- * 	translations: [ 'en', 'de' ],
+ * 	translations: [ 'es', 'de' ],
  * 	premium: true
  * } );
  *

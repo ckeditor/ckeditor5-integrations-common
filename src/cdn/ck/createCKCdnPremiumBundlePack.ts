@@ -24,7 +24,7 @@ import './globals.d';
  * const { SlashCommand } = await loadCKCdnResourcesPack(
  * 	createCKCdnPremiumBundlePack( {
  * 		version: '43.0.0',
- * 		translations: [ 'en', 'de' ]
+ * 		translations: [ 'es', 'de' ]
  * 	} )
  * );
  * ```
