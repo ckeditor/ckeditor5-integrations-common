@@ -16,6 +16,7 @@ describe( 'createCKCdnPremiumBundlePack', () => {
 		expect( pack.preload ).toEqual( [
 			'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/ckeditor5-premium-features.css',
 			'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/ckeditor5-premium-features.umd.js',
+			'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/translations/es.umd.js',
 			'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/translations/de.umd.js'
 		] );
 
