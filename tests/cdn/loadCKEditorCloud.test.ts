@@ -16,6 +16,10 @@ import { createCKBoxCdnUrl } from '@/cdn/ckbox/createCKBoxCdnUrl';
 
 import { queryPreload, queryScript, queryStylesheet, removeAllCkCdnResources } from '../_utils';
 import { createCKCdnUrl } from '@/src/cdn/ck/createCKCdnUrl';
+import {
+	queryAllInjectedLinks,
+	queryAllInjectedScripts
+} from '../_utils/queryInjectedElements';
 
 describe( 'loadCKEditorCloud', () => {
 	beforeEach( () => {
@@ -80,7 +84,7 @@ describe( 'loadCKEditorCloud', () => {
 	} );
 
 	describe( 'CSP', () => {
-		it( 'should set crossorigin=anonymous attribute on injected elements if `htmlAttributes` is not specified', async () => {
+		it( 'should set crossorigin=anonymous attribute on injected elements if attributes are not specified', async () => {
 			console.info( queryAnonymousLinks()[ 0 ] );
 
 			expect( queryAnonymousLinks() ).toHaveLength( 0 );
@@ -94,7 +98,7 @@ describe( 'loadCKEditorCloud', () => {
 			expect( queryAnonymousScripts() ).toHaveLength( 1 );
 		} );
 
-		it( 'should set crossorigin=anonymous attribute on injected elements if `htmlAttributes` is specified but is blank', async () => {
+		it( 'should not set crossorigin attribute on injected elements if attributes are specified but are blank', async () => {
 			expect( queryAnonymousLinks() ).toHaveLength( 0 );
 			expect( queryAnonymousScripts() ).toHaveLength( 0 );
 
@@ -103,8 +107,8 @@ describe( 'loadCKEditorCloud', () => {
 				injectedHtmlElementsAttributes: {}
 			} );
 
-			expect( queryAnonymousLinks() ).toHaveLength( 3 );
-			expect( queryAnonymousScripts() ).toHaveLength( 1 );
+			expect( queryAnonymousLinks() ).toHaveLength( 0 );
+			expect( queryAnonymousScripts() ).toHaveLength( 0 );
 		} );
 
 		it( 'should be possible to override the `crossorigin` attribute', async () => {
@@ -119,7 +123,7 @@ describe( 'loadCKEditorCloud', () => {
 			expect( promise ).rejects.toThrowError();
 		} );
 
-		it( 'should set nonce attribute on injected elements if `htmlAttributes` is specified', async () => {
+		it( 'should set nonce attribute on injected elements if attributes are specified', async () => {
 			await loadCKEditorCloud( {
 				version: '43.0.0',
 				injectedHtmlElementsAttributes: {
@@ -139,15 +143,11 @@ describe( 'loadCKEditorCloud', () => {
 		} );
 
 		function queryAnonymousScripts() {
-			return [ ...document.querySelectorAll( 'script[data-injected-by="ckeditor-integration"]' ) ].filter( script =>
-				script.getAttribute( 'crossorigin' ) === 'anonymous'
-			);
+			return queryAllInjectedScripts().filter( script => script.getAttribute( 'crossorigin' ) === 'anonymous' );
 		}
 
 		function queryAnonymousLinks() {
-			return [ ...document.querySelectorAll( 'link[data-injected-by="ckeditor-integration"]' ) ].filter( link =>
-				link.getAttribute( 'crossorigin' ) === 'anonymous'
-			);
+			return queryAllInjectedLinks().filter( link => link.getAttribute( 'crossorigin' ) === 'anonymous' );
 		}
 	} );
 

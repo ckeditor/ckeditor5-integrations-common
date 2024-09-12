@@ -77,7 +77,10 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 ): Promise<CKEditorCloudResult<Config>> {
 	const {
 		version, translations, plugins,
-		premium, ckbox, injectedHtmlElementsAttributes
+		premium, ckbox,
+		injectedHtmlElementsAttributes = {
+			crossorigin: 'anonymous'
+		}
 	} = config;
 
 	const pack = combineCKCdnBundlesPacks( {
@@ -103,10 +106,7 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 	return loadCKCdnResourcesPack(
 		{
 			...pack,
-			htmlAttributes: {
-				crossorigin: 'anonymous',
-				...injectedHtmlElementsAttributes
-			}
+			htmlAttributes: injectedHtmlElementsAttributes
 		}
 	) as Promise<CKEditorCloudResult<Config>>;
 }
