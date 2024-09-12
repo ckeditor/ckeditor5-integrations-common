@@ -110,12 +110,16 @@ describe( 'loadCKEditorCloud', () => {
 		} );
 
 		it( 'should be possible to override the `crossorigin` attribute', async () => {
+			const setAttributeSpy = vi.spyOn( HTMLElement.prototype, 'setAttribute' );
 			const promise = loadCKEditorCloud( {
 				version: '43.0.0',
 				injectedHtmlElementsAttributes: {
 					crossorigin: 'use-credentials'
 				}
 			} );
+
+			expect( setAttributeSpy ).toBeCalledWith( 'crossorigin', 'use-credentials' );
+			expect( setAttributeSpy ).toBeCalledTimes( 6 );
 
 			// It's fine because `use-credentials` throws an error in the vitest browser.
 			expect( promise ).rejects.toThrowError();
