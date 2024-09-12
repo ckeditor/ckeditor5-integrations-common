@@ -5,7 +5,7 @@ Changelog
 
 ### BREAKING CHANGES
 
-* The `languages` configuration property has been renamed to translations in `loadCKEditorCloud`.
+* The `languages` configuration property has been renamed to `translations` in `loadCKEditorCloud`.
 
 ### Features
 
