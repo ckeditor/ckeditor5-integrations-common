@@ -1,6 +1,24 @@
 Changelog
 =========
 
+## [2.0.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v1.0.0...v2.0.0) (2024-09-12)
+
+### BREAKING CHANGES
+
+* The `languages` configuration property has been renamed to `translations` in `loadCKEditorCloud`.
+
+### Features
+
+* Add the `crossorigin=anonymous` attribute to all CDN resource tags to prevent CORS issues. Closes https://github.com/ckeditor/ckeditor5-integrations-common/issues/30. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/78587c987dc4d70154db2f1b88455a430b542ac0))
+* Add the `injectedHtmlElementsAttributes` attribute to the `loadCKEditorCloud` configuration, allowing the addition of `nonce` and other custom attributes to injected elements. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/78587c987dc4d70154db2f1b88455a430b542ac0))
+* `CKEditorCloudResult` now returns more narrowly typed attributes for `CKBox` and `CKEditorPremiumFeatures`, taking into account `CKEditorCloudConfig`. Closes [#24](https://github.com/ckeditor/ckeditor5-integrations-common/issues/24). ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/30de408f43b85f5f91c64b7d243ca4b773348e9a))
+* The `en` language is no longer loaded when passed in `translations` as it is prebundled. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/25e41b6b199ff616b496b9ac63d610d8d35cf1ea))
+
+### Bug fixes
+
+* Rename the `languages` configuration property to `translations` in `loadCKEditorCloud`. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/25e41b6b199ff616b496b9ac63d610d8d35cf1ea))
+
+
 ## [1.0.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v0.2.1...v1.0.0) (2024-09-04)
 
 We are happy to announce the first stable release of `@ckeditor/ckeditor5-integrations-common`, a package containing utility modules for integrating with CKEditor 5.
