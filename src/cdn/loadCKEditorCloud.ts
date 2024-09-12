@@ -77,7 +77,10 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 ): Promise<CKEditorCloudResult<Config>> {
 	const {
 		version, translations, plugins,
-		premium, ckbox
+		premium, ckbox,
+		injectedHtmlElementsAttributes = {
+			crossorigin: 'anonymous'
+		}
 	} = config;
 
 	const pack = combineCKCdnBundlesPacks( {
@@ -100,7 +103,12 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 		loadedPlugins: combineCdnPluginsPacks( plugins ?? {} )
 	} );
 
-	return loadCKCdnResourcesPack( pack ) as Promise<CKEditorCloudResult<Config>>;
+	return loadCKCdnResourcesPack(
+		{
+			...pack,
+			htmlAttributes: injectedHtmlElementsAttributes
+		}
+	) as Promise<CKEditorCloudResult<Config>>;
 }
 
 /**
@@ -168,4 +176,9 @@ export type CKEditorCloudConfig<Plugins extends CdnPluginsPacks = CdnPluginsPack
 	 * Additional resources to load.
 	 */
 	plugins?: Plugins;
+
+	/**
+	 * Map of attributes to add to the script, stylesheet and link tags that are injected by the loader.
+	 */
+	injectedHtmlElementsAttributes?: Record<string, any>;
 };

@@ -14,9 +14,16 @@ export const INJECTED_STYLESHEETS = new Map<string, Promise<void>>();
  *
  * @param props.href The URL of the stylesheet to be injected.
  * @param props.placementInHead The placement of the stylesheet in the head.
+ * @param props.attributes Additional attributes to be set on the link element.
  * @returns A promise that resolves when the stylesheet is loaded.
  */
-export function injectStylesheet( { href, placementInHead = 'start' }: InjectStylesheetProps ): Promise<void> {
+export function injectStylesheet(
+	{
+		href,
+		placementInHead = 'start',
+		attributes = {}
+	}: InjectStylesheetProps
+): Promise<void> {
 	// Return the promise if the stylesheet is already injected by this function.
 	if ( INJECTED_STYLESHEETS.has( href ) ) {
 		return INJECTED_STYLESHEETS.get( href )!;
@@ -62,7 +69,13 @@ export function injectStylesheet( { href, placementInHead = 'start' }: InjectSty
 	const promise = new Promise<void>( ( resolve, reject ) => {
 		const link = document.createElement( 'link' );
 
+		// Set additional attributes if provided.
+		for ( const [ key, value ] of Object.entries( attributes || {} ) ) {
+			link.setAttribute( key, value );
+		}
+
 		link.setAttribute( 'data-injected-by', 'ckeditor-integration' );
+
 		link.rel = 'stylesheet';
 		link.href = href;
 
@@ -109,4 +122,9 @@ type InjectStylesheetProps = {
 	 * of the head. Default is 'start' because it allows user to override the styles easily.
 	 */
 	placementInHead?: 'start' | 'end';
+
+	/**
+	 * Additional attributes to set on the link tag.
+	 */
+	attributes?: Record<string, any>;
 };

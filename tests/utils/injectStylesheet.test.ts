@@ -9,6 +9,7 @@ import { CDN_MOCK_STYLESHEET_URL, removeCkCdnLinks } from 'tests/_utils/ckCdnMoc
 import { injectStylesheet } from '@/utils/injectStylesheet';
 import { preloadResource } from '@/utils/preloadResource';
 import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl';
+import { queryStylesheet } from '../_utils';
 
 describe( 'injectStylesheet', () => {
 	beforeEach( () => {
@@ -153,5 +154,33 @@ describe( 'injectStylesheet', () => {
 			[ 'preload', CDN_MOCK_STYLESHEET_URL ],
 			[ 'stylesheet', CDN_MOCK_STYLESHEET_URL ]
 		] );
+	} );
+
+	it( 'should be possible to define custom attributes for the stylesheet element', async () => {
+		await injectStylesheet( {
+			href: CDN_MOCK_STYLESHEET_URL,
+			attributes: {
+				'data-custom-attribute': 'custom-value'
+			}
+		} );
+
+		const element = queryStylesheet( CDN_MOCK_STYLESHEET_URL )?.getAttribute( 'data-custom-attribute' );
+
+		expect( element ).toEqual( 'custom-value' );
+	} );
+
+	it( 'should not set crossorigin attribute by default', async () => {
+		await injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL } );
+
+		expect( queryStylesheet( CDN_MOCK_STYLESHEET_URL )?.hasAttribute( 'crossorigin' ) ).toEqual( false );
+	} );
+
+	it( 'should not crash if attributes object is null', async () => {
+		await injectStylesheet( {
+			href: CDN_MOCK_STYLESHEET_URL,
+			attributes: null as any
+		} );
+
+		expect( queryStylesheet( CDN_MOCK_STYLESHEET_URL ) ).not.toBeNull();
 	} );
 } );

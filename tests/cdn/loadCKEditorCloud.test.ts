@@ -12,13 +12,18 @@ import type { AIAdapter } from 'ckeditor5-premium-features';
 
 import { loadCKEditorCloud } from '@/cdn/loadCKEditorCloud';
 import { createCKBoxBundlePack } from '@/cdn/ckbox/createCKBoxCdnBundlePack';
-import { removeCkCdnLinks, removeCkCdnScripts } from 'tests/_utils/ckCdnMocks';
 import { createCKBoxCdnUrl } from '@/cdn/ckbox/createCKBoxCdnUrl';
+
+import { queryPreload, queryScript, queryStylesheet, removeAllCkCdnResources } from '../_utils';
+import { createCKCdnUrl } from '@/src/cdn/ck/createCKCdnUrl';
+import {
+	queryAllInjectedLinks,
+	queryAllInjectedScripts
+} from '../_utils/queryInjectedElements';
 
 describe( 'loadCKEditorCloud', () => {
 	beforeEach( () => {
-		removeCkCdnScripts();
-		removeCkCdnLinks();
+		removeAllCkCdnResources();
 
 		vi.spyOn( console, 'error' ).mockImplementation( () => undefined );
 		window.FakePlugin = { fake: 'fake' };
@@ -76,6 +81,76 @@ describe( 'loadCKEditorCloud', () => {
 
 		expect( CKEditor.ClassicEditor ).toBeDefined();
 		expect( loadedPlugins?.Plugin ).toBeDefined();
+	} );
+
+	describe( 'CSP', () => {
+		it( 'should set crossorigin=anonymous attribute on injected elements if attributes are not specified', async () => {
+			expect( queryAnonymousLinks() ).toHaveLength( 0 );
+			expect( queryAnonymousScripts() ).toHaveLength( 0 );
+
+			await loadCKEditorCloud( {
+				version: '43.0.0'
+			} );
+
+			expect( queryAnonymousLinks() ).toHaveLength( 3 );
+			expect( queryAnonymousScripts() ).toHaveLength( 1 );
+		} );
+
+		it( 'should not set crossorigin attribute on injected elements if attributes are specified but are blank', async () => {
+			expect( queryAnonymousLinks() ).toHaveLength( 0 );
+			expect( queryAnonymousScripts() ).toHaveLength( 0 );
+
+			await loadCKEditorCloud( {
+				version: '43.0.0',
+				injectedHtmlElementsAttributes: {}
+			} );
+
+			expect( queryAnonymousLinks() ).toHaveLength( 0 );
+			expect( queryAnonymousScripts() ).toHaveLength( 0 );
+		} );
+
+		it( 'should be possible to override the `crossorigin` attribute', async () => {
+			const setAttributeSpy = vi.spyOn( HTMLElement.prototype, 'setAttribute' );
+			const promise = loadCKEditorCloud( {
+				version: '43.0.0',
+				injectedHtmlElementsAttributes: {
+					crossorigin: 'use-credentials'
+				}
+			} );
+
+			expect( setAttributeSpy ).toBeCalledWith( 'crossorigin', 'use-credentials' );
+			expect( setAttributeSpy ).toBeCalledTimes( 6 );
+
+			// It's fine because `use-credentials` throws an error in the vitest browser.
+			expect( promise ).rejects.toThrowError();
+		} );
+
+		it( 'should set nonce attribute on injected elements if attributes are specified', async () => {
+			await loadCKEditorCloud( {
+				version: '43.0.0',
+				injectedHtmlElementsAttributes: {
+					nonce: 'test-nonce'
+				}
+			} );
+
+			const script = createCKCdnUrl( 'ckeditor5', 'ckeditor5.umd.js', '43.0.0' );
+			const link = createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '43.0.0' );
+
+			expect( queryScript( script )?.getAttribute( 'nonce' ) ).toBe( 'test-nonce' );
+			expect( queryStylesheet( link )?.getAttribute( 'nonce' ) ).toBe( 'test-nonce' );
+
+			for ( const preloadLink of [ script, link ] ) {
+				expect( queryPreload( preloadLink )?.getAttribute( 'nonce' ) ).toBe( 'test-nonce' );
+			}
+		} );
+
+		function queryAnonymousScripts() {
+			return queryAllInjectedScripts().filter( script => script.getAttribute( 'crossorigin' ) === 'anonymous' );
+		}
+
+		function queryAnonymousLinks() {
+			return queryAllInjectedLinks().filter( link => link.getAttribute( 'crossorigin' ) === 'anonymous' );
+		}
 	} );
 
 	describe( 'typings', () => {

@@ -5,6 +5,8 @@
 
 import { describe, expect, it, beforeEach } from 'vitest';
 import { preloadResource } from '@/utils/preloadResource';
+
+import { queryPreload } from 'tests/_utils';
 import {
 	CDN_MOCK_SCRIPT_URL,
 	CDN_MOCK_STYLESHEET_URL
@@ -46,8 +48,28 @@ describe( 'preloadResource', () => {
 
 		preloadResource( url );
 
-		const otherLinkElement = document.head.querySelector( `link[href="${ url }"][rel="preload"]` );
+		expect( queryPreload( url )!.getAttribute( 'as' ) ).toBe( 'fetch' );
+	} );
 
-		expect( otherLinkElement!.getAttribute( 'as' ) ).toBe( 'fetch' );
+	it( 'should allow to set additional attributes', () => {
+		preloadResource( CDN_MOCK_SCRIPT_URL, {
+			attributes: {
+				'data-custom-attribute': 'custom-value'
+			}
+		} );
+
+		expect( queryPreload( CDN_MOCK_SCRIPT_URL )?.getAttribute( 'data-custom-attribute' ) ).toBe( 'custom-value' );
+	} );
+
+	it( 'should not inject the crossorigin if empty attributes object passed', () => {
+		preloadResource( CDN_MOCK_SCRIPT_URL, { attributes: {} } );
+
+		expect( queryPreload( CDN_MOCK_SCRIPT_URL )?.hasAttribute( 'crossorigin' ) ).toBe( false );
+	} );
+
+	it( 'should not crash if attributes object is null', () => {
+		preloadResource( CDN_MOCK_SCRIPT_URL, { attributes: null as any } );
+
+		expect( queryPreload( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
 	} );
 } );

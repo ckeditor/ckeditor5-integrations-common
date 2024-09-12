@@ -13,9 +13,14 @@ export const INJECTED_SCRIPTS = new Map<string, Promise<void>>();
  * Injects a script into the document.
  *
  * @param src The URL of the script to be injected.
+ * @param props Additional properties used to decide how the script should be injected.
+ * @param props.attributes Additional attributes to be set on the script element.
  * @returns A promise that resolves when the script is loaded.
  */
-export function injectScript( src: string ): Promise<void> {
+export function injectScript(
+	src: string,
+	{ attributes }: InjectScriptProps = {}
+): Promise<void> {
 	// Return the promise if the script is already injected by this function.
 	if ( INJECTED_SCRIPTS.has( src ) ) {
 		return INJECTED_SCRIPTS.get( src )!;
@@ -39,7 +44,13 @@ export function injectScript( src: string ): Promise<void> {
 			resolve();
 		};
 
+		// Set additional attributes if provided.
+		for ( const [ key, value ] of Object.entries( attributes || {} ) ) {
+			script.setAttribute( key, value );
+		}
+
 		script.setAttribute( 'data-injected-by', 'ckeditor-integration' );
+
 		script.type = 'text/javascript';
 		script.async = true;
 		script.src = src;
@@ -68,11 +79,21 @@ export function injectScript( src: string ): Promise<void> {
 }
 
 /**
+ * Props for the `injectScript` function.
+ */
+export type InjectScriptProps = {
+	attributes?: Record<string, any>;
+};
+
+/**
  * Injects multiple scripts into the document in parallel.
  *
  * @param sources The URLs of the scripts to be injected.
+ * @param props Additional properties used to decide how the script should be injected.
  * @returns A promise that resolves when all scripts are loaded.
  */
-export async function injectScriptsInParallel( sources: Array<string> ): Promise<void> {
-	await Promise.all( sources.map( injectScript ) );
+export async function injectScriptsInParallel( sources: Array<string>, props?: InjectScriptProps ): Promise<void> {
+	await Promise.all(
+		sources.map( src => injectScript( src, props ) )
+	);
 }
