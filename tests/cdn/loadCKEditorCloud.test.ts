@@ -85,8 +85,6 @@ describe( 'loadCKEditorCloud', () => {
 
 	describe( 'CSP', () => {
 		it( 'should set crossorigin=anonymous attribute on injected elements if attributes are not specified', async () => {
-			console.info( queryAnonymousLinks()[ 0 ] );
-
 			expect( queryAnonymousLinks() ).toHaveLength( 0 );
 			expect( queryAnonymousScripts() ).toHaveLength( 0 );
 
