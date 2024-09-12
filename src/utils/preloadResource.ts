@@ -8,8 +8,19 @@
  *
  * 	* It should detect if the resource is already preloaded.
  * 	* It should detect type of the resource and set the `as` attribute accordingly.
+ *
+ * @param url The URL of the resource to preload.
+ * @param props Additional properties for the preload.
+ * @param props.attributes Additional attributes to be set on the `<link>` element.
  */
-export function preloadResource( url: string ): void {
+export function preloadResource(
+	url: string,
+	{ attributes }: PreloadResourceProps = {
+		attributes: {
+			crossorigin: 'anonymous'
+		}
+	}
+): void {
 	if ( document.head.querySelector( `link[href="${ url }"][rel="preload"]` ) ) {
 		return;
 	}
@@ -17,12 +28,25 @@ export function preloadResource( url: string ): void {
 	const link = document.createElement( 'link' );
 
 	link.setAttribute( 'data-injected-by', 'ckeditor-integration' );
+
+	// Set additional attributes if provided.
+	for ( const [ key, value ] of Object.entries( attributes || {} ) ) {
+		link.setAttribute( key, value );
+	}
+
 	link.rel = 'preload';
 	link.as = detectTypeOfResource( url );
 	link.href = url;
 
 	document.head.insertBefore( link, document.head.firstChild );
 }
+
+/**
+ * Properties for the `preloadResource` function.
+ */
+type PreloadResourceProps = {
+	attributes?: Record<string, any>;
+};
 
 /**
  * Detects the type of the resource based on its URL.

@@ -43,7 +43,9 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 	}
 
 	// Preload resources specified in the pack.
-	preload.forEach( preloadResource );
+	for ( const url of preload ) {
+		preloadResource( url );
+	}
 
 	// Load stylesheet tags before scripts to avoid a flash of unstyled content.
 	await Promise.all(

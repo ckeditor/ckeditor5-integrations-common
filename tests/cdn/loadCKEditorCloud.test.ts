@@ -12,8 +12,9 @@ import type { AIAdapter } from 'ckeditor5-premium-features';
 
 import { loadCKEditorCloud } from '@/cdn/loadCKEditorCloud';
 import { createCKBoxBundlePack } from '@/cdn/ckbox/createCKBoxCdnBundlePack';
+import { CKBOX_CDN_URL, createCKBoxCdnUrl } from '@/cdn/ckbox/createCKBoxCdnUrl';
+
 import { removeCkCdnLinks, removeCkCdnScripts } from 'tests/_utils/ckCdnMocks';
-import { createCKBoxCdnUrl } from '@/cdn/ckbox/createCKBoxCdnUrl';
 
 describe( 'loadCKEditorCloud', () => {
 	beforeEach( () => {
@@ -76,6 +77,25 @@ describe( 'loadCKEditorCloud', () => {
 
 		expect( CKEditor.ClassicEditor ).toBeDefined();
 		expect( loadedPlugins?.Plugin ).toBeDefined();
+	} );
+
+	it( 'should set crossorigin=anonymous attribute on injected elements', async () => {
+		await loadCKEditorCloud( {
+			version: '43.0.0'
+		} );
+
+		const nonAnonymousLinks = [ ...document.querySelectorAll( 'link' ) ].filter( link =>
+			link.getAttribute( 'href' )?.includes( CKBOX_CDN_URL ) &&
+			link.getAttribute( 'crossorigin' ) !== 'anonymous'
+		);
+
+		const nonAnonymousScripts = [ ...document.querySelectorAll( 'script' ) ].filter( script =>
+			script.getAttribute( 'src' )?.includes( CKBOX_CDN_URL ) &&
+			script.getAttribute( 'crossorigin' ) !== 'anonymous'
+		);
+
+		expect( nonAnonymousLinks ).toHaveLength( 0 );
+		expect( nonAnonymousScripts ).toHaveLength( 0 );
 	} );
 
 	describe( 'typings', () => {
