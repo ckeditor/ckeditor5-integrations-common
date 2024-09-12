@@ -44,12 +44,12 @@ export function injectScript(
 			resolve();
 		};
 
-		script.setAttribute( 'data-injected-by', 'ckeditor-integration' );
-
 		// Set additional attributes if provided.
 		for ( const [ key, value ] of Object.entries( attributes || {} ) ) {
 			script.setAttribute( key, value );
 		}
+
+		script.setAttribute( 'data-injected-by', 'ckeditor-integration' );
 
 		script.type = 'text/javascript';
 		script.async = true;

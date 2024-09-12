@@ -23,12 +23,12 @@ export function preloadResource(
 
 	const link = document.createElement( 'link' );
 
-	link.setAttribute( 'data-injected-by', 'ckeditor-integration' );
-
 	// Set additional attributes if provided.
 	for ( const [ key, value ] of Object.entries( attributes || {} ) ) {
 		link.setAttribute( key, value );
 	}
+
+	link.setAttribute( 'data-injected-by', 'ckeditor-integration' );
 
 	link.rel = 'preload';
 	link.as = detectTypeOfResource( url );
