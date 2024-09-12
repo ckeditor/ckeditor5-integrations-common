@@ -187,4 +187,13 @@ describe( 'injectStylesheet', () => {
 
 		expect( element ).toBeNull();
 	} );
+
+	it( 'should not crash if attributes object is null', async () => {
+		await injectStylesheet( {
+			href: CDN_MOCK_STYLESHEET_URL,
+			attributes: null as any
+		} );
+
+		expect( queryStylesheet( CDN_MOCK_STYLESHEET_URL ) ).not.toBeNull();
+	} );
 } );

@@ -72,4 +72,10 @@ describe( 'preloadResource', () => {
 
 		expect( queryPreload( CDN_MOCK_SCRIPT_URL )?.getAttribute( 'crossorigin' ) ).toBeNull();
 	} );
+
+	it( 'should not crash if attributes object is null', () => {
+		preloadResource( CDN_MOCK_SCRIPT_URL, { attributes: null as any } );
+
+		expect( queryPreload( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
+	} );
 } );

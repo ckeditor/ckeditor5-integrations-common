@@ -113,6 +113,13 @@ describe( 'injectScript', () => {
 		expect( queryScript( CDN_MOCK_SCRIPT_URL )?.getAttribute( 'crossorigin' ) ).toBeNull();
 		await waitForExecuteMockScript();
 	} );
+
+	it( 'should not crash if attributes object is null', async () => {
+		await injectScript( CDN_MOCK_SCRIPT_URL, { attributes: null as any } );
+
+		expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
+		await waitForExecuteMockScript();
+	} );
 } );
 
 async function waitForExecuteMockScript() {
