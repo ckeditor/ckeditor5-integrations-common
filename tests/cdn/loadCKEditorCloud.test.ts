@@ -12,16 +12,14 @@ import type { AIAdapter } from 'ckeditor5-premium-features';
 
 import { loadCKEditorCloud } from '@/cdn/loadCKEditorCloud';
 import { createCKBoxBundlePack } from '@/cdn/ckbox/createCKBoxCdnBundlePack';
-import { CKBOX_CDN_URL, createCKBoxCdnUrl } from '@/cdn/ckbox/createCKBoxCdnUrl';
+import { createCKBoxCdnUrl } from '@/cdn/ckbox/createCKBoxCdnUrl';
 
-import { removeCkCdnLinks, removeCkCdnScripts } from 'tests/_utils/ckCdnMocks';
-import { queryPreload, queryScript, queryStylesheet } from '../_utils';
+import { queryPreload, queryScript, queryStylesheet, removeAllCkCdnResources } from '../_utils';
 import { createCKCdnUrl } from '@/src/cdn/ck/createCKCdnUrl';
 
 describe( 'loadCKEditorCloud', () => {
 	beforeEach( () => {
-		removeCkCdnScripts();
-		removeCkCdnLinks();
+		removeAllCkCdnResources();
 
 		vi.spyOn( console, 'error' ).mockImplementation( () => undefined );
 		window.FakePlugin = { fake: 'fake' };
@@ -83,22 +81,30 @@ describe( 'loadCKEditorCloud', () => {
 
 	describe( 'CSP', () => {
 		it( 'should set crossorigin=anonymous attribute on injected elements if `htmlAttributes` is not specified', async () => {
+			console.info( queryAnonymousLinks()[ 0 ] );
+
+			expect( queryAnonymousLinks() ).toHaveLength( 0 );
+			expect( queryAnonymousScripts() ).toHaveLength( 0 );
+
 			await loadCKEditorCloud( {
 				version: '43.0.0'
 			} );
 
-			expect( queryNonAnonymousLinks() ).toHaveLength( 0 );
-			expect( queryNonAnonymousScripts() ).toHaveLength( 0 );
+			expect( queryAnonymousLinks() ).toHaveLength( 3 );
+			expect( queryAnonymousScripts() ).toHaveLength( 1 );
 		} );
 
 		it( 'should set crossorigin=anonymous attribute on injected elements if `htmlAttributes` is specified but is blank', async () => {
+			expect( queryAnonymousLinks() ).toHaveLength( 0 );
+			expect( queryAnonymousScripts() ).toHaveLength( 0 );
+
 			await loadCKEditorCloud( {
 				version: '43.0.0',
 				injectedHtmlElementsAttributes: {}
 			} );
 
-			expect( queryNonAnonymousLinks() ).toHaveLength( 0 );
-			expect( queryNonAnonymousScripts() ).toHaveLength( 0 );
+			expect( queryAnonymousLinks() ).toHaveLength( 3 );
+			expect( queryAnonymousScripts() ).toHaveLength( 1 );
 		} );
 
 		it( 'should be possible to override the `crossorigin` attribute', async () => {
@@ -132,17 +138,15 @@ describe( 'loadCKEditorCloud', () => {
 			}
 		} );
 
-		function queryNonAnonymousScripts() {
-			return [ ...document.querySelectorAll( 'script' ) ].filter( script =>
-				script.getAttribute( 'src' )?.includes( CKBOX_CDN_URL ) &&
-				script.getAttribute( 'crossorigin' ) !== 'anonymous'
+		function queryAnonymousScripts() {
+			return [ ...document.querySelectorAll( 'script[data-injected-by="ckeditor-integration"]' ) ].filter( script =>
+				script.getAttribute( 'crossorigin' ) === 'anonymous'
 			);
 		}
 
-		function queryNonAnonymousLinks() {
-			return [ ...document.querySelectorAll( 'link' ) ].filter( link =>
-				link.getAttribute( 'href' )?.includes( CKBOX_CDN_URL ) &&
-				link.getAttribute( 'crossorigin' ) !== 'anonymous'
+		function queryAnonymousLinks() {
+			return [ ...document.querySelectorAll( 'link[data-injected-by="ckeditor-integration"]' ) ].filter( link =>
+				link.getAttribute( 'crossorigin' ) === 'anonymous'
 			);
 		}
 	} );
