@@ -60,7 +60,7 @@ export function createCKCdnBaseBundlePack(
 
 		scripts: [
 			// It's safe to load translations and the main script in parallel.
-			async () => injectScriptsInParallel( urls.scripts )
+			async attributes => injectScriptsInParallel( urls.scripts, attributes )
 		],
 
 		// Load all stylesheets of the base features.

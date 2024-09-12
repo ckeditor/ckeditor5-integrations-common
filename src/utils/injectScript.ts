@@ -19,11 +19,7 @@ export const INJECTED_SCRIPTS = new Map<string, Promise<void>>();
  */
 export function injectScript(
 	src: string,
-	{ attributes }: InjectScriptProps = {
-		attributes: {
-			crossorigin: 'anonymous'
-		}
-	}
+	{ attributes }: InjectScriptProps = {}
 ): Promise<void> {
 	// Return the promise if the script is already injected by this function.
 	if ( INJECTED_SCRIPTS.has( src ) ) {
@@ -85,7 +81,7 @@ export function injectScript(
 /**
  * Props for the `injectScript` function.
  */
-type InjectScriptProps = {
+export type InjectScriptProps = {
 	attributes?: Record<string, any>;
 };
 

@@ -61,16 +61,10 @@ describe( 'preloadResource', () => {
 		expect( queryPreload( CDN_MOCK_SCRIPT_URL )?.getAttribute( 'data-custom-attribute' ) ).toBe( 'custom-value' );
 	} );
 
-	it( 'should set crossorigin=anonymous attribute by default', () => {
-		preloadResource( CDN_MOCK_SCRIPT_URL );
-
-		expect( queryPreload( CDN_MOCK_SCRIPT_URL )?.getAttribute( 'crossorigin' ) ).toBe( 'anonymous' );
-	} );
-
-	it( 'should not inject the crossorigin=anonymous if empty attributes object passed', () => {
+	it( 'should not inject the crossorigin if empty attributes object passed', () => {
 		preloadResource( CDN_MOCK_SCRIPT_URL, { attributes: {} } );
 
-		expect( queryPreload( CDN_MOCK_SCRIPT_URL )?.getAttribute( 'crossorigin' ) ).toBeNull();
+		expect( queryPreload( CDN_MOCK_SCRIPT_URL )?.hasAttribute( 'crossorigin' ) ).toBe( false );
 	} );
 
 	it( 'should not crash if attributes object is null', () => {

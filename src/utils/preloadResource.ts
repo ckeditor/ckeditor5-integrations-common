@@ -15,11 +15,7 @@
  */
 export function preloadResource(
 	url: string,
-	{ attributes }: PreloadResourceProps = {
-		attributes: {
-			crossorigin: 'anonymous'
-		}
-	}
+	{ attributes }: PreloadResourceProps = {}
 ): void {
 	if ( document.head.querySelector( `link[href="${ url }"][rel="preload"]` ) ) {
 		return;

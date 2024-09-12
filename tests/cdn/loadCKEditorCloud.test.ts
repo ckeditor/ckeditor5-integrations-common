@@ -15,6 +15,8 @@ import { createCKBoxBundlePack } from '@/cdn/ckbox/createCKBoxCdnBundlePack';
 import { CKBOX_CDN_URL, createCKBoxCdnUrl } from '@/cdn/ckbox/createCKBoxCdnUrl';
 
 import { removeCkCdnLinks, removeCkCdnScripts } from 'tests/_utils/ckCdnMocks';
+import { queryPreload, queryScript, queryStylesheet } from '../_utils';
+import { createCKCdnUrl } from '@/src/cdn/ck/createCKCdnUrl';
 
 describe( 'loadCKEditorCloud', () => {
 	beforeEach( () => {
@@ -79,23 +81,70 @@ describe( 'loadCKEditorCloud', () => {
 		expect( loadedPlugins?.Plugin ).toBeDefined();
 	} );
 
-	it( 'should set crossorigin=anonymous attribute on injected elements', async () => {
-		await loadCKEditorCloud( {
-			version: '43.0.0'
+	describe( 'CSP', () => {
+		it( 'should set crossorigin=anonymous attribute on injected elements if `htmlAttributes` is not specified', async () => {
+			await loadCKEditorCloud( {
+				version: '43.0.0'
+			} );
+
+			expect( queryNonAnonymousLinks() ).toHaveLength( 0 );
+			expect( queryNonAnonymousScripts() ).toHaveLength( 0 );
 		} );
 
-		const nonAnonymousLinks = [ ...document.querySelectorAll( 'link' ) ].filter( link =>
-			link.getAttribute( 'href' )?.includes( CKBOX_CDN_URL ) &&
-			link.getAttribute( 'crossorigin' ) !== 'anonymous'
-		);
+		it( 'should set crossorigin=anonymous attribute on injected elements if `htmlAttributes` is specified but is blank', async () => {
+			await loadCKEditorCloud( {
+				version: '43.0.0',
+				injectedHtmlElementsAttributes: {}
+			} );
 
-		const nonAnonymousScripts = [ ...document.querySelectorAll( 'script' ) ].filter( script =>
-			script.getAttribute( 'src' )?.includes( CKBOX_CDN_URL ) &&
-			script.getAttribute( 'crossorigin' ) !== 'anonymous'
-		);
+			expect( queryNonAnonymousLinks() ).toHaveLength( 0 );
+			expect( queryNonAnonymousScripts() ).toHaveLength( 0 );
+		} );
 
-		expect( nonAnonymousLinks ).toHaveLength( 0 );
-		expect( nonAnonymousScripts ).toHaveLength( 0 );
+		it( 'should be possible to override the `crossorigin` attribute', async () => {
+			const promise = loadCKEditorCloud( {
+				version: '43.0.0',
+				injectedHtmlElementsAttributes: {
+					crossorigin: 'use-credentials'
+				}
+			} );
+
+			// It's fine because `use-credentials` throws an error in the vitest browser.
+			expect( promise ).rejects.toThrowError();
+		} );
+
+		it( 'should set nonce attribute on injected elements if `htmlAttributes` is specified', async () => {
+			await loadCKEditorCloud( {
+				version: '43.0.0',
+				injectedHtmlElementsAttributes: {
+					nonce: 'test-nonce'
+				}
+			} );
+
+			const script = createCKCdnUrl( 'ckeditor5', 'ckeditor5.umd.js', '43.0.0' );
+			const link = createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '43.0.0' );
+
+			expect( queryScript( script )?.getAttribute( 'nonce' ) ).toBe( 'test-nonce' );
+			expect( queryStylesheet( link )?.getAttribute( 'nonce' ) ).toBe( 'test-nonce' );
+
+			for ( const preloadLink of [ script, link ] ) {
+				expect( queryPreload( preloadLink )?.getAttribute( 'nonce' ) ).toBe( 'test-nonce' );
+			}
+		} );
+
+		function queryNonAnonymousScripts() {
+			return [ ...document.querySelectorAll( 'script' ) ].filter( script =>
+				script.getAttribute( 'src' )?.includes( CKBOX_CDN_URL ) &&
+				script.getAttribute( 'crossorigin' ) !== 'anonymous'
+			);
+		}
+
+		function queryNonAnonymousLinks() {
+			return [ ...document.querySelectorAll( 'link' ) ].filter( link =>
+				link.getAttribute( 'href' )?.includes( CKBOX_CDN_URL ) &&
+				link.getAttribute( 'crossorigin' ) !== 'anonymous'
+			);
+		}
 	} );
 
 	describe( 'typings', () => {

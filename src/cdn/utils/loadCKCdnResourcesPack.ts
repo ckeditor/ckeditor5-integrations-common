@@ -5,7 +5,7 @@
 
 import type { Awaitable } from '../../types/Awaitable';
 
-import { injectScript } from '../../utils/injectScript';
+import { injectScript, type InjectScriptProps } from '../../utils/injectScript';
 import { injectStylesheet } from '../../utils/injectStylesheet';
 import { preloadResource } from '../../utils/preloadResource';
 import { uniq } from '../../utils/uniq';
@@ -28,6 +28,7 @@ import { uniq } from '../../utils/uniq';
  */
 export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>( pack: P ): Promise<InferCKCdnResourcesPackExportsType<P>> {
 	let {
+		htmlAttributes = {},
 		scripts = [],
 		stylesheets = [],
 		preload,
@@ -44,23 +45,30 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 
 	// Preload resources specified in the pack.
 	for ( const url of preload ) {
-		preloadResource( url );
+		preloadResource( url, {
+			attributes: htmlAttributes
+		} );
 	}
 
 	// Load stylesheet tags before scripts to avoid a flash of unstyled content.
 	await Promise.all(
 		uniq( stylesheets ).map( href => injectStylesheet( {
 			href,
+			attributes: htmlAttributes,
 			placementInHead: 'start'
 		} ) )
 	);
 
 	// Load script tags.
 	for ( const script of uniq( scripts ) ) {
+		const injectorProps: InjectScriptProps = {
+			attributes: htmlAttributes
+		};
+
 		if ( typeof script === 'string' ) {
-			await injectScript( script );
+			await injectScript( script, injectorProps );
 		} else {
-			await script();
+			await script( injectorProps );
 		}
 	}
 
@@ -153,7 +161,7 @@ export type CKCdnResourcesAdvancedPack<R> = {
 	/**
 	 * List of scripts to load. Scripts are loaded in the order they are defined.
 	 */
-	scripts?: Array<string | ( () => Awaitable<unknown> )>;
+	scripts?: Array<string | CKCdnScriptInjectorCallback>;
 
 	/**
 	 * List of stylesheets to load. Stylesheets are loaded in the order they are defined.
@@ -161,10 +169,21 @@ export type CKCdnResourcesAdvancedPack<R> = {
 	stylesheets?: Array<string>;
 
 	/**
+	 * Map of attributes to add to the script, stylesheet and link tags.
+	 * It can be used to specify `crossorigin` or `nonce` attributes on the injected HTML elements.
+	 */
+	htmlAttributes?: Record<string, any>;
+
+	/**
 	 * Get JS object with global variables exported by scripts.
 	 */
 	checkPluginLoaded?: () => Awaitable<R>;
 };
+
+/**
+ * Callback that injects a script tag into the document.
+ */
+type CKCdnScriptInjectorCallback = ( props: InjectScriptProps ) => Awaitable<unknown> ;
 
 /**
  * Extracts the type of the exported global variables from a CKResourcesPack.

@@ -21,9 +21,7 @@ export function injectStylesheet(
 	{
 		href,
 		placementInHead = 'start',
-		attributes = {
-			crossorigin: 'anonymous'
-		}
+		attributes = {}
 	}: InjectStylesheetProps
 ): Promise<void> {
 	// Return the promise if the stylesheet is already injected by this function.

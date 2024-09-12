@@ -100,17 +100,10 @@ describe( 'injectScript', () => {
 		await waitForExecuteMockScript();
 	} );
 
-	it( 'should set crossorigin=anonymous attribute by default', async () => {
+	it( 'should not set crossorigin attribute by default', async () => {
 		await injectScript( CDN_MOCK_SCRIPT_URL );
 
-		expect( queryScript( CDN_MOCK_SCRIPT_URL )?.getAttribute( 'crossorigin' ) ).toBe( 'anonymous' );
-		await waitForExecuteMockScript();
-	} );
-
-	it( 'should not inject the crossorigin=anonymous if empty attributes object passed', async () => {
-		await injectScript( CDN_MOCK_SCRIPT_URL, { attributes: {} } );
-
-		expect( queryScript( CDN_MOCK_SCRIPT_URL )?.getAttribute( 'crossorigin' ) ).toBeNull();
+		expect( queryScript( CDN_MOCK_SCRIPT_URL )?.hasAttribute( 'crossorigin' ) ).toBe( false );
 		await waitForExecuteMockScript();
 	} );
 
