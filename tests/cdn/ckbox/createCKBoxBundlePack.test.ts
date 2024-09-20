@@ -3,10 +3,20 @@
  * For licensing, see LICENSE.md.
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
+
+import type { CKBoxCdnVersion } from '@/cdn/ckbox/createCKBoxCdnUrl';
+
 import { createCKBoxBundlePack } from '@/cdn/ckbox/createCKBoxCdnBundlePack';
+import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack';
+
+import { removeAllCkCdnResources } from '@/tests/_utils';
 
 describe( 'createCKBoxBundlePack', () => {
+	beforeEach( () => {
+		removeAllCkCdnResources();
+	} );
+
 	it( 'should return a pack of resources for the base CKBox bundle', async () => {
 		const pack = createCKBoxBundlePack( {
 			version: '2.5.1'
@@ -19,7 +29,28 @@ describe( 'createCKBoxBundlePack', () => {
 			stylesheets: [
 				'https://cdn.ckbox.io/ckbox/2.5.1/styles/themes/lark.css'
 			],
+			beforeInject: expect.any( Function ),
 			checkPluginLoaded: expect.any( Function )
 		} );
 	} );
+
+	it( 'should not throw an error if the requested version is the same as the installed one', async () => {
+		await loadCKBox( '2.5.1' );
+		await expect( loadCKBox( '2.5.1' ) ).resolves.not.toThrow();
+	} );
+
+	it( 'should throw an error if the requested version is different than the installed one', async () => {
+		await loadCKBox( '2.5.1' );
+		await expect( async () => loadCKBox( '2.5.0' ) ).rejects.toThrowError(
+			'The CKBox version 2.5.1 is already installed. The requested version is 2.5.0.'
+		);
+	} );
 } );
+
+function loadCKBox( version: CKBoxCdnVersion ) {
+	return loadCKCdnResourcesPack(
+		createCKBoxBundlePack( {
+			version
+		} )
+	);
+}

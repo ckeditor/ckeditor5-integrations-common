@@ -3,10 +3,21 @@
  * For licensing, see LICENSE.md.
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
+
+import type { CKCdnVersion } from '@/cdn/ck/createCKCdnUrl';
+
+import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack';
 import { createCKCdnPremiumBundlePack } from '@/cdn/ck/createCKCdnPremiumBundlePack';
+import { createCKCdnBaseBundlePack } from '@/cdn/ck/createCKCdnBaseBundlePack';
+
+import { removeAllCkCdnResources } from '@/tests/_utils';
 
 describe( 'createCKCdnPremiumBundlePack', () => {
+	beforeEach( () => {
+		removeAllCkCdnResources();
+	} );
+
 	it( 'should return a pack of resources for the CKEditor Premium Features', () => {
 		const pack = createCKCdnPremiumBundlePack( {
 			version: '43.0.0',
@@ -69,4 +80,27 @@ describe( 'createCKCdnPremiumBundlePack', () => {
 			]
 		} );
 	} );
+
+	describe( 'error handling', () => {
+		beforeEach( async () => {
+			await loadCKCdnResourcesPack(
+				createCKCdnBaseBundlePack( {
+					version: '43.0.0'
+				} )
+			);
+		} );
+
+		it( 'should not throw an error if the requested version is the same as the installed one', async () => {
+			await loadCKPremiumFeatures( '43.0.0' );
+			await expect( loadCKPremiumFeatures( '43.0.0' ) ).resolves.not.toThrow();
+		} );
+	} );
 } );
+
+function loadCKPremiumFeatures( version: CKCdnVersion ) {
+	return loadCKCdnResourcesPack(
+		createCKCdnPremiumBundlePack( {
+			version
+		} )
+	);
+}

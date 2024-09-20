@@ -3,6 +3,8 @@
  * For licensing, see LICENSE.md.
  */
 
+import type { SemanticVersion } from '@/utils/isSemanticVersion';
+
 /**
  * The URL of the CKBox CDN.
  */
@@ -11,7 +13,7 @@ export const CKBOX_CDN_URL = 'https://cdn.ckbox.io';
 /**
  * A version of a file on the CKBox CDN.
  */
-export type CKBoxCdnVersion = `${ number }.${ number }.${ number }`;
+export type CKBoxCdnVersion = SemanticVersion;
 
 /**
  * Creates a URL to a file on the CKBox CDN.

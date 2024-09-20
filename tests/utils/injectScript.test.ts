@@ -9,7 +9,7 @@ import { CDN_MOCK_SCRIPT_URL, removeCkCdnScripts } from 'tests/_utils/ckCdnMocks
 import { queryScript } from 'tests/_utils';
 
 import { INJECTED_SCRIPTS, injectScript } from '@/utils/injectScript';
-import { createDefer } from '@/src/utils/defer';
+import { createDefer } from '@/utils/defer';
 
 describe( 'injectScript', () => {
 	beforeEach( () => {
