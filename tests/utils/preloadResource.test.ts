@@ -4,18 +4,15 @@
  */
 
 import { describe, expect, it, beforeEach } from 'vitest';
-import { preloadResource } from '@/utils/preloadResource';
+import { preloadResource } from '@/utils/preloadResource.js';
+import { queryPreload } from '@/utils/queryHeadElement.js';
 
-import { queryPreload } from 'tests/_utils';
-import {
-	CDN_MOCK_SCRIPT_URL,
-	CDN_MOCK_STYLESHEET_URL
-} from 'tests/_utils/ckCdnMocks';
+import { CDN_MOCK_STYLESHEET_URL, CDN_MOCK_SCRIPT_URL } from '@/test-utils/cdn/mocks.js';
+import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
 
 describe( 'preloadResource', () => {
 	beforeEach( () => {
-		// Reset the document head before each test
-		document.head.innerHTML = '';
+		removeAllCkCdnResources();
 	} );
 
 	it( 'should append a link element to the head with the correct attributes', () => {

@@ -13,13 +13,15 @@ export default defineConfig( {
 	build: {
 		target: 'esnext',
 		lib: {
-			entry: 'src/index',
-			fileName: 'index',
-			formats: [ 'es', 'umd' ],
-			name: 'CKEDITOR_INTEGRATIONS_COMMON'
+			formats: [ 'es', 'cjs' ],
+			entry: {
+				index: 'src/index',
+				'test-utils': 'src/test-utils'
+			}
 		},
 		sourcemap: true,
-		emptyOutDir: true
+		emptyOutDir: true,
+		minify: false
 	},
 	plugins: [
 		tsconfigPaths(),

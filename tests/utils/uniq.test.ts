@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { uniq } from '@/utils/uniq';
+import { uniq } from '@/utils/uniq.js';
 
 describe( 'uniq', () => {
 	it( 'should remove duplicate elements from an array', () => {

@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { isSemanticVersion } from '@/utils/isSemanticVersion';
+import { isSemanticVersion } from '@/utils/isSemanticVersion.js';
 
 describe( 'isSemanticVersion', () => {
 	it( 'should return true for a valid semantic version', () => {

@@ -3,9 +3,9 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { BundleInstallationInfo } from './types';
+import type { BundleInstallationInfo } from './types.js';
 
-import { isSemanticVersion } from '../utils/isSemanticVersion';
+import { isSemanticVersion } from '../utils/isSemanticVersion.js';
 
 /**
  * Returns information about the base CKEditor bundle installation.

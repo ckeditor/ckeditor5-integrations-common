@@ -3,12 +3,12 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { Awaitable } from '../../types/Awaitable';
+import type { Awaitable } from '../../types/Awaitable.js';
 
-import { injectScript, type InjectScriptProps } from '../../utils/injectScript';
-import { injectStylesheet } from '../../utils/injectStylesheet';
-import { preloadResource } from '../../utils/preloadResource';
-import { uniq } from '../../utils/uniq';
+import { injectScript, type InjectScriptProps } from '../../utils/injectScript.js';
+import { injectStylesheet } from '../../utils/injectStylesheet.js';
+import { preloadResource } from '../../utils/preloadResource.js';
+import { uniq } from '../../utils/uniq.js';
 
 /**
  * Loads pack of resources (scripts and stylesheets) and returns the exported global variables (if any).

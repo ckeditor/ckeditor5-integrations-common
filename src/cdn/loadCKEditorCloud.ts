@@ -3,28 +3,28 @@
  * For licensing, see LICENSE.md.
  */
 
-import { createCKCdnBaseBundlePack } from './ck/createCKCdnBaseBundlePack';
-import { createCKCdnPremiumBundlePack } from './ck/createCKCdnPremiumBundlePack';
+import { createCKCdnBaseBundlePack } from './ck/createCKCdnBaseBundlePack.js';
+import { createCKCdnPremiumBundlePack } from './ck/createCKCdnPremiumBundlePack.js';
 
-import { combineCKCdnBundlesPacks } from './utils/combineCKCdnBundlesPacks';
+import { combineCKCdnBundlesPacks } from './utils/combineCKCdnBundlesPacks.js';
 import {
 	createCKBoxBundlePack,
 	type CKBoxCdnBundlePackConfig
-} from './ckbox/createCKBoxCdnBundlePack';
+} from './ckbox/createCKBoxCdnBundlePack.js';
 
-import type { ConditionalBlank } from '../types/ConditionalBlank';
-import type { CKCdnVersion } from './ck/createCKCdnUrl';
+import type { ConditionalBlank } from '../types/ConditionalBlank.js';
+import type { CKCdnVersion } from './ck/createCKCdnUrl.js';
 
 import {
 	loadCKCdnResourcesPack,
 	type InferCKCdnResourcesPackExportsType
-} from './utils/loadCKCdnResourcesPack';
+} from './utils/loadCKCdnResourcesPack.js';
 
 import {
 	combineCdnPluginsPacks,
 	type CombinedPluginsPackWithFallbackScope,
 	type CdnPluginsPacks
-} from './plugins/combineCdnPluginsPacks';
+} from './plugins/combineCdnPluginsPacks.js';
 
 /**
  * A composable function that loads CKEditor Cloud Services bundles.

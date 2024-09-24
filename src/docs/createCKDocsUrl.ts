@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { SemanticVersion } from '../utils/isSemanticVersion';
+import type { SemanticVersion } from '../utils/isSemanticVersion.js';
 
 export const CK_DOCS_URL = 'https://ckeditor.com/docs/ckeditor5';
 

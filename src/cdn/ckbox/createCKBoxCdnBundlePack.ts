@@ -3,13 +3,11 @@
  * For licensing, see LICENSE.md.
  */
 
-import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
-import { getCKBoxInstallationInfo } from '../../installation-info/getCKBoxInstallationInfo';
+import { waitForWindowEntry } from '../../utils/waitForWindowEntry.js';
+import { getCKBoxInstallationInfo } from '../../installation-info/getCKBoxInstallationInfo.js';
 
-import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack';
-import { createCKBoxCdnUrl, type CKBoxCdnVersion } from './createCKBoxCdnUrl';
-
-import './globals.d';
+import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack.js';
+import { createCKBoxCdnUrl, type CKBoxCdnVersion } from './createCKBoxCdnUrl.js';
 
 /**
  * Creates a pack of resources for the base CKBox bundle.

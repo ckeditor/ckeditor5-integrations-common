@@ -4,7 +4,7 @@
  */
 
 import { it, expect, describe, vi, afterEach } from 'vitest';
-import { uid } from '@/utils/uid';
+import { uid } from '@/utils/uid.js';
 
 describe( 'uid', () => {
 	afterEach( () => {

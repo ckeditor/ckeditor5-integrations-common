@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { createDefer, type Defer } from '@/utils/defer';
+import { createDefer, type Defer } from '@/utils/defer.js';
 
 describe( 'createDefer', () => {
 	it( 'should resolve the promise with the provided value', async () => {

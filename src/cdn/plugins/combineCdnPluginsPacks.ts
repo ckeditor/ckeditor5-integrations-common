@@ -3,19 +3,19 @@
  * For licensing, see LICENSE.md.
  */
 
-import { mapObjectValues } from '../../utils/mapObjectValues';
-import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
+import { mapObjectValues } from '../../utils/mapObjectValues.js';
+import { waitForWindowEntry } from '../../utils/waitForWindowEntry.js';
 
 import {
 	normalizeCKCdnResourcesPack,
 	type InferCKCdnResourcesPackExportsType,
 	type CKCdnResourcesAdvancedPack
-} from '../utils/loadCKCdnResourcesPack';
+} from '../utils/loadCKCdnResourcesPack.js';
 
 import {
 	combineCKCdnBundlesPacks,
 	type CKCdnBundlesPacks
-} from '../utils/combineCKCdnBundlesPacks';
+} from '../utils/combineCKCdnBundlesPacks.js';
 
 /**
  * This function is similar to `combineCKCdnBundlesPacks` but it provides global scope

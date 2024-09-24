@@ -5,10 +5,9 @@
 
 import { describe, it, beforeEach, expect } from 'vitest';
 
-import { getCKBoxInstallationInfo } from '@/installation-info/getCKBoxInstallationInfo';
-import { loadCKEditorCloud } from '@/cdn/loadCKEditorCloud';
-
-import { removeAllCkCdnResources } from '@/tests/_utils';
+import { getCKBoxInstallationInfo } from '@/installation-info/getCKBoxInstallationInfo.js';
+import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
+import { loadCKEditorCloud } from '@/cdn/loadCKEditorCloud.js';
 
 describe( 'getCKBoxInstallationInfo', () => {
 	beforeEach( () => {

@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { isSSR } from '@/utils/isSSR';
+import { isSSR } from '@/utils/isSSR.js';
 
 describe( 'Node - isSSR', () => {
 	it( 'should return false when running in the node', () => {

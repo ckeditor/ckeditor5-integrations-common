@@ -5,12 +5,11 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import type { CKBoxCdnVersion } from '@/cdn/ckbox/createCKBoxCdnUrl';
+import type { CKBoxCdnVersion } from '@/cdn/ckbox/createCKBoxCdnUrl.js';
 
-import { createCKBoxBundlePack } from '@/cdn/ckbox/createCKBoxCdnBundlePack';
-import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack';
-
-import { removeAllCkCdnResources } from '@/tests/_utils';
+import { createCKBoxBundlePack } from '@/cdn/ckbox/createCKBoxCdnBundlePack.js';
+import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
+import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack.js';
 
 describe( 'createCKBoxCdnBundlePack', () => {
 	beforeEach( () => {

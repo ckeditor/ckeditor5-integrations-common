@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { Awaitable } from '../types/Awaitable';
+import type { Awaitable } from '../types/Awaitable.js';
 
 /**
  * Waits for the provided callback to succeed. The callback is executed multiple times until it succeeds or the timeout is reached.

@@ -5,13 +5,15 @@
 
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
-import { waitForWindowEntry } from '@/utils/waitForWindowEntry';
-import { removeCkCdnScripts, CDN_MOCK_SCRIPT_URL } from 'tests/_utils/ckCdnMocks';
-import { injectScript } from '@/utils/injectScript';
+import { waitForWindowEntry } from '@/utils/waitForWindowEntry.js';
+import { injectScript } from '@/utils/injectScript.js';
+
+import { CDN_MOCK_SCRIPT_URL } from '@/test-utils/cdn/mocks.js';
+import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
 
 describe( 'waitForWindowEntry', () => {
 	beforeEach( () => {
-		removeCkCdnScripts();
+		removeAllCkCdnResources();
 
 		vi.spyOn( console, 'error' ).mockImplementation( () => undefined );
 	} );

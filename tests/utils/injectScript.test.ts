@@ -5,15 +5,16 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { CDN_MOCK_SCRIPT_URL, removeCkCdnScripts } from 'tests/_utils/ckCdnMocks';
-import { queryScript } from 'tests/_utils';
+import { injectScript, INJECTED_SCRIPTS } from '@/utils/injectScript.js';
+import { queryScript } from '@/utils/queryHeadElement.js';
+import { createDefer } from '@/utils/defer.js';
 
-import { INJECTED_SCRIPTS, injectScript } from '@/utils/injectScript';
-import { createDefer } from '@/utils/defer';
+import { CDN_MOCK_SCRIPT_URL } from '@/test-utils/cdn/mocks.js';
+import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
 
 describe( 'injectScript', () => {
 	beforeEach( () => {
-		removeCkCdnScripts();
+		removeAllCkCdnResources();
 
 		vi.spyOn( console, 'warn' ).mockImplementation( () => undefined );
 		vi.spyOn( console, 'error' ).mockImplementation( () => undefined );

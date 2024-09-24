@@ -3,25 +3,22 @@
  * For licensing, see LICENSE.md.
  */
 
-import { CKBOX_CDN_URL, createCKBoxCdnUrl } from '@/cdn/ckbox/createCKBoxCdnUrl';
-
-import { INJECTED_SCRIPTS } from '@/utils/injectScript';
-import { INJECTED_STYLESHEETS } from '@/utils/injectStylesheet';
-
-/**
- * The URL of the CKBox CDN.
- */
-export const CKBOX_CDN_MOCK_SCRIPT_URL = createCKBoxCdnUrl( 'ckbox', 'ckbox.js', '2.5.1' );
+import { INJECTED_SCRIPTS } from '../../utils/injectScript.js';
+import { INJECTED_STYLESHEETS } from '../../utils/injectStylesheet.js';
+import { CKBOX_CDN_URL } from '../../cdn/ckbox/createCKBoxCdnUrl.js';
 
 /**
- * The URL of the CKBox CDN.
+ * Removes all CKBox resources from the DOM.
  */
-export const CKBOX_CDN_MOCK_STYLESHEET_URL = createCKBoxCdnUrl( 'ckbox', 'styles/themes/lark.css', '2.5.1' );
+export function removeCkBoxResources(): void {
+	removeCkBoxCdnScripts();
+	removeCkBoxCdnLinks();
+}
 
 /**
  * Removes all CKBox scripts from the DOM.
  */
-export function removeCkBoxCdnScripts(): void {
+function removeCkBoxCdnScripts(): void {
 	[ ...document.querySelectorAll( 'script' ) ]
 		.filter( script => script.src.startsWith( CKBOX_CDN_URL ) )
 		.forEach( script => {
@@ -35,7 +32,7 @@ export function removeCkBoxCdnScripts(): void {
 /**
  * Removes all CKBox stylesheets and preloads from the DOM.
  */
-export function removeCkBoxCdnLinks(): void {
+function removeCkBoxCdnLinks(): void {
 	[ ...document.querySelectorAll( 'link' ) ]
 		.filter( link => link.href.startsWith( CKBOX_CDN_URL ) )
 		.forEach( link => {

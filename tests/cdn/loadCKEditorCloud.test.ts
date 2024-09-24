@@ -10,16 +10,17 @@ import {
 
 import type { AIAdapter } from 'ckeditor5-premium-features';
 
-import { loadCKEditorCloud } from '@/cdn/loadCKEditorCloud';
-import { createCKBoxBundlePack } from '@/cdn/ckbox/createCKBoxCdnBundlePack';
-import { createCKBoxCdnUrl } from '@/cdn/ckbox/createCKBoxCdnUrl';
+import { loadCKEditorCloud } from '@/cdn/loadCKEditorCloud.js';
+import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
+import { createCKBoxBundlePack } from '@/cdn/ckbox/createCKBoxCdnBundlePack.js';
+import { createCKBoxCdnUrl } from '@/cdn/ckbox/createCKBoxCdnUrl.js';
 
-import { queryPreload, queryScript, queryStylesheet, removeAllCkCdnResources } from '../_utils';
-import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl';
+import { queryPreload, queryScript, queryStylesheet } from '@/utils/queryHeadElement.js';
+import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl.js';
 import {
 	queryAllInjectedLinks,
 	queryAllInjectedScripts
-} from '../_utils/queryInjectedElements';
+} from '@/utils/queryAllInjectedElements.js';
 
 describe( 'loadCKEditorCloud', () => {
 	beforeEach( () => {

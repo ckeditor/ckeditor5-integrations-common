@@ -3,18 +3,16 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack';
+import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack.js';
 
-import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
-import { injectScriptsInParallel } from '../../utils/injectScript';
-import { without } from '../../utils/without';
+import { waitForWindowEntry } from '../../utils/waitForWindowEntry.js';
+import { injectScriptsInParallel } from '../../utils/injectScript.js';
+import { without } from '../../utils/without.js';
 
-import { getCKBaseBundleInstallationInfo } from '../../installation-info/getCKBaseBundleInstallationInfo';
-import { createCKDocsUrl } from '../../docs/createCKDocsUrl';
+import { getCKBaseBundleInstallationInfo } from '../../installation-info/getCKBaseBundleInstallationInfo.js';
+import { createCKDocsUrl } from '../../docs/createCKDocsUrl.js';
 
-import { createCKCdnUrl, type CKCdnVersion } from './createCKCdnUrl';
-
-import './globals.d';
+import { createCKCdnUrl, type CKCdnVersion } from './createCKCdnUrl.js';
 
 /**
  * Creates a pack of resources for the base CKEditor bundle.
