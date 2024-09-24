@@ -3,14 +3,14 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { CKCdnResourcesAdvancedPack } from '@/cdn/utils/loadCKCdnResourcesPack';
+import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack';
 
-import { waitForWindowEntry } from '@/utils/waitForWindowEntry';
-import { injectScriptsInParallel } from '@/utils/injectScript';
-import { without } from '@/utils/without';
+import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
+import { injectScriptsInParallel } from '../../utils/injectScript';
+import { without } from '../../utils/without';
 
-import { getCKBaseBundleInstallationInfo } from '@/installation-info/getCKBaseBundleInstallationInfo';
-import { createCKDocsUrl } from '@/docs/createCKDocsUrl';
+import { getCKBaseBundleInstallationInfo } from '../../installation-info/getCKBaseBundleInstallationInfo';
+import { createCKDocsUrl } from '../../docs/createCKDocsUrl';
 
 import { createCKCdnUrl, type CKCdnVersion } from './createCKCdnUrl';
 

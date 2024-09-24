@@ -5,7 +5,7 @@
 
 import type { BundleInstallationInfo } from './types';
 
-import { isSemanticVersion } from '@/utils/isSemanticVersion';
+import { isSemanticVersion } from '../utils/isSemanticVersion';
 
 /**
  * Returns information about the CKBox installation.

@@ -3,8 +3,8 @@
  * For licensing, see LICENSE.md.
  */
 
-import { filterBlankObjectValues } from '@/utils/filterBlankObjectValues';
-import { mapObjectValues } from '@/utils/mapObjectValues';
+import { filterBlankObjectValues } from '../../utils/filterBlankObjectValues';
+import { mapObjectValues } from '../../utils/mapObjectValues';
 
 import {
 	normalizeCKCdnResourcesPack,
