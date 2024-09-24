@@ -26,7 +26,12 @@ export default defineConfig( {
 			include: [ 'tests/_utils/**/*', 'src/**/*' ],
 			exclude: [ '**/*.test.ts', '**/*.test.tsx' ],
 			copyDtsFiles: true,
-			clearPureImport: false
+			clearPureImport: false,
+			compilerOptions: {
+				paths: {
+					'@/*': [ './*', './src/*' ]
+				}
+			}
 		} )
 	]
 } );

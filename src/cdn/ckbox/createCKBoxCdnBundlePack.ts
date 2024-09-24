@@ -3,10 +3,10 @@
  * For licensing, see LICENSE.md.
  */
 
-import { waitForWindowEntry } from '@/utils/waitForWindowEntry';
-import { getCKBoxInstallationInfo } from '@/installation-info/getCKBoxInstallationInfo';
+import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
+import { getCKBoxInstallationInfo } from '../../installation-info/getCKBoxInstallationInfo';
 
-import type { CKCdnResourcesAdvancedPack } from '@/cdn/utils/loadCKCdnResourcesPack';
+import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack';
 import { createCKBoxCdnUrl, type CKBoxCdnVersion } from './createCKBoxCdnUrl';
 
 import './globals.d';

@@ -3,6 +3,9 @@
  * For licensing, see LICENSE.md.
  */
 
+declare module 'ckeditor5-premium-features' {}
+declare module 'ckeditor5' {}
+
 import type * as CKEditorPremiumFeatures from 'ckeditor5-premium-features';
 import type * as CKEditor from 'ckeditor5';
 

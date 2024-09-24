@@ -3,8 +3,8 @@
  * For licensing, see LICENSE.md.
  */
 
-import { mapObjectValues } from '@/utils/mapObjectValues';
-import { waitForWindowEntry } from '@/utils/waitForWindowEntry';
+import { mapObjectValues } from '../../utils/mapObjectValues';
+import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
 
 import {
 	normalizeCKCdnResourcesPack,
