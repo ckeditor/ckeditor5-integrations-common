@@ -12,7 +12,7 @@ import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack';
 
 import { removeAllCkCdnResources } from '@/tests/_utils';
 
-describe( 'createCKBoxBundlePack', () => {
+describe( 'createCKBoxCdnBundlePack', () => {
 	beforeEach( () => {
 		removeAllCkCdnResources();
 	} );
@@ -42,7 +42,8 @@ describe( 'createCKBoxBundlePack', () => {
 	it( 'should throw an error if the requested version is different than the installed one', async () => {
 		await loadCKBox( '2.5.1' );
 		await expect( async () => loadCKBox( '2.5.0' ) ).rejects.toThrowError(
-			'The CKBox version 2.5.1 is already installed. The requested version is 2.5.0.'
+			'CKBox is already loaded from CDN in version 2.5.1 is already installed. ' +
+			'Remove the old <script> and <link> tags loading CKBox to allow loading the 2.5.0 version.'
 		);
 	} );
 } );
