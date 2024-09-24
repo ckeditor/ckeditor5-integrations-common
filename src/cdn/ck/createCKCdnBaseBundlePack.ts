@@ -89,7 +89,7 @@ export function createCKCdnBaseBundlePack(
 					if ( installationInfo.version !== version ) {
 						throw new Error(
 							`CKEditor 5 is already loaded from CDN in version ${ installationInfo.version }. ` +
-                            `Remove the old <script> and <link> tags loading CKEditor 5 to allow loading the ${ version } version.`
+							`Remove the old <script> and <link> tags loading CKEditor 5 to allow loading the ${ version } version.`
 						);
 					}
 
