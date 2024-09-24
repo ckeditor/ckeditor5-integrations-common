@@ -53,7 +53,7 @@ export function createCKBoxBundlePack(
 
 			if ( installationInfo && installationInfo.version !== version ) {
 				throw new Error(
-					`CKBox is already loaded from CDN in version ${ installationInfo.version } is already installed. ` +
+					`CKBox is already loaded from CDN in version ${ installationInfo.version }. ` +
 					`Remove the old <script> and <link> tags loading CKBox to allow loading the ${ version } version.`
 				);
 			}
