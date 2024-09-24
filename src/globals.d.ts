@@ -3,6 +3,10 @@
  * For licensing, see LICENSE.md.
  */
 
+declare module 'ckeditor5' {}
+
+declare module 'ckeditor5-premium-features' {}
+
 declare module 'https://cdn.ckeditor.com/typings/ckeditor5.d.ts' {
 	export type * from 'ckeditor5';
 }
