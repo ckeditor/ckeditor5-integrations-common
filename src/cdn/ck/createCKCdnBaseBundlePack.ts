@@ -14,6 +14,8 @@ import { createCKDocsUrl } from '../../docs/createCKDocsUrl.js';
 
 import { createCKCdnUrl, type CKCdnVersion } from './createCKCdnUrl.js';
 
+import './globals.js';
+
 /**
  * Creates a pack of resources for the base CKEditor bundle.
  *

@@ -9,6 +9,8 @@ import { getCKBoxInstallationInfo } from '../../installation-info/getCKBoxInstal
 import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack.js';
 import { createCKBoxCdnUrl, type CKBoxCdnVersion } from './createCKBoxCdnUrl.js';
 
+import './globals.js';
+
 /**
  * Creates a pack of resources for the base CKBox bundle.
  *
