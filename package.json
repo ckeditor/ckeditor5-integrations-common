@@ -46,8 +46,7 @@
     "node": ">=18.0.0"
   },
   "peerDependencies": {
-    "ckeditor5": ">=42.0.0 || ^0.0.0-nightly",
-    "ckeditor5-premium-features": ">=42.0.0 || ^0.0.0-nightly"
+    "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
   },
   "type": "module",
   "main": "./dist/index.umd.cjs",
