@@ -91,7 +91,8 @@ describe( 'createCKCdnBaseBundlePack', () => {
 	it( 'should throw an error if the requested version differs from the installed one', async () => {
 		await loadCKEditor( '43.0.0' );
 		await expect( async () => loadCKEditor( '42.0.0' ) ).rejects.toThrowError(
-			'CKEditor 5 version 43.0.0 is already loaded from CDN. The requested version is 42.0.0.'
+			'CKEditor 5 is already loaded from CDN in version 43.0.0. ' +
+			'Remove the old <script> and <link> tags loading CKEditor 5 to allow loading the 4.2.0 version.'
 		);
 	} );
 
