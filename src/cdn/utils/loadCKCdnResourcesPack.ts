@@ -3,12 +3,12 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { Awaitable } from '../../types/Awaitable';
+import type { Awaitable } from '@/types/Awaitable';
 
-import { injectScript, type InjectScriptProps } from '../../utils/injectScript';
-import { injectStylesheet } from '../../utils/injectStylesheet';
-import { preloadResource } from '../../utils/preloadResource';
-import { uniq } from '../../utils/uniq';
+import { injectScript, type InjectScriptProps } from '@/utils/injectScript';
+import { injectStylesheet } from '@/utils/injectStylesheet';
+import { preloadResource } from '@/utils/preloadResource';
+import { uniq } from '@/utils/uniq';
 
 /**
  * Loads pack of resources (scripts and stylesheets) and returns the exported global variables (if any).
@@ -32,8 +32,12 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 		scripts = [],
 		stylesheets = [],
 		preload,
+		beforeInject,
 		checkPluginLoaded
 	} = normalizeCKCdnResourcesPack( pack );
+
+	// Execute the `beforeInject` callback if defined. It checks if the resources are already loaded.
+	beforeInject?.();
 
 	// If preload is not defined, use all stylesheets and scripts as preload resources.
 	if ( !preload ) {
@@ -173,6 +177,11 @@ export type CKCdnResourcesAdvancedPack<R> = {
 	 * It can be used to specify `crossorigin` or `nonce` attributes on the injected HTML elements.
 	 */
 	htmlAttributes?: Record<string, any>;
+
+	/**
+	 * Callback that is executed before injecting the resources. It can be used to verify if the resources are already loaded.
+	 */
+	beforeInject?: () => void;
 
 	/**
 	 * Get JS object with global variables exported by scripts.

@@ -3,8 +3,9 @@
  * For licensing, see LICENSE.md.
  */
 
-import { filterBlankObjectValues } from '../../utils/filterBlankObjectValues';
-import { mapObjectValues } from '../../utils/mapObjectValues';
+import { filterBlankObjectValues } from '@/utils/filterBlankObjectValues';
+import { mapObjectValues } from '@/utils/mapObjectValues';
+
 import {
 	normalizeCKCdnResourcesPack,
 	type CKCdnResourcesPack,
@@ -71,8 +72,16 @@ export function combineCKCdnBundlesPacks<P extends CKCdnBundlesPacks>( packs: P 
 		return exportedGlobalVariables as any;
 	};
 
+	// Call beforeInject method of all packs.
+	const beforeInject = () => {
+		for ( const pack of Object.values( normalizedPacks ) ) {
+			pack.beforeInject?.();
+		}
+	};
+
 	return {
 		...mergedPacks,
+		beforeInject,
 		checkPluginLoaded
 	};
 }

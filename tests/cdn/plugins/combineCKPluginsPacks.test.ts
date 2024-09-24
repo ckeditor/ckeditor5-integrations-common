@@ -26,6 +26,7 @@ describe( 'combineCdnPluginsPacks', () => {
 		} );
 
 		expect( combinedPack ).toEqual( {
+			beforeInject: expect.any( Function ),
 			scripts: [ 'https://example.org/screen-reader.js' ],
 			preload: [],
 			stylesheets: [],

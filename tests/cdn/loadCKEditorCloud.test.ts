@@ -15,7 +15,7 @@ import { createCKBoxBundlePack } from '@/cdn/ckbox/createCKBoxCdnBundlePack';
 import { createCKBoxCdnUrl } from '@/cdn/ckbox/createCKBoxCdnUrl';
 
 import { queryPreload, queryScript, queryStylesheet, removeAllCkCdnResources } from '../_utils';
-import { createCKCdnUrl } from '@/src/cdn/ck/createCKCdnUrl';
+import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl';
 import {
 	queryAllInjectedLinks,
 	queryAllInjectedScripts

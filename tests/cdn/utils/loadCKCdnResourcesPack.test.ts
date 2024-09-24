@@ -16,6 +16,7 @@ import {
 	CDN_MOCK_SCRIPT_URL,
 	CDN_MOCK_STYLESHEET_URL
 } from 'tests/_utils';
+import { queryAllInjectedScripts } from '@/tests/_utils/queryInjectedElements';
 
 describe( 'loadCKCdnResourcesPack', () => {
 	beforeEach( () => {
@@ -61,6 +62,20 @@ describe( 'loadCKCdnResourcesPack', () => {
 		} );
 
 		expect( result ).toEqual( loaded );
+	} );
+
+	it( 'should execute beforeInject callback before injecting the resources', async () => {
+		const beforeInject = vi.fn().mockImplementation( () => {
+			expect( window.CKEDITOR ).toBeUndefined();
+			expect( queryAllInjectedScripts() ).toHaveLength( 0 );
+		} );
+
+		await loadCKCdnResourcesPack( {
+			scripts: [ CDN_MOCK_SCRIPT_URL ],
+			beforeInject
+		} );
+
+		expect( beforeInject ).toHaveBeenCalled();
 	} );
 
 	it( 'should inject the script if the pack contains one', async () => {
