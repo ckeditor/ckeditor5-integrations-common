@@ -49,7 +49,7 @@
     "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
   },
   "type": "module",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.umd.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
