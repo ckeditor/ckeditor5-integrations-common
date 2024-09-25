@@ -5,13 +5,13 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import type { CKCdnVersion } from '@/cdn/ck/createCKCdnUrl';
+import type { CKCdnVersion } from '@/cdn/ck/createCKCdnUrl.js';
 
-import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack';
-import { createCKCdnPremiumBundlePack } from '@/cdn/ck/createCKCdnPremiumBundlePack';
-import { createCKCdnBaseBundlePack } from '@/cdn/ck/createCKCdnBaseBundlePack';
+import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack.js';
+import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
 
-import { removeAllCkCdnResources } from '@/tests/_utils';
+import { createCKCdnPremiumBundlePack } from '@/cdn/ck/createCKCdnPremiumBundlePack.js';
+import { createCKCdnBaseBundlePack } from '@/cdn/ck/createCKCdnBaseBundlePack.js';
 
 describe( 'createCKCdnPremiumBundlePack', () => {
 	beforeEach( () => {

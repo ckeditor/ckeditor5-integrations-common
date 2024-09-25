@@ -3,15 +3,15 @@
  * For licensing, see LICENSE.md.
  */
 
-import { filterBlankObjectValues } from '../../utils/filterBlankObjectValues';
-import { mapObjectValues } from '../../utils/mapObjectValues';
+import { filterBlankObjectValues } from '../../utils/filterBlankObjectValues.js';
+import { mapObjectValues } from '../../utils/mapObjectValues.js';
 
 import {
 	normalizeCKCdnResourcesPack,
 	type CKCdnResourcesPack,
 	type InferCKCdnResourcesPackExportsType,
 	type CKCdnResourcesAdvancedPack
-} from './loadCKCdnResourcesPack';
+} from './loadCKCdnResourcesPack.js';
 
 /**
  * Combines multiple CKEditor CDN bundles packs into a single pack.

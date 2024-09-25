@@ -5,23 +5,25 @@
 
 import { describe, it, vi, expect, vitest, beforeEach, afterEach } from 'vitest';
 
-import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack';
-import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl';
+import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack.js';
+import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl.js';
+
+import { queryAllInjectedScripts } from '@/utils/queryAllInjectedElements.js';
 import {
 	queryScript,
 	queryStylesheet,
-	queryPreload,
-	removeCkCdnLinks,
-	removeCkCdnScripts,
+	queryPreload
+} from '@/utils/queryHeadElement.js';
+
+import { removeAllCkCdnResources } from '@/test-utils/index.js';
+import {
 	CDN_MOCK_SCRIPT_URL,
 	CDN_MOCK_STYLESHEET_URL
-} from 'tests/_utils';
-import { queryAllInjectedScripts } from '@/tests/_utils/queryInjectedElements';
+} from '@/test-utils/cdn/mocks.js';
 
 describe( 'loadCKCdnResourcesPack', () => {
 	beforeEach( () => {
-		removeCkCdnScripts();
-		removeCkCdnLinks();
+		removeAllCkCdnResources();
 
 		vi.spyOn( console, 'error' ).mockImplementation( () => undefined );
 	} );

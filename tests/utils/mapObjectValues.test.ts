@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { mapObjectValues } from '@/utils/mapObjectValues';
+import { mapObjectValues } from '@/utils/mapObjectValues.js';
 
 describe( 'mapObjectValues', () => {
 	it( 'should map object values using the provided mapper function', () => {

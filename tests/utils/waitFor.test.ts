@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { waitFor } from '@/utils/waitFor';
+import { waitFor } from '@/utils/waitFor.js';
 
 describe( 'waitFor', () => {
 	it( 'should resolve when the callback succeeds', async () => {

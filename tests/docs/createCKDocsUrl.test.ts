@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { createCKDocsUrl } from '@/docs/createCKDocsUrl';
+import { createCKDocsUrl } from '@/docs/createCKDocsUrl.js';
 
 describe( 'createCKDocsUrl', () => {
 	it( 'should create a URL with the latest version by default', () => {

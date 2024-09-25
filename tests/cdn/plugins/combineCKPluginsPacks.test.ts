@@ -5,8 +5,8 @@
 
 import { describe, it, expect, beforeEach, afterEach, expectTypeOf } from 'vitest';
 
-import type { Awaitable } from '@/types/Awaitable';
-import { combineCdnPluginsPacks } from '@/cdn/plugins/combineCdnPluginsPacks';
+import type { Awaitable } from '@/types/Awaitable.js';
+import { combineCdnPluginsPacks } from '@/cdn/plugins/combineCdnPluginsPacks.js';
 
 describe( 'combineCdnPluginsPacks', () => {
 	beforeEach( () => {

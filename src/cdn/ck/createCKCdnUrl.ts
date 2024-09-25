@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { SemanticVersion } from '../../utils/isSemanticVersion';
+import type { SemanticVersion } from '../../utils/isSemanticVersion.js';
 
 /**
  * The URL of the CKEditor CDN.

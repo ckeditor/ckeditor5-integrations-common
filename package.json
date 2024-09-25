@@ -65,10 +65,11 @@
     },
     "./test-utils": {
       "import": {
-        "types": "./dist/tests/_utils/index.d.ts",
-        "default": "./dist/tests/_utils/index.js"
+        "types": "./dist/test-utils/index.d.ts",
+        "default": "./dist/test-utils/index.js"
       }
-    }
+    },
+    "./package.json": "./package.json"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [

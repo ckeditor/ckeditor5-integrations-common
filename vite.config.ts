@@ -19,14 +19,28 @@ export default defineConfig( {
 			name: 'CKEDITOR_INTEGRATIONS_COMMON'
 		},
 		sourcemap: true,
-		emptyOutDir: true
+		emptyOutDir: true,
+		minify: false
 	},
 	plugins: [
 		tsconfigPaths(),
 		dts( {
 			exclude: [ '**/*.test.ts', '**/*.test.tsx' ],
 			copyDtsFiles: true,
-			clearPureImport: false
+			clearPureImport: false,
+			beforeWriteFile: ( filePath, content ) => {
+				// Force disable TypeScript checks for the CKEditor 5 Premium Features typings.
+				// CKEditor 5 Premium Features typings are optional and might be missing in the project.
+				// Some `tsconfig.json` with `skipLibCheck` set to `false` might fail to compile such project.
+				if ( content.includes( 'from \'ckeditor5-premium-features\'' ) ) {
+					content = `// @ts-nocheck\n${ content }`;
+				}
+
+				return {
+					filePath,
+					content
+				};
+			}
 		} )
 	]
 } );

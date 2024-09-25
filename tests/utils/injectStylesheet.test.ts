@@ -5,15 +5,17 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { CDN_MOCK_STYLESHEET_URL, removeCkCdnLinks } from 'tests/_utils/ckCdnMocks';
-import { injectStylesheet } from '@/utils/injectStylesheet';
-import { preloadResource } from '@/utils/preloadResource';
-import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl';
-import { queryStylesheet } from '../_utils';
+import { injectStylesheet } from '@/utils/injectStylesheet.js';
+import { preloadResource } from '@/utils/preloadResource.js';
+import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl.js';
+import { queryStylesheet } from '@/utils/queryHeadElement.js';
+
+import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
+import { CDN_MOCK_STYLESHEET_URL } from '@/test-utils/cdn/mocks.js';
 
 describe( 'injectStylesheet', () => {
 	beforeEach( () => {
-		removeCkCdnLinks();
+		removeAllCkCdnResources();
 
 		vi.spyOn( console, 'warn' ).mockImplementation( () => undefined );
 		vi.spyOn( console, 'error' ).mockImplementation( () => undefined );

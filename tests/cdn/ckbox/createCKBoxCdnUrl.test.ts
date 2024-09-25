@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { createCKBoxCdnUrl, CKBOX_CDN_URL } from '@/cdn/ckbox/createCKBoxCdnUrl';
+import { createCKBoxCdnUrl, CKBOX_CDN_URL } from '@/cdn/ckbox/createCKBoxCdnUrl.js';
 
 describe( 'createCKBoxCdnUrl', () => {
 	it( 'should return the correct URL for a given bundle, file, and version', () => {
