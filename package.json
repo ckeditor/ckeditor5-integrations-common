@@ -24,7 +24,9 @@
   },
   "homepage": "https://github.com/ckeditor/ckeditor5-integrations-common",
   "scripts": {
-    "build": "vite build",
+    "build": "yarn build:lib && yarn build:test-utils",
+    "build:lib": "vite build",
+    "build:test-utils": "vite build --config vite.test-utils.config.ts",
     "dev": "vite",
     "lint": "eslint --quiet \"**/*.{ts,tsx}\"",
     "test": "vitest run --coverage",
@@ -58,17 +60,13 @@
       },
       "require": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/index.cjs"
+        "default": "./dist/index.umd.cjs"
       }
     },
     "./test-utils": {
       "import": {
-        "types": "./dist/test-utils.d.ts",
-        "default": "./dist/test-utils.js"
-      },
-      "require": {
-        "types": "./dist/test-utils.d.ts",
-        "default": "./dist/test-utils.cjs"
+        "types": "./dist/test-utils/index.d.ts",
+        "default": "./dist/test-utils/index.js"
       }
     }
   },

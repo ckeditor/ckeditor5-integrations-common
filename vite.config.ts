@@ -13,11 +13,10 @@ export default defineConfig( {
 	build: {
 		target: 'esnext',
 		lib: {
-			formats: [ 'es', 'cjs' ],
-			entry: {
-				index: 'src/index',
-				'test-utils': 'src/test-utils'
-			}
+			entry: 'src/index',
+			fileName: 'index',
+			formats: [ 'es', 'umd' ],
+			name: 'CKEDITOR_INTEGRATIONS_COMMON'
 		},
 		sourcemap: true,
 		emptyOutDir: true,
