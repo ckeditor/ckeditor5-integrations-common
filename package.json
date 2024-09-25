@@ -68,7 +68,8 @@
         "types": "./dist/test-utils/index.d.ts",
         "default": "./dist/test-utils/index.js"
       }
-    }
+    },
+    "./package.json": "./package.json"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
