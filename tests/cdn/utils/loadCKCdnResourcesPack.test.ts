@@ -15,7 +15,7 @@ import {
 	queryPreload
 } from '@/utils/queryHeadElement.js';
 
-import { removeAllCkCdnResources } from '@/test-utils.js';
+import { removeAllCkCdnResources } from '@/test-utils/index.js';
 import {
 	CDN_MOCK_SCRIPT_URL,
 	CDN_MOCK_STYLESHEET_URL
