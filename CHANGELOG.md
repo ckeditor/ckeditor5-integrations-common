@@ -1,6 +1,19 @@
 Changelog
 =========
 
+## [2.1.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.0.0...v2.1.0) (2024-09-26)
+
+### Features
+
+* Improved error readability in `loadCKEditorCloud`. It should now detect existing editor instances and provide migration info from NPM to CDN. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/a57de9cd4e996ff151c599e810db1d33ca380be8))
+
+### Bug fixes
+
+* Improved support for TS configurations containing `skipLibCheck: false` and non-installed `ckeditor5-premium-features`. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/72b9b8269868cc962a19a1ebdf767b0b1b20dfaa))
+* No longer use aliases in `src/` files due to incorrect `.d.ts` output. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/7fe1f75fe16b8f5e7af93a50f4a11ecabccc5087))
+* Polyfill `ckeditor5` and `ckeditor5-premium-features` typings if these packages are not installed. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/7fe1f75fe16b8f5e7af93a50f4a11ecabccc5087))
+
+
 ## [2.0.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v1.0.0...v2.0.0) (2024-09-12)
 
 ### BREAKING CHANGES
