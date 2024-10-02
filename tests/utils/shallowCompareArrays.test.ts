@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { shallowCompareArrays } from '@/utils/shallowCompareArrays';
+import { shallowCompareArrays } from '@/utils/shallowCompareArrays.js';
 
 describe( 'shallowCompareArrays', () => {
 	it( 'should return true if references are the same', () => {

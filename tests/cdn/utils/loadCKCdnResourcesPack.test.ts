@@ -5,22 +5,25 @@
 
 import { describe, it, vi, expect, vitest, beforeEach, afterEach } from 'vitest';
 
-import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack';
-import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl';
+import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack.js';
+import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl.js';
+
+import { queryAllInjectedScripts } from '@/utils/queryAllInjectedElements.js';
 import {
 	queryScript,
 	queryStylesheet,
-	queryPreload,
-	removeCkCdnLinks,
-	removeCkCdnScripts,
+	queryPreload
+} from '@/utils/queryHeadElement.js';
+
+import { removeAllCkCdnResources } from '@/test-utils/index.js';
+import {
 	CDN_MOCK_SCRIPT_URL,
 	CDN_MOCK_STYLESHEET_URL
-} from 'tests/_utils';
+} from '@/test-utils/cdn/mocks.js';
 
 describe( 'loadCKCdnResourcesPack', () => {
 	beforeEach( () => {
-		removeCkCdnScripts();
-		removeCkCdnLinks();
+		removeAllCkCdnResources();
 
 		vi.spyOn( console, 'error' ).mockImplementation( () => undefined );
 	} );
@@ -61,6 +64,20 @@ describe( 'loadCKCdnResourcesPack', () => {
 		} );
 
 		expect( result ).toEqual( loaded );
+	} );
+
+	it( 'should execute beforeInject callback before injecting the resources', async () => {
+		const beforeInject = vi.fn().mockImplementation( () => {
+			expect( window.CKEDITOR ).toBeUndefined();
+			expect( queryAllInjectedScripts() ).toHaveLength( 0 );
+		} );
+
+		await loadCKCdnResourcesPack( {
+			scripts: [ CDN_MOCK_SCRIPT_URL ],
+			beforeInject
+		} );
+
+		expect( beforeInject ).toHaveBeenCalled();
 	} );
 
 	it( 'should inject the script if the pack contains one', async () => {

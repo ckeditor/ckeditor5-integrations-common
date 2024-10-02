@@ -3,15 +3,14 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { CKCdnResourcesAdvancedPack } from '../utils/loadCKCdnResourcesPack';
-import type { CKCdnBaseBundlePackConfig } from './createCKCdnBaseBundlePack';
+import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack.js';
+import type { CKCdnBaseBundlePackConfig } from './createCKCdnBaseBundlePack.js';
 
-import { createCKCdnUrl } from './createCKCdnUrl';
-import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
-import { injectScriptsInParallel } from '../../utils/injectScript';
-import { without } from '../../utils/without';
+import { waitForWindowEntry } from '../../utils/waitForWindowEntry.js';
+import { injectScriptsInParallel } from '../../utils/injectScript.js';
+import { without } from '../../utils/without.js';
 
-import './globals.d';
+import { createCKCdnUrl } from './createCKCdnUrl.js';
 
 /**
  * Creates a pack of resources for the CKEditor Premium Features.

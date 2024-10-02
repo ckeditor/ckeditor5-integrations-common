@@ -3,12 +3,13 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { CKCdnResourcesAdvancedPack } from '../utils/loadCKCdnResourcesPack';
+import { waitForWindowEntry } from '../../utils/waitForWindowEntry.js';
+import { getCKBoxInstallationInfo } from '../../installation-info/getCKBoxInstallationInfo.js';
 
-import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
-import { createCKBoxCdnUrl, type CKBoxCdnVersion } from './createCKBoxCdnUrl';
+import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack.js';
+import { createCKBoxCdnUrl, type CKBoxCdnVersion } from './createCKBoxCdnUrl.js';
 
-import './globals.d';
+import './globals.js';
 
 /**
  * Creates a pack of resources for the base CKBox bundle.
@@ -39,14 +40,24 @@ export function createCKBoxBundlePack(
 
 		// Load optional theme, if provided. It's not required but recommended because it improves the look and feel.
 		...theme && {
-			stylesheets: [
-				createCKBoxCdnUrl( 'ckbox', `styles/themes/${ theme }.css`, version )
-			]
+			stylesheets: [ createCKBoxCdnUrl( 'ckbox', `styles/themes/${ theme }.css`, version ) ]
 		},
 
 		// Pick the exported global variables from the window object.
 		checkPluginLoaded: async () =>
-			waitForWindowEntry( [ 'CKBox' ] )
+			waitForWindowEntry( [ 'CKBox' ] ),
+
+		// Check if the CKBox bundle is already loaded and throw an error if it is.
+		beforeInject: () => {
+			const installationInfo = getCKBoxInstallationInfo();
+
+			if ( installationInfo && installationInfo.version !== version ) {
+				throw new Error(
+					`CKBox is already loaded from CDN in version ${ installationInfo.version }. ` +
+					`Remove the old <script> and <link> tags loading CKBox to allow loading the ${ version } version.`
+				);
+			}
+		}
 	};
 }
 

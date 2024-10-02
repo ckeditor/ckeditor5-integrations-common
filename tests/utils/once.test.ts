@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it, vi } from 'vitest';
-import { once } from '@/utils/once';
+import { once } from '@/utils/once.js';
 
 describe( 'once', () => {
 	it( 'should execute the function only once', () => {

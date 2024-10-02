@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { overwriteObject } from '@/utils/overwriteObject';
+import { overwriteObject } from '@/utils/overwriteObject.js';
 
 describe( 'overwriteObject', () => {
 	it( 'overwriteObject should clear the destination object and copy properties from the source object', () => {

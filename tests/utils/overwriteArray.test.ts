@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { overwriteArray } from '@/utils/overwriteArray';
+import { overwriteArray } from '@/utils/overwriteArray.js';
 
 describe( 'overwriteArray', () => {
 	it( 'should clear the destination array and copy the elements from the source array', () => {

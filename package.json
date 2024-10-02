@@ -1,6 +1,6 @@
 {
   "name": "@ckeditor/ckeditor5-integrations-common",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "This package implements common utility modules for integration projects.",
   "keywords": [
     "wysiwyg",
@@ -46,8 +46,7 @@
     "node": ">=18.0.0"
   },
   "peerDependencies": {
-    "ckeditor5": ">=42.0.0 || ^0.0.0-nightly",
-    "ckeditor5-premium-features": ">=42.0.0 || ^0.0.0-nightly"
+    "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
   },
   "type": "module",
   "main": "./dist/index.umd.cjs",
@@ -66,10 +65,11 @@
     },
     "./test-utils": {
       "import": {
-        "types": "./dist/tests/_utils/index.d.ts",
-        "default": "./dist/tests/_utils/index.js"
+        "types": "./dist/test-utils/index.d.ts",
+        "default": "./dist/test-utils/index.js"
       }
-    }
+    },
+    "./package.json": "./package.json"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [

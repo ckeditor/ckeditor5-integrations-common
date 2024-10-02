@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import { filterObjectValues } from './filterObjectValues';
+import { filterObjectValues } from './filterObjectValues.js';
 
 /**
  * Removes null and undefined values from an object.

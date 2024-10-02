@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl';
+import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl.js';
 
 describe( 'createCKCdnUrl', () => {
 	it( 'should return the correct URL for a given bundle, file, and version', () => {

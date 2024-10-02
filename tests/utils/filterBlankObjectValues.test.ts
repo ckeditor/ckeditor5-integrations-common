@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { filterBlankObjectValues } from '@/utils/filterBlankObjectValues';
+import { filterBlankObjectValues } from '@/utils/filterBlankObjectValues.js';
 
 describe( 'filterBlankObjectValues', () => {
 	it( 'should filter object values that are empty', () => {

@@ -3,14 +3,15 @@
  * For licensing, see LICENSE.md.
  */
 
-import { filterBlankObjectValues } from '../../utils/filterBlankObjectValues';
-import { mapObjectValues } from '../../utils/mapObjectValues';
+import { filterBlankObjectValues } from '../../utils/filterBlankObjectValues.js';
+import { mapObjectValues } from '../../utils/mapObjectValues.js';
+
 import {
 	normalizeCKCdnResourcesPack,
 	type CKCdnResourcesPack,
 	type InferCKCdnResourcesPackExportsType,
 	type CKCdnResourcesAdvancedPack
-} from './loadCKCdnResourcesPack';
+} from './loadCKCdnResourcesPack.js';
 
 /**
  * Combines multiple CKEditor CDN bundles packs into a single pack.
@@ -71,8 +72,16 @@ export function combineCKCdnBundlesPacks<P extends CKCdnBundlesPacks>( packs: P 
 		return exportedGlobalVariables as any;
 	};
 
+	// Call beforeInject method of all packs.
+	const beforeInject = () => {
+		for ( const pack of Object.values( normalizedPacks ) ) {
+			pack.beforeInject?.();
+		}
+	};
+
 	return {
 		...mergedPacks,
+		beforeInject,
 		checkPluginLoaded
 	};
 }

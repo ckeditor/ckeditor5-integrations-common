@@ -13,8 +13,8 @@ export default defineConfig( {
 	build: {
 		target: 'esnext',
 		lib: {
-			entry: 'tests/_utils/index',
-			fileName: 'tests/_utils/index',
+			entry: 'src/test-utils/index',
+			fileName: 'test-utils/index',
 			formats: [ 'es' ]
 		},
 		sourcemap: true,
@@ -23,10 +23,13 @@ export default defineConfig( {
 	plugins: [
 		tsconfigPaths(),
 		dts( {
-			include: [ 'tests/_utils/**/*', 'src/**/*' ],
+			include: [ 'src/test-utils/**/*.ts' ],
 			exclude: [ '**/*.test.ts', '**/*.test.tsx' ],
 			copyDtsFiles: true,
-			clearPureImport: false
+			clearPureImport: false,
+			compilerOptions: {
+				baseUrl: './src/test-utils'
+			}
 		} )
 	]
 } );

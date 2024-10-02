@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { without } from '@/utils/without';
+import { without } from '@/utils/without.js';
 
 describe( 'without', () => {
 	it( 'should remove specified items from the array', () => {

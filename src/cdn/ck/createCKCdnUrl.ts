@@ -3,6 +3,8 @@
  * For licensing, see LICENSE.md.
  */
 
+import type { SemanticVersion } from '../../utils/isSemanticVersion.js';
+
 /**
  * The URL of the CKEditor CDN.
  */
@@ -11,7 +13,7 @@ export const CK_CDN_URL = 'https://cdn.ckeditor.com';
 /**
  * A version of a file on the CKEditor CDN.
  */
-export type CKCdnVersion = `${ number }.${ number }.${ number }`;
+export type CKCdnVersion = SemanticVersion;
 
 /**
  * Creates a URL to a file on the CKEditor CDN.

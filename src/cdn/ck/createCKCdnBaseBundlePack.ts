@@ -3,14 +3,18 @@
  * For licensing, see LICENSE.md.
  */
 
-import type { CKCdnResourcesAdvancedPack } from '../utils/loadCKCdnResourcesPack';
+import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack.js';
 
-import { createCKCdnUrl, type CKCdnVersion } from './createCKCdnUrl';
-import { waitForWindowEntry } from '../../utils/waitForWindowEntry';
-import { injectScriptsInParallel } from '../../utils/injectScript';
-import { without } from '../../utils/without';
+import { waitForWindowEntry } from '../../utils/waitForWindowEntry.js';
+import { injectScriptsInParallel } from '../../utils/injectScript.js';
+import { without } from '../../utils/without.js';
 
-import './globals.d';
+import { getCKBaseBundleInstallationInfo } from '../../installation-info/getCKBaseBundleInstallationInfo.js';
+import { createCKDocsUrl } from '../../docs/createCKDocsUrl.js';
+
+import { createCKCdnUrl, type CKCdnVersion } from './createCKCdnUrl.js';
+
+import './globals.js';
 
 /**
  * Creates a pack of resources for the base CKEditor bundle.
@@ -68,7 +72,30 @@ export function createCKCdnBaseBundlePack(
 
 		// Pick the exported global variables from the window object.
 		checkPluginLoaded: async () =>
-			waitForWindowEntry( [ 'CKEDITOR' ] )
+			waitForWindowEntry( [ 'CKEDITOR' ] ),
+
+		// Check if the CKEditor base bundle is already loaded and throw an error if it is.
+		beforeInject: () => {
+			const installationInfo = getCKBaseBundleInstallationInfo();
+
+			switch ( installationInfo?.source ) {
+				case 'npm':
+					throw new Error(
+						'CKEditor 5 is already loaded from npm. Check the migration guide for more details: ' +
+						createCKDocsUrl( 'updating/migration-to-cdn/vanilla-js.html' )
+					);
+
+				case 'cdn':
+					if ( installationInfo.version !== version ) {
+						throw new Error(
+							`CKEditor 5 is already loaded from CDN in version ${ installationInfo.version }. ` +
+							`Remove the old <script> and <link> tags loading CKEditor 5 to allow loading the ${ version } version.`
+						);
+					}
+
+					break;
+			}
+		}
 	};
 }
 
