@@ -13,7 +13,7 @@ import {
 } from './ckbox/createCKBoxCdnBundlePack.js';
 
 import type { ConditionalBlank } from '../types/ConditionalBlank.js';
-import type { CKCdnVersion } from './ck/createCKCdnUrl.js';
+import type { CKCdnVersion, createCKCdnUrl } from './ck/createCKCdnUrl.js';
 
 import {
 	loadCKCdnResourcesPack,
@@ -77,7 +77,7 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 ): Promise<CKEditorCloudResult<Config>> {
 	const {
 		version, translations, plugins,
-		premium, ckbox,
+		premium, ckbox, createCustomCdnUrl,
 		injectedHtmlElementsAttributes = {
 			crossorigin: 'anonymous'
 		}
@@ -86,13 +86,15 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 	const pack = combineCKCdnBundlesPacks( {
 		CKEditor: createCKCdnBaseBundlePack( {
 			version,
-			translations
+			translations,
+			createCustomCdnUrl
 		} ),
 
 		...premium && {
 			CKEditorPremiumFeatures: createCKCdnPremiumBundlePack( {
 				version,
-				translations
+				translations,
+				createCustomCdnUrl
 			} )
 		},
 
@@ -181,4 +183,9 @@ export type CKEditorCloudConfig<Plugins extends CdnPluginsPacks = CdnPluginsPack
 	 * Map of attributes to add to the script, stylesheet and link tags that are injected by the loader.
 	 */
 	injectedHtmlElementsAttributes?: Record<string, any>;
+
+	/**
+	 * The function that creates custom CDN URLs.
+	 */
+	createCustomCdnUrl?: typeof createCKCdnUrl;
 };

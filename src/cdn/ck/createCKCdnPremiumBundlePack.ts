@@ -31,23 +31,24 @@ import { createCKCdnUrl } from './createCKCdnUrl.js';
 export function createCKCdnPremiumBundlePack(
 	{
 		version,
-		translations
+		translations,
+		createCustomCdnUrl = createCKCdnUrl
 	}: CKCdnPremiumBundlePackConfig
 ): CKCdnResourcesAdvancedPack<Window['CKEDITOR_PREMIUM_FEATURES']> {
 	const urls = {
 		scripts: [
 			// Load the main script of the premium features.
-			createCKCdnUrl( 'ckeditor5-premium-features', 'ckeditor5-premium-features.umd.js', version ),
+			createCustomCdnUrl( 'ckeditor5-premium-features', 'ckeditor5-premium-features.umd.js', version ),
 
 			// Load all JavaScript files from the premium features.
 			// EN bundle is prebuilt into the main script, so we don't need to load it separately.
 			...without( [ 'en' ], translations || [] ).map( translation =>
-				createCKCdnUrl( 'ckeditor5-premium-features', `translations/${ translation }.umd.js`, version )
+				createCustomCdnUrl( 'ckeditor5-premium-features', `translations/${ translation }.umd.js`, version )
 			)
 		],
 
 		stylesheets: [
-			createCKCdnUrl( 'ckeditor5-premium-features', 'ckeditor5-premium-features.css', version )
+			createCustomCdnUrl( 'ckeditor5-premium-features', 'ckeditor5-premium-features.css', version )
 		]
 	};
 
@@ -77,5 +78,5 @@ export function createCKCdnPremiumBundlePack(
  */
 export type CKCdnPremiumBundlePackConfig = Pick<
 	CKCdnBaseBundlePackConfig,
-	'translations' | 'version'
+	'translations' | 'version' | 'createCustomCdnUrl'
 >;
