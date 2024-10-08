@@ -88,6 +88,27 @@ describe( 'createCKCdnBaseBundlePack', () => {
 		} );
 	} );
 
+	it( 'should allow to specify custom CDN urls using `createCustomCdnUrl` parameter', () => {
+		const pack = createCKCdnBaseBundlePack( {
+			version: '43.0.0',
+			createCustomCdnUrl: ( type, name, version ) => `https://cdn.example.com/${ type }/${ name }/${ version }`
+		} );
+
+		expect( pack ).to.toMatchObject( {
+			checkPluginLoaded: expect.any( Function ),
+			stylesheets: [
+				'https://cdn.example.com/ckeditor5/ckeditor5.css/43.0.0'
+			],
+			scripts: [
+				expect.any( Function )
+			],
+			preload: [
+				'https://cdn.example.com/ckeditor5/ckeditor5.css/43.0.0',
+				'https://cdn.example.com/ckeditor5/ckeditor5.umd.js/43.0.0'
+			]
+		} );
+	} );
+
 	it( 'should throw an error if the requested version differs from the installed one', async () => {
 		await loadCKEditor( '43.0.0' );
 		await expect( async () => loadCKEditor( '42.0.0' ) ).rejects.toThrowError(

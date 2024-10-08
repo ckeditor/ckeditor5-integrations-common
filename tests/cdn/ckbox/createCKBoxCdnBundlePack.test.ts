@@ -45,6 +45,24 @@ describe( 'createCKBoxCdnBundlePack', () => {
 			'Remove the old <script> and <link> tags loading CKBox to allow loading the 2.5.0 version.'
 		);
 	} );
+
+	it( 'should allow to specify custom CDN urls using `createCustomCdnUrl` parameter', () => {
+		const pack = createCKBoxBundlePack( {
+			version: '2.5.1',
+			createCustomCdnUrl: ( type, name, version ) => `https://cdn.example.com/${ type }/${ name }/${ version }`
+		} );
+
+		expect( pack ).toMatchObject( {
+			scripts: [
+				'https://cdn.example.com/ckbox/ckbox.js/2.5.1'
+			],
+			stylesheets: [
+				'https://cdn.example.com/ckbox/styles/themes/lark.css/2.5.1'
+			],
+			beforeInject: expect.any( Function ),
+			checkPluginLoaded: expect.any( Function )
+		} );
+	} );
 } );
 
 function loadCKBox( version: CKBoxCdnVersion ) {
