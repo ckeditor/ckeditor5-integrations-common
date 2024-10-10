@@ -61,6 +61,27 @@ describe( 'createCKCdnPremiumBundlePack', () => {
 		} );
 	} );
 
+	it( 'should allow to specify custom CDN urls using `createCustomCdnUrl` parameter', () => {
+		const pack = createCKCdnPremiumBundlePack( {
+			version: '43.0.0',
+			createCustomCdnUrl: ( type, path, version ) => `https://example.com/${ type }/${ path }/${ version }`
+		} );
+
+		expect( pack ).to.toMatchObject( {
+			checkPluginLoaded: expect.any( Function ),
+			stylesheets: [
+				'https://example.com/ckeditor5-premium-features/ckeditor5-premium-features.css/43.0.0'
+			],
+			scripts: [
+				expect.any( Function )
+			],
+			preload: [
+				'https://example.com/ckeditor5-premium-features/ckeditor5-premium-features.css/43.0.0',
+				'https://example.com/ckeditor5-premium-features/ckeditor5-premium-features.umd.js/43.0.0'
+			]
+		} );
+	} );
+
 	it( 'should not load any language if not provided', () => {
 		const pack = createCKCdnPremiumBundlePack( {
 			version: '43.0.0'

@@ -29,18 +29,21 @@ import './globals.js';
 export function createCKBoxBundlePack(
 	{
 		version,
-		theme = 'lark'
+		theme = 'lark',
+		createCustomCdnUrl = createCKBoxCdnUrl
 	}: CKBoxCdnBundlePackConfig
 ): CKCdnResourcesAdvancedPack<Window['CKBox']> {
 	return {
 		// Load the main script of the base features.
 		scripts: [
-			createCKBoxCdnUrl( 'ckbox', 'ckbox.js', version )
+			createCustomCdnUrl( 'ckbox', 'ckbox.js', version )
 		],
 
 		// Load optional theme, if provided. It's not required but recommended because it improves the look and feel.
 		...theme && {
-			stylesheets: [ createCKBoxCdnUrl( 'ckbox', `styles/themes/${ theme }.css`, version ) ]
+			stylesheets: [
+				createCustomCdnUrl( 'ckbox', `styles/themes/${ theme }.css`, version )
+			]
 		},
 
 		// Pick the exported global variables from the window object.
@@ -75,4 +78,9 @@ export type CKBoxCdnBundlePackConfig = {
 	 * The theme of the CKBox bundle. Default is 'lark'.
 	 */
 	theme?: string | null;
+
+	/**
+	 * Function that creates a custom URL for the CKBox bundle.
+	 */
+	createCustomCdnUrl?: typeof createCKBoxCdnUrl;
 };

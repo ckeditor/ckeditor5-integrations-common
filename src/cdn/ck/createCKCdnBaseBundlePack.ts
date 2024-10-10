@@ -35,23 +35,24 @@ import './globals.js';
 export function createCKCdnBaseBundlePack(
 	{
 		version,
-		translations
+		translations,
+		createCustomCdnUrl = createCKCdnUrl
 	}: CKCdnBaseBundlePackConfig
 ): CKCdnResourcesAdvancedPack<Window['CKEDITOR']> {
 	const urls = {
 		scripts: [
 			// Load the main script of the base features.
-			createCKCdnUrl( 'ckeditor5', 'ckeditor5.umd.js', version ),
+			createCustomCdnUrl( 'ckeditor5', 'ckeditor5.umd.js', version ),
 
 			// Load all JavaScript files from the base features.
 			// EN bundle is prebuilt into the main script, so we don't need to load it separately.
 			...without( [ 'en' ], translations || [] ).map( translation =>
-				createCKCdnUrl( 'ckeditor5', `translations/${ translation }.umd.js`, version )
+				createCustomCdnUrl( 'ckeditor5', `translations/${ translation }.umd.js`, version )
 			)
 		],
 
 		stylesheets: [
-			createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', version )
+			createCustomCdnUrl( 'ckeditor5', 'ckeditor5.css', version )
 		]
 	};
 
@@ -113,4 +114,9 @@ export type CKCdnBaseBundlePackConfig = {
 	 * The list of translations to load.
 	 */
 	translations?: Array<string>;
+
+	/**
+	 * The function that creates custom CDN URLs.
+	 */
+	createCustomCdnUrl?: typeof createCKCdnUrl;
 };

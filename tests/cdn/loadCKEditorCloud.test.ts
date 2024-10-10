@@ -84,6 +84,24 @@ describe( 'loadCKEditorCloud', () => {
 		expect( loadedPlugins?.Plugin ).toBeDefined();
 	} );
 
+	it( 'should allow to specify custom CDN urls using `createCustomCdnUrl` parameter', async () => {
+		const { CKEditor } = await loadCKEditorCloud( {
+			version: '43.0.0',
+			premium: true,
+			createCustomCdnUrl: ( type, name, version ) => `${ createCKCdnUrl( type, name, version ) }?testParam=123`
+		} );
+
+		expect( CKEditor.ClassicEditor ).toBeDefined();
+
+		expectBundleLoaded( 'ckeditor5' );
+		expectBundleLoaded( 'ckeditor5-premium-features' );
+
+		function expectBundleLoaded( bundleName: string ) {
+			expect( queryScript( `${ createCKCdnUrl( bundleName, `${ bundleName }.umd.js`, '43.0.0' ) }?testParam=123` ) ).not.toBeNull();
+			expect( queryStylesheet( `${ createCKCdnUrl( bundleName, `${ bundleName }.css`, '43.0.0' ) }?testParam=123` ) ).not.toBeNull();
+		}
+	} );
+
 	describe( 'CSP', () => {
 		it( 'should set crossorigin=anonymous attribute on injected elements if attributes are not specified', async () => {
 			expect( queryAnonymousLinks() ).toHaveLength( 0 );
