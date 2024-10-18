@@ -5,7 +5,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import type { CKCdnVersion } from '@/cdn/ck/createCKCdnUrl.js';
+import type { CKCdnVersion } from '@/cdn/ck/isCKCdnVersion.js';
 
 import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack.js';
 import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
