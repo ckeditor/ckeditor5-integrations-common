@@ -12,7 +12,8 @@ import { without } from '../../utils/without.js';
 import { getCKBaseBundleInstallationInfo } from '../../installation-info/getCKBaseBundleInstallationInfo.js';
 import { createCKDocsUrl } from '../../docs/createCKDocsUrl.js';
 
-import { createCKCdnUrl, type CKCdnVersion } from './createCKCdnUrl.js';
+import { createCKCdnUrl } from './createCKCdnUrl.js';
+import type { CKCdnVersion } from './isCKCdnVersion.js';
 
 import './globals.js';
 

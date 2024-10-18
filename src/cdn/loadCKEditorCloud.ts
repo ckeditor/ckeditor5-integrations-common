@@ -13,7 +13,8 @@ import {
 } from './ckbox/createCKBoxCdnBundlePack.js';
 
 import type { ConditionalBlank } from '../types/ConditionalBlank.js';
-import type { CKCdnVersion, createCKCdnUrl } from './ck/createCKCdnUrl.js';
+import { isCKCdnTestingVersion, type CKCdnVersion } from './ck/isCKCdnVersion.js';
+import { createCKCdnUrl } from './ck/createCKCdnUrl.js';
 
 import {
 	loadCKCdnResourcesPack,
@@ -82,6 +83,12 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 			crossorigin: 'anonymous'
 		}
 	} = config;
+
+	if ( isCKCdnTestingVersion( version ) ) {
+		console.warn(
+			'You are using a testing version of CKEditor 5. Please remember that it is not suitable for production environments.'
+		);
+	}
 
 	const pack = combineCKCdnBundlesPacks( {
 		CKEditor: createCKCdnBaseBundlePack( {
