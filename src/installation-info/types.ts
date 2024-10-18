@@ -13,7 +13,7 @@ type BundleInstallationSource = 'npm' | 'cdn';
 /**
  * Information about the currently installed CKEditor.
  */
-export type BundleInstallationInfo = {
+export type BundleInstallationInfo<V extends string = SemanticVersion> = {
 
 	/**
 	 * The source from which CKEditor was installed.
@@ -23,5 +23,5 @@ export type BundleInstallationInfo = {
 	/**
 	 * The version of CKEditor.
 	 */
-	version: SemanticVersion;
+	version: V;
 };

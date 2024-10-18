@@ -27,11 +27,35 @@ describe( 'loadCKEditorCloud', () => {
 		removeAllCkCdnResources();
 
 		vi.spyOn( console, 'error' ).mockImplementation( () => undefined );
+		vi.spyOn( console, 'warn' ).mockImplementation( () => undefined );
+
 		window.FakePlugin = { fake: 'fake' };
 	} );
 
 	afterEach( () => {
 		vi.restoreAllMocks();
+	} );
+
+	for ( const version of [ 'alpha', 'nightly' ] as const ) {
+		it( `should raise warning if ${ version } version is used`, async () => {
+			const { CKEditor } = await loadCKEditorCloud( {
+				version
+			} );
+
+			expect( CKEditor.ClassicEditor ).toBeDefined();
+			expect( console.warn ).toBeCalledWith(
+				'You are using a testing version of CKEditor 5. Please remember that it is not suitable for production environments.'
+			);
+		} );
+	}
+
+	it( 'should not raise a warning if non-testing version is passed', async () => {
+		const { CKEditor } = await loadCKEditorCloud( {
+			version: '43.0.0'
+		} );
+
+		expect( CKEditor.ClassicEditor ).toBeDefined();
+		expect( console.warn ).not.toBeCalled();
 	} );
 
 	it( 'should be possible to load base ckeditor with base features', async () => {
