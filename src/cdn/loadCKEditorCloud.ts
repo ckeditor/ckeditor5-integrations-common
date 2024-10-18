@@ -12,9 +12,10 @@ import {
 	type CKBoxCdnBundlePackConfig
 } from './ckbox/createCKBoxCdnBundlePack.js';
 
+import type { CKCdnUrlCreator } from './ck/createCKCdnUrl.js';
 import type { ConditionalBlank } from '../types/ConditionalBlank.js';
+
 import { isCKCdnTestingVersion, type CKCdnVersion } from './ck/isCKCdnVersion.js';
-import { createCKCdnUrl } from './ck/createCKCdnUrl.js';
 
 import {
 	loadCKCdnResourcesPack,
@@ -194,5 +195,5 @@ export type CKEditorCloudConfig<Plugins extends CdnPluginsPacks = CdnPluginsPack
 	/**
 	 * The function that creates custom CDN URLs.
 	 */
-	createCustomCdnUrl?: typeof createCKCdnUrl;
+	createCustomCdnUrl?: CKCdnUrlCreator;
 };

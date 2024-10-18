@@ -27,3 +27,8 @@ export const CK_CDN_URL = 'https://cdn.ckeditor.com';
 export function createCKCdnUrl( bundle: string, file: string, version: CKCdnVersion ): string {
 	return `${ CK_CDN_URL }/${ bundle }/${ version }/${ file }`;
 }
+
+/**
+ * A function that creates a URL to a file on the CKEditor CDN.
+ */
+export type CKCdnUrlCreator = typeof createCKCdnUrl;
