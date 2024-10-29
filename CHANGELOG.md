@@ -5,8 +5,9 @@ Changelog
 
 ### Features
 
-* Add `createCustomCdnUrl` configuration option that allows to override default CKEditor5 Cloud CDN urls. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/f13ee317b8ee65a79525824d04ebeeb27b52700b))
-* Improve detection of already installed version of editor. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/adc3143d032a2501c0a5872cb92a36938d720f5a))
+* Added the `createCustomCdnUrl` configuration option to override default CKEditor 5 Cloud CDN URLs in `loadCKEditorCloud`. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/f13ee317b8ee65a79525824d04ebeeb27b52700b))
+* Added support for passing a translations list for CKBox in the configuration for `loadCKEditorCloud`. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/29f8aaf3a82904fc1598a4f81d3803e587d639e2))
+* Improved detection of already installed versions of the editor. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/adc3143d032a2501c0a5872cb92a36938d720f5a))
 
 
 ## [2.1.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.0.0...v2.1.0) (2024-09-26)
