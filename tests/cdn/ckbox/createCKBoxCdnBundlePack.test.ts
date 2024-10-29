@@ -33,6 +33,26 @@ describe( 'createCKBoxCdnBundlePack', () => {
 		} );
 	} );
 
+	it( 'should return translations scripts if translations are provided', async () => {
+		const pack = createCKBoxBundlePack( {
+			version: '2.5.1',
+			translations: [ 'es', 'de', 'en' ] // EN should be ignored, as it's prebuilt into the main script.
+		} );
+
+		expect( pack ).toMatchObject( {
+			scripts: [
+				'https://cdn.ckbox.io/ckbox/2.5.1/ckbox.js',
+				'https://cdn.ckbox.io/ckbox/2.5.1/translations/es.js',
+				'https://cdn.ckbox.io/ckbox/2.5.1/translations/de.js'
+			],
+			stylesheets: [
+				'https://cdn.ckbox.io/ckbox/2.5.1/styles/themes/lark.css'
+			],
+			beforeInject: expect.any( Function ),
+			checkPluginLoaded: expect.any( Function )
+		} );
+	} );
+
 	it( 'should not throw an error if the requested version is the same as the installed one', async () => {
 		await loadCKBox( '2.5.1' );
 		await expect( loadCKBox( '2.5.1' ) ).resolves.not.toThrow();
