@@ -5,8 +5,9 @@
 
 import { describe, it, beforeEach, expect } from 'vitest';
 
-import { getCKBaseBundleInstallationInfo } from '@/installation-info/getCKBaseBundleInstallationInfo.js';
 import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
+
+import { getCKBaseBundleInstallationInfo } from '@/installation-info/getCKBaseBundleInstallationInfo.js';
 import { loadCKEditorCloud } from '@/cdn/loadCKEditorCloud.js';
 
 describe( 'getCKBaseBundleInstallationInfo', () => {

@@ -27,6 +27,14 @@ export { filterBlankObjectValues } from './utils/filterBlankObjectValues.js';
 export { mapObjectValues } from './utils/mapObjectValues.js';
 export { without } from './utils/without.js';
 
+export { appendExtraPluginsToEditorConfig } from './plugins/appendExtraPluginsToEditorConfig.js';
+export {
+	createIntegrationUsageDataPlugin,
+	type IntegrationUsageDataPlugin
+} from './plugins/IntegrationUsageDataPlugin.js';
+
+export { isCKEditorFreeLicense } from './license/isCKEditorFreeLicense.js';
+
 export {
 	CK_CDN_URL,
 	createCKCdnUrl
