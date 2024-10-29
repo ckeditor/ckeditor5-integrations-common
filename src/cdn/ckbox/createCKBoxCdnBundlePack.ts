@@ -4,6 +4,7 @@
  */
 
 import { waitForWindowEntry } from '../../utils/waitForWindowEntry.js';
+import { without } from '../../utils/without.js';
 import { getCKBoxInstallationInfo } from '../../installation-info/getCKBoxInstallationInfo.js';
 
 import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack.js';
@@ -30,13 +31,19 @@ export function createCKBoxBundlePack(
 	{
 		version,
 		theme = 'lark',
+		translations,
 		createCustomCdnUrl = createCKBoxCdnUrl
 	}: CKBoxCdnBundlePackConfig
 ): CKCdnResourcesAdvancedPack<Window['CKBox']> {
 	return {
 		// Load the main script of the base features.
 		scripts: [
-			createCustomCdnUrl( 'ckbox', 'ckbox.js', version )
+			createCustomCdnUrl( 'ckbox', 'ckbox.js', version ),
+
+			// EN bundle is prebuilt into the main script, so we don't need to load it separately.
+			...without( [ 'en' ], translations || [] ).map( translation =>
+				createCustomCdnUrl( 'ckbox', `translations/${ translation }.js`, version )
+			)
 		],
 
 		// Load optional theme, if provided. It's not required but recommended because it improves the look and feel.
@@ -73,6 +80,11 @@ export type CKBoxCdnBundlePackConfig = {
 	 * The version of  the base CKEditor bundle.
 	 */
 	version: CKBoxCdnVersion;
+
+	/**
+	 * The list of translations to load.
+	 */
+	translations?: Array<string>;
 
 	/**
 	 * The theme of the CKBox bundle. Default is 'lark'.
