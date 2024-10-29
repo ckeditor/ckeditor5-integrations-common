@@ -5,7 +5,7 @@
 
 import type { BundleInstallationInfo } from './types.js';
 
-import { isSemanticVersion } from '../utils/isSemanticVersion.js';
+import { isSemanticVersion } from '../utils/version/isSemanticVersion.js';
 
 /**
  * Returns information about the base CKEditor bundle installation.
