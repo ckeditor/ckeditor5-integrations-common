@@ -36,7 +36,7 @@ describe( 'loadCKEditorCloud', () => {
 		vi.restoreAllMocks();
 	} );
 
-	for ( const version of [ 'alpha', 'nightly' ] as const ) {
+	for ( const version of [ 'alpha', 'internal' ] as const ) {
 		it( `should raise warning if ${ version } version is used`, async () => {
 			const { CKEditor } = await loadCKEditorCloud( {
 				version

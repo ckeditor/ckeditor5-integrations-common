@@ -3,15 +3,15 @@
  * For licensing, see LICENSE.md.
  */
 
-import { isSemanticVersion, type SemanticVersion } from '../../utils/isSemanticVersion.js';
+import { isSemanticVersion, type SemanticVersion } from '../../utils/version/isSemanticVersion.js';
 
 /**
- * A version of a file on the CKEditor CDN that is used for testing purposes.
+ * A version of the CKEditor that is used for testing purposes.
  */
 export type CKCdnTestingVersion =
+	| 'nightly'
 	| 'alpha'
-	| `${ SemanticVersion }-nightly-${ string }`
-	| `rc-${ string }`;
+	| 'internal';
 
 /**
  * A version of a file on the CKEditor CDN.
@@ -27,14 +27,19 @@ export type CKCdnVersion =
  * @returns `true` if the string is a version of a file on the CKEditor CDN, `false` otherwise.
  * @example
  * ```ts
- * isCKCdnVersion( 'nightly' ); // -> true
- * isCKCdnVersion( 'alpha' ); // -> true
- * isCKCdnVersion( 'rc-1.2.3' ); // -> true
- * isCKCdnVersion( '1.2.3' ); // -> false
+ * isCKCdnTestingVersion( '1.2.3-nightly-abc' ); // -> true
+ * isCKCdnTestingVersion( '1.2.3-internal-abc' ); // -> true
+ * isCKCdnTestingVersion( '1.2.3-alpha.1' ); // -> true
+ * isCKCdnTestingVersion( '1.2.3' ); // -> false
+ * isCKCdnTestingVersion( 'nightly' ); // -> true
  * ```
  */
-export function isCKCdnTestingVersion( version: string ): version is CKCdnTestingVersion {
-	return version === 'alpha' || version === 'nightly' || version.startsWith( 'rc-' );
+export function isCKCdnTestingVersion( version: string | undefined ): version is CKCdnTestingVersion {
+	if ( !version ) {
+		return false;
+	}
+
+	return [ 'nightly', 'alpha', 'internal' ].some( testVersion => version.includes( testVersion ) );
 }
 
 /**
@@ -50,6 +55,6 @@ export function isCKCdnTestingVersion( version: string ): version is CKCdnTestin
  * isCKCdnVersion( '1.2.3' ); // -> true
  * ```
  */
-export function isCKCdnVersion( version: string ): version is CKCdnVersion {
+export function isCKCdnVersion( version: string | undefined ): version is CKCdnVersion {
 	return isSemanticVersion( version ) || isCKCdnTestingVersion( version );
 }

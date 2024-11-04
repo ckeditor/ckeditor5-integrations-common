@@ -9,10 +9,13 @@ import { isCKCdnVersion, isCKCdnTestingVersion } from '@/cdn/ck/isCKCdnVersion.j
 const testCases = [
 	{ version: 'alpha', isTesting: true, isVersion: true },
 	{ version: 'nightly', isTesting: true, isVersion: true },
-	{ version: 'rc-1.2.3', isTesting: true, isVersion: true },
+	{ version: 'rc-1.2.3', isTesting: false, isVersion: false },
 	{ version: '1.2.3', isTesting: false, isVersion: true },
 	{ version: 'beta', isTesting: false, isVersion: false },
-	{ version: '1.2', isTesting: false, isVersion: false }
+	{ version: '1.2', isTesting: false, isVersion: false },
+	{ version: '0.0.0-nightly-20241104.0', isTesting: true, isVersion: true },
+	{ version: '0.0.0-internal-20241104.0', isTesting: true, isVersion: true },
+	{ version: '43.3.0-alpha.12	', isTesting: true, isVersion: true }
 ];
 
 describe( 'isCKCdnTestingVersion', () => {
