@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## [2.2.1](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.2.0...v2.2.1) (2024-11-04)
+
+### Features
+
+* Add testing versions support to injector. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/518448b1e7e9e8b8866592ff2b7daca3869f73b3))
+
+
 ## [2.2.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.1.0...v2.2.0) (2024-10-29)
 
 ### Features
