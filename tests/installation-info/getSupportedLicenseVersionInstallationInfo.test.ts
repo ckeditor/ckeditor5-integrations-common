@@ -51,6 +51,13 @@ describe( 'getSupportedLicenseVersionInstallationInfo', () => {
 		mockEditorVersion( '37.0.0' );
 		expect( getSupportedLicenseVersionInstallationInfo() ).toEqual( 1 );
 	} );
+
+	it( 'should return license V3 for test versions', () => {
+		for ( const version of [ 'alpha', 'nightly', 'internal' ] ) {
+			mockEditorVersion( version );
+			expect( getSupportedLicenseVersionInstallationInfo() ).toEqual( 3 );
+		}
+	} );
 } );
 
 function mockEditorVersion( version: string ): void {

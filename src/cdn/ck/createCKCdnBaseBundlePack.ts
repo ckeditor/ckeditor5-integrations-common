@@ -12,7 +12,8 @@ import { without } from '../../utils/without.js';
 import { getCKBaseBundleInstallationInfo } from '../../installation-info/getCKBaseBundleInstallationInfo.js';
 import { createCKDocsUrl } from '../../docs/createCKDocsUrl.js';
 
-import { createCKCdnUrl, type CKCdnVersion } from './createCKCdnUrl.js';
+import { createCKCdnUrl, type CKCdnUrlCreator } from './createCKCdnUrl.js';
+import type { CKCdnVersion } from './isCKCdnVersion.js';
 
 import './globals.js';
 
@@ -118,5 +119,5 @@ export type CKCdnBaseBundlePackConfig = {
 	/**
 	 * The function that creates custom CDN URLs.
 	 */
-	createCustomCdnUrl?: typeof createCKCdnUrl;
+	createCustomCdnUrl?: CKCdnUrlCreator;
 };

@@ -5,15 +5,15 @@
 
 import type { BundleInstallationInfo } from './types.js';
 
-import { isSemanticVersion } from '../utils/version/isSemanticVersion.js';
+import { isCKCdnVersion, type CKCdnVersion } from '../cdn/ck/isCKCdnVersion.js';
 
 /**
  * Returns information about the base CKEditor bundle installation.
  */
-export function getCKBaseBundleInstallationInfo(): BundleInstallationInfo | null {
+export function getCKBaseBundleInstallationInfo(): BundleInstallationInfo<CKCdnVersion> | null {
 	const { CKEDITOR_VERSION, CKEDITOR } = window;
 
-	if ( !isSemanticVersion( CKEDITOR_VERSION ) ) {
+	if ( !isCKCdnVersion( CKEDITOR_VERSION ) ) {
 		return null;
 	}
 

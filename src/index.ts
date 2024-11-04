@@ -37,7 +37,8 @@ export { isCKEditorFreeLicense } from './license/isCKEditorFreeLicense.js';
 
 export {
 	CK_CDN_URL,
-	createCKCdnUrl
+	createCKCdnUrl,
+	type CKCdnUrlCreator
 } from './cdn/ck/createCKCdnUrl.js';
 
 export {
