@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
-import { isCKCdnTestingVersion } from 'cdn/ck/isCKCdnVersion.js';
+import { isCKCdnTestingVersion } from '../cdn/ck/isCKCdnVersion.js';
 import type { LicenseKeyVersion } from '../license/LicenseKey.js';
 
 import { destructureSemanticVersion } from '../utils/version/destructureSemanticVersion.js';
