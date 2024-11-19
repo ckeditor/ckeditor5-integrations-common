@@ -52,7 +52,7 @@ describe( 'loadCKEditorCloud', () => {
 	it( 'should raise exception if unsupported version is passed', () => {
 		expect( () => loadCKEditorCloud( { version: '42.0.0' } ) ).toThrowError(
 			'The CKEditor 5 CDN can\'t be used with the given editor version: 42.0.0. ' +
-			'Please make sure you are using at least the CKEditor 5 version 43.'
+			'Please make sure you are using at least the CKEditor 5 version 44.'
 		);
 	} );
 
