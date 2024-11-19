@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## [2.2.2](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.2.1...v2.2.2) (2024-11-19)
+
+### Features
+
+* Improved error messages in `loadCKEditorCloud` when using editor version not supporting CDN distribution. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/390bac703e2a72cd8dcac5681a8998507d3bf63a))
+
+
 ## [2.2.1](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.2.0...v2.2.1) (2024-11-04)
 
 ### Features
