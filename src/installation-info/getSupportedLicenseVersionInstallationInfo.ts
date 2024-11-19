@@ -3,10 +3,9 @@
  * For licensing, see LICENSE.md.
  */
 
-import { isCKCdnTestingVersion } from '../cdn/ck/isCKCdnVersion.js';
+import { getLicenseVersionFromEditorVersion } from '../license/getLicenseVersionFromEditorVersion.js';
 import type { LicenseKeyVersion } from '../license/LicenseKey.js';
 
-import { destructureSemanticVersion } from '../utils/version/destructureSemanticVersion.js';
 import { getCKBaseBundleInstallationInfo } from './getCKBaseBundleInstallationInfo.js';
 
 /**
@@ -22,26 +21,5 @@ export function getSupportedLicenseVersionInstallationInfo(): LicenseKeyVersion 
 		return null;
 	}
 
-	const { version } = installationInfo;
-
-	// Assume that the testing version is always the newest one
-	// so we can return the highest supported license version.
-	if ( isCKCdnTestingVersion( version ) ) {
-		return 3;
-	}
-
-	const { major } = destructureSemanticVersion( version );
-
-	// License V3 was released in CKEditor 44.0.0.
-	if ( major >= 44 ) {
-		return 3;
-	}
-
-	// License V2 was released in CKEditor 38.0.0.
-	if ( major >= 38 ) {
-		return 2;
-	}
-
-	// License V1.
-	return 1;
+	return getLicenseVersionFromEditorVersion( installationInfo.version );
 }
