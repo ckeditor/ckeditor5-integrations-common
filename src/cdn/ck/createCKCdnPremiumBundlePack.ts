@@ -22,7 +22,7 @@ import { createCKCdnUrl } from './createCKCdnUrl.js';
  * ```ts
  * const { SlashCommand } = await loadCKCdnResourcesPack(
  * 	createCKCdnPremiumBundlePack( {
- * 		version: '43.0.0',
+ * 		version: '44.0.0',
  * 		translations: [ 'es', 'de' ]
  * 	} )
  * );

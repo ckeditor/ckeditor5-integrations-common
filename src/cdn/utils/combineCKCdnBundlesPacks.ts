@@ -24,11 +24,11 @@ import {
  * const { Base, Premium } = await loadCKCdnResourcesPack(
  * 	combineCKCdnBundlesPacks( {
  * 		Base: createCKCdnBaseBundlePack( {
- * 			version: '43.0.0',
+ * 			version: '44.0.0',
  * 			translations: [ 'es', 'de' ]
  * 		} ),
  * 		Premium: createCKCdnPremiumBundlePack( {
- * 			version: '43.0.0',
+ * 			version: '44.0.0',
  * 			translations: [ 'es', 'de' ]
  * 		} )
  * 	} )

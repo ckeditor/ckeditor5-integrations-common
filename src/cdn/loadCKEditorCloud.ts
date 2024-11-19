@@ -15,6 +15,7 @@ import {
 import type { CKCdnUrlCreator } from './ck/createCKCdnUrl.js';
 import type { ConditionalBlank } from '../types/ConditionalBlank.js';
 
+import { isCKCdnSupportedByEditorVersion } from '../license/isCKCdnSupportedByEditorVersion.js';
 import { isCKCdnTestingVersion, type CKCdnVersion } from './ck/isCKCdnVersion.js';
 
 import {
@@ -40,7 +41,7 @@ import {
  *
  * ```ts
  * const { CKEditor, CKEditorPremiumFeatures } = await loadCKEditorCloud( {
- * 	version: '43.0.0',
+ * 	version: '44.0.0',
  * 	translations: [ 'es', 'de' ],
  * 	premium: true
  * } );
@@ -53,7 +54,7 @@ import {
  *
  * ```ts
  * const { CKEditor, loadedPlugins } = await loadCKEditorCloud( {
- * 	version: '43.0.0',
+ * 	version: '44.0.0',
  * 	plugins: {
  * 		Plugin1: async () => import( './your-local-import.umd.js' ),
  * 		Plugin2: [
@@ -85,11 +86,7 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 		}
 	} = config;
 
-	if ( isCKCdnTestingVersion( version ) ) {
-		console.warn(
-			'You are using a testing version of CKEditor 5. Please remember that it is not suitable for production environments.'
-		);
-	}
+	validateCKEditorVersion( version );
 
 	const pack = combineCKCdnBundlesPacks( {
 		CKEditor: createCKCdnBaseBundlePack( {
@@ -119,6 +116,27 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 			htmlAttributes: injectedHtmlElementsAttributes
 		}
 	) as Promise<CKEditorCloudResult<Config>>;
+}
+
+/**
+ * Checks if the given version the CKEditor 5 version is supported by the CKEditor Cloud Services.
+ * If it is not supported, an error is thrown.
+ *
+ * @param version The CKEditor version to validate.
+ */
+function validateCKEditorVersion( version: CKCdnVersion ) {
+	if ( isCKCdnTestingVersion( version ) ) {
+		console.warn(
+			'You are using a testing version of CKEditor 5. Please remember that it is not suitable for production environments.'
+		);
+	}
+
+	if ( !isCKCdnSupportedByEditorVersion( version ) ) {
+		throw new Error(
+			`The CKEditor 5 CDN can't be used with the given editor version: ${ version }. ` +
+			'Please make sure you are using at least the CKEditor 5 version 43.'
+		);
+	}
 }
 
 /**

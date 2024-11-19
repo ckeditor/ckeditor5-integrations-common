@@ -49,6 +49,13 @@ describe( 'loadCKEditorCloud', () => {
 		} );
 	}
 
+	it( 'should raise exception if unsupported version is passed', () => {
+		expect( () => loadCKEditorCloud( { version: '42.0.0' } ) ).toThrowError(
+			'The CKEditor 5 CDN can\'t be used with the given editor version: 42.0.0. ' +
+			'Please make sure you are using at least the CKEditor 5 version 43.'
+		);
+	} );
+
 	it( 'should not raise a warning if non-testing version is passed', async () => {
 		const { CKEditor } = await loadCKEditorCloud( {
 			version: '43.0.0'

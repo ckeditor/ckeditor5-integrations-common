@@ -27,7 +27,7 @@ import './globals.js';
  * ```ts
  * const { Paragraph } = await loadCKCdnResourcesPack(
  * 	createCKCdnBaseBundlePack( {
- * 		version: '43.0.0',
+ * 		version: '44.0.0',
  * 		translations: [ 'es', 'de' ]
  * 	} )
  * );
