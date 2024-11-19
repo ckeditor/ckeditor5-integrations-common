@@ -134,7 +134,7 @@ function validateCKEditorVersion( version: CKCdnVersion ) {
 	if ( !isCKCdnSupportedByEditorVersion( version ) ) {
 		throw new Error(
 			`The CKEditor 5 CDN can't be used with the given editor version: ${ version }. ` +
-			'Please make sure you are using at least the CKEditor 5 version 43.'
+			'Please make sure you are using at least the CKEditor 5 version 44.'
 		);
 	}
 }
