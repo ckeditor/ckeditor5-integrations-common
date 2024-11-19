@@ -119,7 +119,7 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 }
 
 /**
- * Checks if the given version the CKEditor 5 version is supported by the CKEditor Cloud Services.
+ * Checks if the given version the CKEditor 5 version is supported by the CKEditor CDN
  * If it is not supported, an error is thrown.
  *
  * @param version The CKEditor version to validate.
@@ -140,7 +140,7 @@ function validateCKEditorVersion( version: CKCdnVersion ) {
 }
 
 /**
- * The result of the resolved bundles from CKEditor Cloud Services.
+ * The result of the resolved bundles from CKEditor CDN.
  */
 export type CKEditorCloudResult<Config extends CKEditorCloudConfig> = {
 
