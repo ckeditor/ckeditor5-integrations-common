@@ -119,8 +119,7 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 }
 
 /**
- * Checks if the given version the CKEditor 5 version is supported by the CKEditor CDN
- * If it is not supported, an error is thrown.
+ * Checks if the CKEditor Cloud Services support the given CKEditor 5 version.
  *
  * @param version The CKEditor version to validate.
  */
