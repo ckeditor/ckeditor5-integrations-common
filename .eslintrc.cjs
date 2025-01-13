@@ -65,6 +65,13 @@ module.exports = {
 			rules: {
 				'@typescript-eslint/no-unused-expressions': 'off'
 			}
+		},
+		{
+			files: [ '**/*.ts' ],
+			rules: {
+				// In some cases, this particular rule causes crashes of whole eslint. It may be not needed after upgrade eslint.
+				'@typescript-eslint/no-useless-constructor': 'off'
+			}
 		}
 	]
 };

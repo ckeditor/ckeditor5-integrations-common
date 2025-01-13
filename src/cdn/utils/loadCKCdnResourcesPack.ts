@@ -10,6 +10,8 @@ import { injectStylesheet } from '../../utils/injectStylesheet.js';
 import { preloadResource } from '../../utils/preloadResource.js';
 import { uniq } from '../../utils/uniq.js';
 
+import { CKEditorCloudLoaderError } from '../CKEditorCloudLoaderError.js';
+
 /**
  * Loads pack of resources (scripts and stylesheets) and returns the exported global variables (if any).
  *
@@ -56,21 +58,45 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 
 	// Load stylesheet tags before scripts to avoid a flash of unstyled content.
 	await Promise.all(
-		uniq( stylesheets ).map( href => injectStylesheet( {
-			href,
-			attributes: htmlAttributes,
-			placementInHead: 'start'
-		} ) )
+		uniq( stylesheets ).map( async href => {
+			try {
+				await injectStylesheet( {
+					href,
+					attributes: htmlAttributes,
+					placementInHead: 'start'
+				} );
+			} catch ( _: unknown ) {
+				throw new CKEditorCloudLoaderError(
+					`The stylesheet "${ href }" could not be loaded. Please check if the URL is correct and the resource is available.`,
+					'resource-load-error',
+					{
+						type: 'stylesheet',
+						url: href
+					}
+				);
+			}
+		} )
 	);
 
 	// Load script tags.
-	for ( const script of uniq( scripts ) ) {
+	for await ( const script of uniq( scripts ) ) {
 		const injectorProps: InjectScriptProps = {
 			attributes: htmlAttributes
 		};
 
 		if ( typeof script === 'string' ) {
-			await injectScript( script, injectorProps );
+			try {
+				await injectScript( script, injectorProps );
+			} catch ( _: unknown ) {
+				throw new CKEditorCloudLoaderError(
+					`The script "${ script }" could not be loaded. Please check if the URL is correct and the resource is available.`,
+					'resource-load-error',
+					{
+						type: 'stylesheet',
+						url: script
+					}
+				);
+			}
 		} else {
 			await script( injectorProps );
 		}
@@ -90,13 +116,8 @@ export function normalizeCKCdnResourcesPack<R = any>( pack: CKCdnResourcesPack<R
 	// Check if it is array of URLs, if so, convert it to the advanced format.
 	if ( Array.isArray( pack ) ) {
 		return {
-			scripts: pack.filter(
-				item => typeof item === 'function' || item.endsWith( '.js' )
-			),
-
-			stylesheets: pack.filter(
-				item => item.endsWith( '.css' )
-			)
+			scripts: pack.filter( item => !item.endsWith( '.css' ) ),
+			stylesheets: pack.filter( item => item.endsWith( '.css' ) )
 		};
 	}
 
