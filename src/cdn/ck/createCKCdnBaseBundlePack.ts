@@ -12,7 +12,9 @@ import { without } from '../../utils/without.js';
 import { getCKBaseBundleInstallationInfo } from '../../installation-info/getCKBaseBundleInstallationInfo.js';
 import { createCKDocsUrl } from '../../docs/createCKDocsUrl.js';
 
+import { CKEditorCloudLoaderError } from '../CKEditorCloudLoaderError.js';
 import { createCKCdnUrl, type CKCdnUrlCreator } from './createCKCdnUrl.js';
+
 import type { CKCdnVersion } from './isCKCdnVersion.js';
 
 import './globals.js';
@@ -82,16 +84,20 @@ export function createCKCdnBaseBundlePack(
 
 			switch ( installationInfo?.source ) {
 				case 'npm':
-					throw new Error(
+					throw new CKEditorCloudLoaderError(
 						'CKEditor 5 is already loaded from npm. Check the migration guide for more details: ' +
-						createCKDocsUrl( 'updating/migration-to-cdn/vanilla-js.html' )
+							createCKDocsUrl( 'updating/migration-to-cdn/vanilla-js.html' ),
+						'editor-already-loaded',
+						installationInfo
 					);
 
 				case 'cdn':
 					if ( installationInfo.version !== version ) {
-						throw new Error(
+						throw new CKEditorCloudLoaderError(
 							`CKEditor 5 is already loaded from CDN in version ${ installationInfo.version }. ` +
-							`Remove the old <script> and <link> tags loading CKEditor 5 to allow loading the ${ version } version.`
+								`Remove the old <script> and <link> tags loading CKEditor 5 to allow loading the ${ version } version.`,
+							'editor-already-loaded',
+							installationInfo
 						);
 					}
 
