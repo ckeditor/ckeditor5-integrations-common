@@ -10,7 +10,9 @@ import { isSemanticVersion, type SemanticVersion } from '../../utils/version/isS
  */
 export type CKCdnTestingVersion =
 	| 'nightly'
+	| `nightly-${ string }`
 	| 'alpha'
+	| 'staging'
 	| 'internal';
 
 /**
@@ -32,6 +34,8 @@ export type CKCdnVersion =
  * isCKCdnTestingVersion( '1.2.3-alpha.1' ); // -> true
  * isCKCdnTestingVersion( '1.2.3' ); // -> false
  * isCKCdnTestingVersion( 'nightly' ); // -> true
+ * isCKCdnTestingVersion( 'nightly-abc' ); // -> true
+ * isCKCdnTestingVersion( 'staging' ); // -> true
  * ```
  */
 export function isCKCdnTestingVersion( version: string | undefined ): version is CKCdnTestingVersion {
@@ -39,7 +43,7 @@ export function isCKCdnTestingVersion( version: string | undefined ): version is
 		return false;
 	}
 
-	return [ 'nightly', 'alpha', 'internal' ].some( testVersion => version.includes( testVersion ) );
+	return [ 'nightly', 'alpha', 'internal', 'nightly-', 'staging' ].some( testVersion => version.includes( testVersion ) );
 }
 
 /**
@@ -53,6 +57,8 @@ export function isCKCdnTestingVersion( version: string | undefined ): version is
  * isCKCdnVersion( 'alpha' ); // -> true
  * isCKCdnVersion( 'rc-1.2.3' ); // -> true
  * isCKCdnVersion( '1.2.3' ); // -> true
+ * isCKCdnVersion( 'nightly-abc' ); // -> true
+ * isCKCdnVersion( 'staging' ); // -> true
  * ```
  */
 export function isCKCdnVersion( version: string | undefined ): version is CKCdnVersion {
