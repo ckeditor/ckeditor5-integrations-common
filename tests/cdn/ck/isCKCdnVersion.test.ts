@@ -15,7 +15,10 @@ const testCases = [
 	{ version: '1.2', isTesting: false, isVersion: false },
 	{ version: '0.0.0-nightly-20241104.0', isTesting: true, isVersion: true },
 	{ version: '0.0.0-internal-20241104.0', isTesting: true, isVersion: true },
-	{ version: '43.3.0-alpha.12	', isTesting: true, isVersion: true }
+	{ version: '43.3.0-alpha.12	', isTesting: true, isVersion: true },
+	{ version: 'nightly-abc', isTesting: true, isVersion: true },
+	{ version: 'staging', isTesting: true, isVersion: true },
+	{ version: 'nightly-next', isTesting: true, isVersion: true }
 ];
 
 describe( 'isCKCdnTestingVersion', () => {
