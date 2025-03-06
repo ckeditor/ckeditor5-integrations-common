@@ -8,7 +8,9 @@ import { without } from '../../utils/without.js';
 import { getCKBoxInstallationInfo } from '../../installation-info/getCKBoxInstallationInfo.js';
 
 import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack.js';
+
 import { createCKBoxCdnUrl, type CKBoxCdnVersion } from './createCKBoxCdnUrl.js';
+import { CKEditorCloudLoaderError } from '../CKEditorCloudLoaderError.js';
 
 import './globals.js';
 
@@ -62,9 +64,11 @@ export function createCKBoxBundlePack(
 			const installationInfo = getCKBoxInstallationInfo();
 
 			if ( installationInfo && installationInfo.version !== version ) {
-				throw new Error(
+				throw new CKEditorCloudLoaderError(
 					`CKBox is already loaded from CDN in version ${ installationInfo.version }. ` +
-					`Remove the old <script> and <link> tags loading CKBox to allow loading the ${ version } version.`
+						`Remove the old <script> and <link> tags loading CKBox to allow loading the ${ version } version.`,
+					'ckbox-already-loaded',
+					installationInfo
 				);
 			}
 		}
