@@ -27,7 +27,7 @@ describe( 'getCKBoxInstallationInfo', () => {
 
 	it( 'should return CDN source if the CKBox bundle is installed', async () => {
 		await loadCKEditorCloud( {
-			version: '43.0.0',
+			version: '44.3.0',
 			ckbox: {
 				version: '2.5.1'
 			}

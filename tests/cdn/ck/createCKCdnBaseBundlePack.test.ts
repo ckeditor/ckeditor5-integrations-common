@@ -23,24 +23,24 @@ describe( 'createCKCdnBaseBundlePack', () => {
 
 	it( 'should create a pack of resources for the base CKEditor bundle', () => {
 		const config: CKCdnBaseBundlePackConfig = {
-			version: '43.0.0',
+			version: '44.3.0',
 			translations: [ 'pl', 'de' ]
 		};
 
 		const pack = createCKCdnBaseBundlePack( config );
 
 		expect( pack.preload ).toEqual( [
-			'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css',
-			'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.umd.js',
-			'https://cdn.ckeditor.com/ckeditor5/43.0.0/translations/pl.umd.js',
-			'https://cdn.ckeditor.com/ckeditor5/43.0.0/translations/de.umd.js'
+			'https://cdn.ckeditor.com/ckeditor5/44.3.0/ckeditor5.css',
+			'https://cdn.ckeditor.com/ckeditor5/44.3.0/ckeditor5.umd.js',
+			'https://cdn.ckeditor.com/ckeditor5/44.3.0/translations/pl.umd.js',
+			'https://cdn.ckeditor.com/ckeditor5/44.3.0/translations/de.umd.js'
 		] );
 
 		expect( pack.scripts ).toHaveLength( 1 );
 		expect( pack.scripts![ 0 ] ).toBeInstanceOf( Function );
 
 		expect( pack.stylesheets ).toEqual( [
-			'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css'
+			'https://cdn.ckeditor.com/ckeditor5/44.3.0/ckeditor5.css'
 		] );
 
 		expect( pack.checkPluginLoaded ).toBeInstanceOf( Function );
@@ -48,84 +48,84 @@ describe( 'createCKCdnBaseBundlePack', () => {
 
 	it( 'should not load default EN translation script as it is already bundled', () => {
 		const pack = createCKCdnBaseBundlePack( {
-			version: '43.0.0',
+			version: '44.3.0',
 			translations: [ 'en', 'en-GB' ]
 		} );
 
 		expect( pack ).to.toMatchObject( {
 			checkPluginLoaded: expect.any( Function ),
 			stylesheets: [
-				'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css'
+				'https://cdn.ckeditor.com/ckeditor5/44.3.0/ckeditor5.css'
 			],
 			scripts: [
 				expect.any( Function )
 			],
 			preload: [
-				'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css',
-				'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.umd.js',
-				'https://cdn.ckeditor.com/ckeditor5/43.0.0/translations/en-GB.umd.js'
+				'https://cdn.ckeditor.com/ckeditor5/44.3.0/ckeditor5.css',
+				'https://cdn.ckeditor.com/ckeditor5/44.3.0/ckeditor5.umd.js',
+				'https://cdn.ckeditor.com/ckeditor5/44.3.0/translations/en-GB.umd.js'
 			]
 		} );
 	} );
 
 	it( 'should not load any language if not provided', () => {
 		const pack = createCKCdnBaseBundlePack( {
-			version: '43.0.0'
+			version: '44.3.0'
 		} );
 
 		expect( pack ).to.toMatchObject( {
 			checkPluginLoaded: expect.any( Function ),
 			stylesheets: [
-				'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css'
+				'https://cdn.ckeditor.com/ckeditor5/44.3.0/ckeditor5.css'
 			],
 			scripts: [
 				expect.any( Function )
 			],
 			preload: [
-				'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css',
-				'https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.umd.js'
+				'https://cdn.ckeditor.com/ckeditor5/44.3.0/ckeditor5.css',
+				'https://cdn.ckeditor.com/ckeditor5/44.3.0/ckeditor5.umd.js'
 			]
 		} );
 	} );
 
 	it( 'should allow to specify custom CDN urls using `createCustomCdnUrl` parameter', () => {
 		const pack = createCKCdnBaseBundlePack( {
-			version: '43.0.0',
+			version: '44.3.0',
 			createCustomCdnUrl: ( type, name, version ) => `https://cdn.example.com/${ type }/${ name }/${ version }`
 		} );
 
 		expect( pack ).to.toMatchObject( {
 			checkPluginLoaded: expect.any( Function ),
 			stylesheets: [
-				'https://cdn.example.com/ckeditor5/ckeditor5.css/43.0.0'
+				'https://cdn.example.com/ckeditor5/ckeditor5.css/44.3.0'
 			],
 			scripts: [
 				expect.any( Function )
 			],
 			preload: [
-				'https://cdn.example.com/ckeditor5/ckeditor5.css/43.0.0',
-				'https://cdn.example.com/ckeditor5/ckeditor5.umd.js/43.0.0'
+				'https://cdn.example.com/ckeditor5/ckeditor5.css/44.3.0',
+				'https://cdn.example.com/ckeditor5/ckeditor5.umd.js/44.3.0'
 			]
 		} );
 	} );
 
 	it( 'should throw an error if the requested version differs from the installed one', async () => {
-		await loadCKEditor( '43.0.0' );
+		await loadCKEditor( '44.3.0' );
 		await expect( async () => loadCKEditor( '42.0.0' ) ).rejects.toThrowError(
-			'CKEditor 5 is already loaded from CDN in version 43.0.0. ' +
+			'CKEditor 5 is already loaded from CDN in version 44.3.0. ' +
 			'Remove the old <script> and <link> tags loading CKEditor 5 to allow loading the 42.0.0 version.'
 		);
 	} );
 
 	it( 'should not throw an error if the requested version is the same as the installed one', async () => {
-		await loadCKEditor( '43.0.0' );
-		await expect( loadCKEditor( '43.0.0' ) ).resolves.not.toThrow();
+		await loadCKEditor( '44.3.0' );
+		await expect( loadCKEditor( '44.3.0' ) ).resolves.not.toThrow();
 	} );
 
 	it( 'should throw an error if CKEditor 5 is loaded from NPM', async () => {
 		window.CKEDITOR_VERSION = '41.0.0';
 
-		await expect( async () => loadCKEditor( '43.0.0' ) ).rejects.toThrowError(
+		await expect( async () => loadCKEditor( '44.3.0' ) ).rejects.toThrowError(
 			'CKEditor 5 is already loaded from npm. Check the migration guide for more details: ' +
 			createCKDocsUrl( 'updating/migration-to-cdn/vanilla-js.html' )
 		);
