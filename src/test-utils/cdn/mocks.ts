@@ -9,12 +9,12 @@ import { createCKBoxCdnUrl } from '../../cdn/ckbox/createCKBoxCdnUrl.js';
 /**
  * The URL of the CKEditor CDN.
  */
-export const CDN_MOCK_SCRIPT_URL = createCKCdnUrl( 'ckeditor5', 'ckeditor5.umd.js', '43.0.0' );
+export const CDN_MOCK_SCRIPT_URL = createCKCdnUrl( 'ckeditor5', 'ckeditor5.umd.js', '44.3.0' );
 
 /**
  * The URL of the CKEditor CDN.
  */
-export const CDN_MOCK_STYLESHEET_URL = createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '43.0.0' );
+export const CDN_MOCK_STYLESHEET_URL = createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '44.3.0' );
 
 /**
  * The URL of the CKBox CDN.

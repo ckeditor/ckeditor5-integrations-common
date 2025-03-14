@@ -20,20 +20,20 @@ describe( 'createCKCdnPremiumBundlePack', () => {
 
 	it( 'should return a pack of resources for the CKEditor Premium Features', () => {
 		const pack = createCKCdnPremiumBundlePack( {
-			version: '43.0.0',
+			version: '44.3.0',
 			translations: [ 'es', 'de' ]
 		} );
 
 		expect( pack.preload ).toEqual( [
-			'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/ckeditor5-premium-features.css',
-			'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/ckeditor5-premium-features.umd.js',
-			'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/translations/es.umd.js',
-			'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/translations/de.umd.js'
+			'https://cdn.ckeditor.com/ckeditor5-premium-features/44.3.0/ckeditor5-premium-features.css',
+			'https://cdn.ckeditor.com/ckeditor5-premium-features/44.3.0/ckeditor5-premium-features.umd.js',
+			'https://cdn.ckeditor.com/ckeditor5-premium-features/44.3.0/translations/es.umd.js',
+			'https://cdn.ckeditor.com/ckeditor5-premium-features/44.3.0/translations/de.umd.js'
 		] );
 
 		expect( pack.scripts ).toHaveLength( 1 );
 		expect( pack.stylesheets ).toEqual( [
-			'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/ckeditor5-premium-features.css'
+			'https://cdn.ckeditor.com/ckeditor5-premium-features/44.3.0/ckeditor5-premium-features.css'
 		] );
 
 		expect( pack.checkPluginLoaded ).toBeInstanceOf( Function );
@@ -41,63 +41,63 @@ describe( 'createCKCdnPremiumBundlePack', () => {
 
 	it( 'should not load default EN translation script as it is already bundled', () => {
 		const pack = createCKCdnPremiumBundlePack( {
-			version: '43.0.0',
+			version: '44.3.0',
 			translations: [ 'en', 'en-GB' ]
 		} );
 
 		expect( pack ).to.toMatchObject( {
 			checkPluginLoaded: expect.any( Function ),
 			stylesheets: [
-				'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/ckeditor5-premium-features.css'
+				'https://cdn.ckeditor.com/ckeditor5-premium-features/44.3.0/ckeditor5-premium-features.css'
 			],
 			scripts: [
 				expect.any( Function )
 			],
 			preload: [
-				'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/ckeditor5-premium-features.css',
-				'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/ckeditor5-premium-features.umd.js',
-				'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/translations/en-GB.umd.js'
+				'https://cdn.ckeditor.com/ckeditor5-premium-features/44.3.0/ckeditor5-premium-features.css',
+				'https://cdn.ckeditor.com/ckeditor5-premium-features/44.3.0/ckeditor5-premium-features.umd.js',
+				'https://cdn.ckeditor.com/ckeditor5-premium-features/44.3.0/translations/en-GB.umd.js'
 			]
 		} );
 	} );
 
 	it( 'should allow to specify custom CDN urls using `createCustomCdnUrl` parameter', () => {
 		const pack = createCKCdnPremiumBundlePack( {
-			version: '43.0.0',
+			version: '44.3.0',
 			createCustomCdnUrl: ( type, path, version ) => `https://example.com/${ type }/${ path }/${ version }`
 		} );
 
 		expect( pack ).to.toMatchObject( {
 			checkPluginLoaded: expect.any( Function ),
 			stylesheets: [
-				'https://example.com/ckeditor5-premium-features/ckeditor5-premium-features.css/43.0.0'
+				'https://example.com/ckeditor5-premium-features/ckeditor5-premium-features.css/44.3.0'
 			],
 			scripts: [
 				expect.any( Function )
 			],
 			preload: [
-				'https://example.com/ckeditor5-premium-features/ckeditor5-premium-features.css/43.0.0',
-				'https://example.com/ckeditor5-premium-features/ckeditor5-premium-features.umd.js/43.0.0'
+				'https://example.com/ckeditor5-premium-features/ckeditor5-premium-features.css/44.3.0',
+				'https://example.com/ckeditor5-premium-features/ckeditor5-premium-features.umd.js/44.3.0'
 			]
 		} );
 	} );
 
 	it( 'should not load any language if not provided', () => {
 		const pack = createCKCdnPremiumBundlePack( {
-			version: '43.0.0'
+			version: '44.3.0'
 		} );
 
 		expect( pack ).to.toMatchObject( {
 			checkPluginLoaded: expect.any( Function ),
 			stylesheets: [
-				'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/ckeditor5-premium-features.css'
+				'https://cdn.ckeditor.com/ckeditor5-premium-features/44.3.0/ckeditor5-premium-features.css'
 			],
 			scripts: [
 				expect.any( Function )
 			],
 			preload: [
-				'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/ckeditor5-premium-features.css',
-				'https://cdn.ckeditor.com/ckeditor5-premium-features/43.0.0/ckeditor5-premium-features.umd.js'
+				'https://cdn.ckeditor.com/ckeditor5-premium-features/44.3.0/ckeditor5-premium-features.css',
+				'https://cdn.ckeditor.com/ckeditor5-premium-features/44.3.0/ckeditor5-premium-features.umd.js'
 			]
 		} );
 	} );
@@ -106,14 +106,14 @@ describe( 'createCKCdnPremiumBundlePack', () => {
 		beforeEach( async () => {
 			await loadCKCdnResourcesPack(
 				createCKCdnBaseBundlePack( {
-					version: '43.0.0'
+					version: '44.3.0'
 				} )
 			);
 		} );
 
 		it( 'should not throw an error if the requested version is the same as the installed one', async () => {
-			await loadCKPremiumFeatures( '43.0.0' );
-			await expect( loadCKPremiumFeatures( '43.0.0' ) ).resolves.not.toThrow();
+			await loadCKPremiumFeatures( '44.3.0' );
+			await expect( loadCKPremiumFeatures( '44.3.0' ) ).resolves.not.toThrow();
 		} );
 	} );
 } );

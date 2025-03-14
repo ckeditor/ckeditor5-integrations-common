@@ -58,7 +58,7 @@ describe( 'loadCKEditorCloud', () => {
 
 	it( 'should not raise a warning if non-testing version is passed', async () => {
 		const { CKEditor } = await loadCKEditorCloud( {
-			version: '43.0.0'
+			version: '44.3.0'
 		} );
 
 		expect( CKEditor.ClassicEditor ).toBeDefined();
@@ -67,30 +67,30 @@ describe( 'loadCKEditorCloud', () => {
 
 	it( 'should be possible to load base ckeditor with base features', async () => {
 		const { CKEditor, CKBox, CKEditorPremiumFeatures } = await loadCKEditorCloud( {
-			version: '43.0.0'
+			version: '44.3.0'
 		} );
 
 		expect( CKBox ).toBeUndefined();
 		expect( CKEditorPremiumFeatures ).toBeUndefined();
 
 		expect( CKEditor.ClassicEditor ).toBeDefined();
-		expect( window.CKEDITOR_VERSION ).toBe( '43.0.0' );
+		expect( window.CKEDITOR_VERSION ).toBe( '44.3.0' );
 	} );
 
 	it( 'should be possible to load ckeditor with premium features', async () => {
 		const { CKEditor, CKEditorPremiumFeatures } = await loadCKEditorCloud( {
-			version: '43.0.0',
+			version: '44.3.0',
 			premium: true
 		} );
 
-		expect( window.CKEDITOR_VERSION ).toBe( '43.0.0' );
+		expect( window.CKEDITOR_VERSION ).toBe( '44.3.0' );
 		expect( CKEditor.ClassicEditor ).toBeDefined();
 		expect( CKEditorPremiumFeatures?.AIAdapter ).toBeDefined();
 	} );
 
 	it( 'should be possible to load ckbox with base features', async () => {
 		const { CKEditor, CKBox, CKEditorPremiumFeatures } = await loadCKEditorCloud( {
-			version: '43.0.0',
+			version: '44.3.0',
 			ckbox: {
 				version: '2.5.1'
 			}
@@ -103,7 +103,7 @@ describe( 'loadCKEditorCloud', () => {
 
 	it( 'should be possible to load custom plugins', async () => {
 		const { CKEditor, loadedPlugins } = await loadCKEditorCloud( {
-			version: '43.0.0',
+			version: '44.3.0',
 			plugins: {
 				Plugin: createCKBoxBundlePack( {
 					version: '2.5.1'
@@ -117,7 +117,7 @@ describe( 'loadCKEditorCloud', () => {
 
 	it( 'should allow to specify custom CDN urls using `createCustomCdnUrl` parameter', async () => {
 		const { CKEditor } = await loadCKEditorCloud( {
-			version: '43.0.0',
+			version: '44.3.0',
 			premium: true,
 			createCustomCdnUrl: ( type, name, version ) => `${ createCKCdnUrl( type, name, version ) }?testParam=123`
 		} );
@@ -128,8 +128,8 @@ describe( 'loadCKEditorCloud', () => {
 		expectBundleLoaded( 'ckeditor5-premium-features' );
 
 		function expectBundleLoaded( bundleName: string ) {
-			expect( queryScript( `${ createCKCdnUrl( bundleName, `${ bundleName }.umd.js`, '43.0.0' ) }?testParam=123` ) ).not.toBeNull();
-			expect( queryStylesheet( `${ createCKCdnUrl( bundleName, `${ bundleName }.css`, '43.0.0' ) }?testParam=123` ) ).not.toBeNull();
+			expect( queryScript( `${ createCKCdnUrl( bundleName, `${ bundleName }.umd.js`, '44.3.0' ) }?testParam=123` ) ).not.toBeNull();
+			expect( queryStylesheet( `${ createCKCdnUrl( bundleName, `${ bundleName }.css`, '44.3.0' ) }?testParam=123` ) ).not.toBeNull();
 		}
 	} );
 
@@ -139,7 +139,7 @@ describe( 'loadCKEditorCloud', () => {
 			expect( queryAnonymousScripts() ).toHaveLength( 0 );
 
 			await loadCKEditorCloud( {
-				version: '43.0.0'
+				version: '44.3.0'
 			} );
 
 			expect( queryAnonymousLinks() ).toHaveLength( 3 );
@@ -151,7 +151,7 @@ describe( 'loadCKEditorCloud', () => {
 			expect( queryAnonymousScripts() ).toHaveLength( 0 );
 
 			await loadCKEditorCloud( {
-				version: '43.0.0',
+				version: '44.3.0',
 				injectedHtmlElementsAttributes: {}
 			} );
 
@@ -162,7 +162,7 @@ describe( 'loadCKEditorCloud', () => {
 		it( 'should be possible to override the `crossorigin` attribute', async () => {
 			const setAttributeSpy = vi.spyOn( HTMLElement.prototype, 'setAttribute' );
 			const promise = loadCKEditorCloud( {
-				version: '43.0.0',
+				version: '44.3.0',
 				injectedHtmlElementsAttributes: {
 					crossorigin: 'use-credentials'
 				}
@@ -177,14 +177,14 @@ describe( 'loadCKEditorCloud', () => {
 
 		it( 'should set nonce attribute on injected elements if attributes are specified', async () => {
 			await loadCKEditorCloud( {
-				version: '43.0.0',
+				version: '44.3.0',
 				injectedHtmlElementsAttributes: {
 					nonce: 'test-nonce'
 				}
 			} );
 
-			const script = createCKCdnUrl( 'ckeditor5', 'ckeditor5.umd.js', '43.0.0' );
-			const link = createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '43.0.0' );
+			const script = createCKCdnUrl( 'ckeditor5', 'ckeditor5.umd.js', '44.3.0' );
+			const link = createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '44.3.0' );
 
 			expect( queryScript( script )?.getAttribute( 'nonce' ) ).toBe( 'test-nonce' );
 			expect( queryStylesheet( link )?.getAttribute( 'nonce' ) ).toBe( 'test-nonce' );
@@ -206,7 +206,7 @@ describe( 'loadCKEditorCloud', () => {
 	describe( 'typings', () => {
 		it( 'should properly infer type of global variable if checkPluginLoaded is not provided', async () => {
 			const { loadedPlugins } = await loadCKEditorCloud( {
-				version: '43.0.0',
+				version: '44.3.0',
 				plugins: {
 					FakePlugin: [ createCKBoxCdnUrl( 'ckbox', 'ckbox.js', '2.5.1' ) ]
 				}
@@ -217,7 +217,7 @@ describe( 'loadCKEditorCloud', () => {
 
 		it( 'should properly infer type of global variable if checkPluginLoaded is provided', async () => {
 			const { loadedPlugins } = await loadCKEditorCloud( {
-				version: '43.0.0',
+				version: '44.3.0',
 				plugins: {
 					FakePlugin: {
 						scripts: [ createCKBoxCdnUrl( 'ckbox', 'ckbox.js', '2.5.1' ) ],
@@ -231,7 +231,7 @@ describe( 'loadCKEditorCloud', () => {
 
 		it( 'should set CKBox result type as non-nullable if ckbox config is provided', async () => {
 			const { CKBox } = await loadCKEditorCloud( {
-				version: '43.0.0',
+				version: '44.3.0',
 				ckbox: {
 					version: '2.5.1'
 				}
@@ -242,7 +242,7 @@ describe( 'loadCKEditorCloud', () => {
 
 		it( 'should set CKBox result type as nullable if ckbox config is not provided', async () => {
 			const { CKBox } = await loadCKEditorCloud( {
-				version: '43.0.0'
+				version: '44.3.0'
 			} );
 
 			expectTypeOf( CKBox ).toBeUndefined();
@@ -250,7 +250,7 @@ describe( 'loadCKEditorCloud', () => {
 
 		it( 'should set CKEditorPremiumFeatures type as non-nullable if premium=true config is provided', async () => {
 			const { CKEditorPremiumFeatures } = await loadCKEditorCloud( {
-				version: '43.0.0',
+				version: '44.3.0',
 				premium: true,
 				ckbox: {
 					version: '2.5.1'
@@ -263,7 +263,7 @@ describe( 'loadCKEditorCloud', () => {
 
 		it( 'should set CKEditorPremiumFeatures type as nullable if premium=true config is not provided', async () => {
 			const { CKEditorPremiumFeatures } = await loadCKEditorCloud( {
-				version: '43.0.0',
+				version: '44.3.0',
 				ckbox: {
 					version: '2.5.1'
 				}

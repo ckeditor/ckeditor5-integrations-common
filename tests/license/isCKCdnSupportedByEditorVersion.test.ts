@@ -19,7 +19,7 @@ describe( 'isCKCdnSupportedByEditorVersion', () => {
 	} );
 
 	it( 'should return true for version 43.x.x (license v1-v2)', () => {
-		expect( isCKCdnSupportedByEditorVersion( '43.0.0' ) ).toBe( true );
+		expect( isCKCdnSupportedByEditorVersion( '44.3.0' ) ).toBe( true );
 		expect( isCKCdnSupportedByEditorVersion( '43.1.0' ) ).toBe( true );
 		expect( isCKCdnSupportedByEditorVersion( '43.2.1' ) ).toBe( true );
 	} );

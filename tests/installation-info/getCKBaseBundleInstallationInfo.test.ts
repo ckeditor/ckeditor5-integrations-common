@@ -26,22 +26,22 @@ describe( 'getCKBaseBundleInstallationInfo', () => {
 	} );
 
 	it( 'should return NPM source if the base CKEditor bundle is not injected from the CDN', () => {
-		window.CKEDITOR_VERSION = '43.0.0';
+		window.CKEDITOR_VERSION = '44.3.0';
 
 		expect( getCKBaseBundleInstallationInfo() ).toEqual( {
 			source: 'npm',
-			version: '43.0.0'
+			version: '44.3.0'
 		} );
 	} );
 
 	it( 'should return CDN source if the base CKEditor bundle is injected from the CDN', async () => {
 		await loadCKEditorCloud( {
-			version: '43.0.0'
+			version: '44.3.0'
 		} );
 
 		expect( getCKBaseBundleInstallationInfo() ).toEqual( {
 			source: 'cdn',
-			version: '43.0.0'
+			version: '44.3.0'
 		} );
 	} );
 } );
