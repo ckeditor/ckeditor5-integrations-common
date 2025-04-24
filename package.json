@@ -77,10 +77,10 @@
     ]
   },
   "devDependencies": {
-    "@ckeditor/ckeditor5-dev-bump-year": "^44.0.0",
-    "@ckeditor/ckeditor5-dev-ci": "^44.0.0",
-    "@ckeditor/ckeditor5-dev-release-tools": "^44.0.0",
-    "@ckeditor/ckeditor5-dev-utils": "^44.0.0",
+    "@ckeditor/ckeditor5-dev-bump-year": "^48.0.0",
+    "@ckeditor/ckeditor5-dev-ci": "^48.0.0",
+    "@ckeditor/ckeditor5-dev-release-tools": "^48.0.0",
+    "@ckeditor/ckeditor5-dev-utils": "^48.0.0",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@vitest/browser": "^2.1.9",
     "@vitest/coverage-istanbul": "^2.1.4",
@@ -100,7 +100,7 @@
     "vite-plugin-dts": "^4.0.2",
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.1.9",
-    "webdriverio": "^8.40.2"
+    "webdriverio": "^9.12.7"
   },
   "resolutions": {
     "ws": "^8",
