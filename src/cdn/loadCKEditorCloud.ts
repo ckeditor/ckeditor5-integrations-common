@@ -29,6 +29,8 @@ import {
 	type CdnPluginsPacks
 } from './plugins/combineCdnPluginsPacks.js';
 
+import { CKEditorCloudLoaderError } from './CKEditorCloudLoaderError.js';
+
 /**
  * A composable function that loads CKEditor Cloud Services bundles.
  * It returns the exports of the loaded bundles.
@@ -131,9 +133,14 @@ function validateCKEditorVersion( version: CKCdnVersion ) {
 	}
 
 	if ( !isCKCdnSupportedByEditorVersion( version ) ) {
-		throw new Error(
+		throw new CKEditorCloudLoaderError(
 			`The CKEditor 5 CDN can't be used with the given editor version: ${ version }. ` +
-			'Please make sure you are using at least the CKEditor 5 version 44.'
+			'Please make sure you are using at least the CKEditor 5 version 44.',
+			'version-not-supported',
+			{
+				currentVersion: version,
+				minimumVersion: '44.0.0'
+			}
 		);
 	}
 }
