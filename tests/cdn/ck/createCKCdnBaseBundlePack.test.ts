@@ -127,7 +127,7 @@ describe( 'createCKCdnBaseBundlePack', () => {
 
 		await expect( async () => loadCKEditor( '44.3.0' ) ).rejects.toThrowError(
 			'CKEditor 5 is already loaded from npm. Check the migration guide for more details: ' +
-			createCKDocsUrl( 'updating/migration-to-cdn/vanilla-js.html' )
+			createCKDocsUrl( 'updating/migrations/vanilla-js.html' )
 		);
 	} );
 } );
