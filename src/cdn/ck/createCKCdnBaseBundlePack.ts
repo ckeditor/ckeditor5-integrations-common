@@ -84,7 +84,7 @@ export function createCKCdnBaseBundlePack(
 				case 'npm':
 					throw new Error(
 						'CKEditor 5 is already loaded from npm. Check the migration guide for more details: ' +
-						createCKDocsUrl( 'updating/migration-to-cdn/vanilla-js.html' )
+						createCKDocsUrl( 'updating/migrations/vanilla-js.html' )
 					);
 
 				case 'cdn':
