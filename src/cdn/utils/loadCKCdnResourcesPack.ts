@@ -192,7 +192,7 @@ export type CKCdnResourcesAdvancedPack<R> = {
 /**
  * Callback that injects a script tag into the document.
  */
-type CKCdnScriptInjectorCallback = ( props: InjectScriptProps ) => Awaitable<unknown> ;
+type CKCdnScriptInjectorCallback = ( props: InjectScriptProps ) => Awaitable<unknown>;
 
 /**
  * Extracts the type of the exported global variables from a CKResourcesPack.

@@ -9,5 +9,5 @@
  */
 export type ConditionalBlank<Condition, Value> =
 	Condition extends true | object ? NonNullable<Value> :
-	Condition extends boolean ? NonNullable<Value> | undefined :
-	undefined;
+		Condition extends boolean ? NonNullable<Value> | undefined :
+			undefined;
