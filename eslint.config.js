@@ -4,15 +4,11 @@
  */
 
 import globals from 'globals';
-// import { defineConfig } from 'eslint/config';
+import { defineConfig } from 'eslint/config';
 import ckeditor5Rules from 'eslint-plugin-ckeditor5-rules';
 import ckeditor5Config from 'eslint-config-ckeditor5';
 
-import tseslint from 'typescript-eslint';
-
-export default tseslint.config(
-	tseslint.configs.recommended,
-
+export default defineConfig( [
 	{
 		ignores: [
 			'coverage/**',
@@ -85,4 +81,4 @@ export default tseslint.config(
 			}
 		}
 	}
-);
+] );
