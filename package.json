@@ -28,6 +28,7 @@
     "build": "yarn build:lib && yarn build:test-utils",
     "build:lib": "vite build",
     "build:test-utils": "vite build --config vite.test-utils.config.ts",
+    "postinstall": "node ./scripts/postinstall.mjs",
     "dev": "vite",
     "lint": "eslint",
     "test": "vitest run --coverage",
