@@ -25,7 +25,7 @@
   "homepage": "https://github.com/ckeditor/ckeditor5-integrations-common",
   "scripts": {
     "nice": "ckeditor5-dev-changelog-create-entry",
-    "build": "yarn build:lib && yarn build:test-utils",
+    "build": "pnpm build:lib && pnpm build:test-utils",
     "build:lib": "vite build",
     "build:test-utils": "vite build --config vite.test-utils.config.ts",
     "postinstall": "node ./scripts/postinstall.js",
@@ -45,7 +45,9 @@
     "LICENSE.md"
   ],
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.0.0",
+    "pnpm": ">=10.14.0",
+    "yarn": "\n\n┌─────────────────────────┐\n│  Hey, we use pnpm now!  │\n└─────────────────────────┘\n\n"
   },
   "peerDependencies": {
     "ckeditor5": ">=42.0.0 || ^0.0.0-nightly"
@@ -106,12 +108,5 @@
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.1.9",
     "webdriverio": "^9.12.7"
-  },
-  "resolutions": {
-    "form-data": "^4.0.4",
-    "string-width": "4.1.0",
-    "tough-cookie": "^4.1.4",
-    "wrap-ansi": "7.0.0",
-    "ws": "^8"
   }
 }
