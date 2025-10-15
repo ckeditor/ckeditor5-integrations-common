@@ -81,16 +81,16 @@
     ]
   },
   "devDependencies": {
-    "@ckeditor/ckeditor5-dev-bump-year": "^50.0.0",
-    "@ckeditor/ckeditor5-dev-changelog": "^50.0.0",
-    "@ckeditor/ckeditor5-dev-ci": "^50.0.0",
-    "@ckeditor/ckeditor5-dev-release-tools": "^50.0.0",
-    "@ckeditor/ckeditor5-dev-utils": "^50.0.0",
+    "@ckeditor/ckeditor5-dev-bump-year": "^53.3.2",
+    "@ckeditor/ckeditor5-dev-changelog": "^53.3.2",
+    "@ckeditor/ckeditor5-dev-ci": "^53.3.2",
+    "@ckeditor/ckeditor5-dev-release-tools": "^53.3.2",
+    "@ckeditor/ckeditor5-dev-utils": "^53.3.2",
     "@vitest/browser": "^2.1.9",
     "@vitest/coverage-istanbul": "^2.1.4",
     "@vitest/ui": "^2.1.4",
-    "ckeditor5": "^44.3.0",
-    "ckeditor5-premium-features": "^44.3.0",
+    "ckeditor5": "^45.2.2",
+    "ckeditor5-premium-features": "^45.2.2",
     "eslint": "^9.26.0",
     "eslint-config-ckeditor5": "^10.0.0",
     "eslint-plugin-ckeditor5-rules": "^10.0.0",
@@ -107,5 +107,10 @@
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.1.9",
     "webdriverio": "^9.12.7"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "^0.25.0"
+    }
   }
 }
