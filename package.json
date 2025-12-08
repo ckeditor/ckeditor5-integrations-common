@@ -34,6 +34,7 @@
     "test": "vitest run --coverage",
     "test:watch": "vitest --ui --watch",
     "test:check:types": "tsc --noEmit -p ./tests/tsconfig.json",
+    "test:scripts": "vitest --config ./scripts-tests/vitest.config.mjs --run",
     "release:prepare-changelog": "node ./scripts/preparechangelog.js",
     "release:prepare-packages": "node ./scripts/preparepackages.js",
     "release:publish-packages": "node ./scripts/publishpackages.js"
@@ -88,6 +89,7 @@
     "@ckeditor/ckeditor5-dev-utils": "^54.2.0",
     "@vitest/browser": "^2.1.9",
     "@vitest/coverage-istanbul": "^2.1.4",
+    "@vitest/coverage-v8": "^2.1.9",
     "@vitest/ui": "^2.1.4",
     "ckeditor5": "^45.2.2",
     "ckeditor5-premium-features": "^45.2.2",
