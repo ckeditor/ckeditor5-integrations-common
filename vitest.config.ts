@@ -5,11 +5,40 @@
 
 import { defineConfig } from 'vitest/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import { webdriverio } from '@vitest/browser-webdriverio';
 
 export default defineConfig( {
 	plugins: [ tsconfigPaths() ],
 	test: {
 		globals: false,
+		restoreMocks: true,
+		clearMocks: true,
+		mockReset: true,
+		unstubEnvs: true,
+		unstubGlobals: true,
+		projects: [ {
+			extends: true,
+			test: {
+				include: [ 'tests/**/*.node.test.ts' ],
+				name: 'node',
+				environment: 'node'
+			}
+		}, {
+			extends: true,
+			test: {
+				exclude: [ 'tests/**/*.node.test.ts' ],
+				include: [ 'tests/**/*.test.ts' ],
+				name: 'browser',
+				browser: {
+					provider: webdriverio(),
+					instances: [ { browser: 'chrome' } ],
+					screenshotFailures: false,
+					headless: true,
+					enabled: true
+				}
+			}
+		} ],
+
 		coverage: {
 			provider: 'istanbul',
 			include: [ 'src/*' ],
