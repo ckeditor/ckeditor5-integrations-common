@@ -109,6 +109,6 @@
     "vite-plugin-dts": "^4.5.4",
     "vite-tsconfig-paths": "^6.0.5",
     "vitest": "^4.0.18",
-    "webdriverio": "^9.12.7"
+    "webdriverio": "^9.24.0"
   }
 }
