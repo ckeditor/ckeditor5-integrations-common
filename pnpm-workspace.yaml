@@ -6,12 +6,17 @@ onlyBuiltDependencies:
   - protobufjs
 
 overrides:
-  esbuild: ^0.25.0
-  diff@^7.0.0: ^8.0.3
-  '@smithy/config-resolver@^3.0.0': ^4.4.0
+  '@smithy/config-resolver@^3.0.0': '^4.4.0'
+  'ajv@^8': '^8.18.0'
+  'diff@^7': '^8.0.3'
+  'esbuild': '^0.25.0'
+  'minimatch@^10': '^10.2.3'
+  'minimatch@^5': '^5.1.8'
+  'minimatch@^9': '^9.0.7'
 
 minimumReleaseAge: 4320 # 3 days
 minimumReleaseAgeExclude:
+  - minimatch
   - '@ckeditor/*'
   - '@cksource/*'
   - '*ckeditor5*'
