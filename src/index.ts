@@ -26,6 +26,8 @@ export { filterObjectValues } from './utils/filterObjectValues.js';
 export { filterBlankObjectValues } from './utils/filterBlankObjectValues.js';
 export { mapObjectValues } from './utils/mapObjectValues.js';
 export { without } from './utils/without.js';
+export { isSemanticVersion } from './utils/version/isSemanticVersion.js';
+export { destructureSemanticVersion } from './utils/version/destructureSemanticVersion.js';
 
 export { appendExtraPluginsToEditorConfig } from './plugins/appendExtraPluginsToEditorConfig.js';
 export {
@@ -51,6 +53,9 @@ export {
 	type CKEditorCloudConfig,
 	type CKEditorCloudResult
 } from './cdn/loadCKEditorCloud.js';
+
+export { getCKBaseBundleInstallationInfo } from './installation-info/getCKBaseBundleInstallationInfo.js';
+export { getCKBoxInstallationInfo } from './installation-info/getCKBoxInstallationInfo.js';
 
 export type {
 	CdnPluginsPacks
