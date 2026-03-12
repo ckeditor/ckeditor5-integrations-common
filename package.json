@@ -1,6 +1,6 @@
 {
   "name": "@ckeditor/ckeditor5-integrations-common",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "This package implements common utility modules for integration projects.",
   "keywords": [
     "wysiwyg",
