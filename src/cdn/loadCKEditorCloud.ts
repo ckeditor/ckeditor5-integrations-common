@@ -27,7 +27,7 @@ import {
 	type CombinedPluginsPackWithFallbackScope,
 	type CdnPluginsPacks
 } from './plugins/combineCdnPluginsPacks.js';
-import { type CKVersion, isCKTestingVersion } from 'utils/version/isCKVersion.js';
+import { type CKVersion, isCKTestingVersion } from '../utils/version/isCKVersion.js';
 
 /**
  * A composable function that loads CKEditor Cloud Services bundles.
