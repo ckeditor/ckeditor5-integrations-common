@@ -5,7 +5,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import type { CKCdnVersion } from '@/cdn/ck/isCKCdnVersion.js';
+import type { CKVersion } from '@/utils/version/isCKVersion.js';
 
 import {
 	createCKCdnBaseBundlePack,
@@ -132,7 +132,7 @@ describe( 'createCKCdnBaseBundlePack', () => {
 	} );
 } );
 
-function loadCKEditor( version: CKCdnVersion ) {
+function loadCKEditor( version: CKVersion ) {
 	return loadCKCdnResourcesPack(
 		createCKCdnBaseBundlePack( {
 			version

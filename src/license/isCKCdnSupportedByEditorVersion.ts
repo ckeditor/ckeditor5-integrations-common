@@ -3,8 +3,8 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
+import { type CKVersion, isCKTestingVersion } from '../utils/version/isCKVersion.js';
 import { destructureSemanticVersion } from '../utils/version/destructureSemanticVersion.js';
-import { isCKCdnTestingVersion, type CKCdnVersion } from '../cdn/ck/isCKCdnVersion.js';
 import { getLicenseVersionFromEditorVersion } from './getLicenseVersionFromEditorVersion.js';
 
 /**
@@ -13,8 +13,8 @@ import { getLicenseVersionFromEditorVersion } from './getLicenseVersionFromEdito
  * @param version The CKEditor version.
  * @returns `true` if the CDN is supported, `false` otherwise.
  */
-export function isCKCdnSupportedByEditorVersion( version: CKCdnVersion ): boolean {
-	if ( isCKCdnTestingVersion( version ) ) {
+export function isCKCdnSupportedByEditorVersion( version: CKVersion ): boolean {
+	if ( isCKTestingVersion( version ) ) {
 		return true;
 	}
 

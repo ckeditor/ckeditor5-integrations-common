@@ -4,6 +4,7 @@
  */
 
 import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack.js';
+import type { CKVersion } from '../../utils/version/isCKVersion.js';
 
 import { waitForWindowEntry } from '../../utils/waitForWindowEntry.js';
 import { injectScriptsInParallel } from '../../utils/injectScript.js';
@@ -13,7 +14,6 @@ import { getCKBaseBundleInstallationInfo } from '../../installation-info/getCKBa
 import { createCKDocsUrl } from '../../docs/createCKDocsUrl.js';
 
 import { createCKCdnUrl, type CKCdnUrlCreator } from './createCKCdnUrl.js';
-import type { CKCdnVersion } from './isCKCdnVersion.js';
 
 import './globals.js';
 
@@ -109,7 +109,7 @@ export type CKCdnBaseBundlePackConfig = {
 	/**
 	 * The version of  the base CKEditor bundle.
 	 */
-	version: CKCdnVersion;
+	version: CKVersion;
 
 	/**
 	 * The list of translations to load.

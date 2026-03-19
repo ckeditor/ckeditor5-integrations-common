@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-import type { CKCdnVersion } from './isCKCdnVersion.js';
+import type { CKVersion } from '../../utils/version/isCKVersion.js';
 
 /**
  * The URL of the CKEditor CDN.
@@ -24,7 +24,7 @@ export const CK_CDN_URL = 'https://cdn.ckeditor.com';
  * expect( url ).to.be.equal( 'https://cdn.ckeditor.com/classic/27.0.0/ckeditor.js' );
  * ```
  */
-export function createCKCdnUrl( bundle: string, file: string, version: CKCdnVersion ): string {
+export function createCKCdnUrl( bundle: string, file: string, version: CKVersion ): string {
 	return `${ CK_CDN_URL }/${ bundle }/${ version }/${ file }`;
 }
 

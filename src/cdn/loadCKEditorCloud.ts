@@ -16,7 +16,6 @@ import type { CKCdnUrlCreator } from './ck/createCKCdnUrl.js';
 import type { ConditionalBlank } from '../types/ConditionalBlank.js';
 
 import { isCKCdnSupportedByEditorVersion } from '../license/isCKCdnSupportedByEditorVersion.js';
-import { isCKCdnTestingVersion, type CKCdnVersion } from './ck/isCKCdnVersion.js';
 
 import {
 	loadCKCdnResourcesPack,
@@ -28,6 +27,7 @@ import {
 	type CombinedPluginsPackWithFallbackScope,
 	type CdnPluginsPacks
 } from './plugins/combineCdnPluginsPacks.js';
+import { type CKVersion, isCKTestingVersion } from 'utils/version/isCKVersion.js';
 
 /**
  * A composable function that loads CKEditor Cloud Services bundles.
@@ -123,8 +123,8 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
  *
  * @param version The CKEditor version to validate.
  */
-function validateCKEditorVersion( version: CKCdnVersion ) {
-	if ( isCKCdnTestingVersion( version ) ) {
+function validateCKEditorVersion( version: CKVersion ) {
+	if ( isCKTestingVersion( version ) ) {
 		console.warn(
 			'You are using a testing version of CKEditor 5. Please remember that it is not suitable for production environments.'
 		);
@@ -182,7 +182,7 @@ export type CKEditorCloudConfig<Plugins extends CdnPluginsPacks = CdnPluginsPack
 	/**
 	 * The version of CKEditor Cloud Services to use.
 	 */
-	version: CKCdnVersion;
+	version: CKVersion;
 
 	/**
 	 * The translations to load.
