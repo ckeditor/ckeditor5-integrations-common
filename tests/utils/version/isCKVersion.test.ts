@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { isCKCdnVersion, isCKCdnTestingVersion } from '@/cdn/ck/isCKCdnVersion.js';
+import { isCKVersion, isCKTestingVersion } from '@/utils/version/isCKVersion.js';
 
 const testCases = [
 	{ version: 'alpha', isTesting: true, isVersion: true },
@@ -21,18 +21,18 @@ const testCases = [
 	{ version: 'nightly-next', isTesting: true, isVersion: true }
 ];
 
-describe( 'isCKCdnTestingVersion', () => {
+describe( 'isCKTestingVersion', () => {
 	for ( const { version, isTesting } of testCases ) {
 		it( `should return ${ isTesting } for "${ version }"`, () => {
-			expect( isCKCdnTestingVersion( version ) ).toBe( isTesting );
+			expect( isCKTestingVersion( version ) ).toBe( isTesting );
 		} );
 	}
 } );
 
-describe( 'isCKCdnVersion', () => {
+describe( 'isCKVersion', () => {
 	for ( const { version, isVersion } of testCases ) {
 		it( `should return ${ isVersion } for "${ version }"`, () => {
-			expect( isCKCdnVersion( version ) ).toBe( isVersion );
+			expect( isCKVersion( version ) ).toBe( isVersion );
 		} );
 	}
 } );

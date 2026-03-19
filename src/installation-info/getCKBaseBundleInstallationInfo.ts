@@ -5,15 +5,15 @@
 
 import type { BundleInstallationInfo } from './types.js';
 
-import { isCKCdnVersion, type CKCdnVersion } from '../cdn/ck/isCKCdnVersion.js';
+import { isCKVersion, type CKVersion } from '../utils/version/isCKVersion.js';
 
 /**
  * Returns information about the base CKEditor bundle installation.
  */
-export function getCKBaseBundleInstallationInfo(): BundleInstallationInfo<CKCdnVersion> | null {
+export function getCKBaseBundleInstallationInfo(): BundleInstallationInfo<CKVersion> | null {
 	const { CKEDITOR_VERSION, CKEDITOR } = window;
 
-	if ( !isCKCdnVersion( CKEDITOR_VERSION ) ) {
+	if ( !isCKVersion( CKEDITOR_VERSION ) ) {
 		return null;
 	}
 

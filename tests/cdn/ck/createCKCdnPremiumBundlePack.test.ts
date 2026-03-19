@@ -5,7 +5,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import type { CKCdnVersion } from '@/cdn/ck/isCKCdnVersion.js';
+import type { CKVersion } from '@/utils/version/isCKVersion.js';
 
 import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack.js';
 import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
@@ -118,7 +118,7 @@ describe( 'createCKCdnPremiumBundlePack', () => {
 	} );
 } );
 
-function loadCKPremiumFeatures( version: CKCdnVersion ) {
+function loadCKPremiumFeatures( version: CKVersion ) {
 	return loadCKCdnResourcesPack(
 		createCKCdnPremiumBundlePack( {
 			version

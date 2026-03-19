@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-import { type CKCdnVersion, isCKCdnTestingVersion } from '../cdn/ck/isCKCdnVersion.js';
+import { isCKTestingVersion, type CKVersion } from '../utils/version/isCKVersion.js';
 import { destructureSemanticVersion } from '../utils/version/destructureSemanticVersion.js';
 import type { LicenseKeyVersion } from './LicenseKey.js';
 
@@ -13,10 +13,10 @@ import type { LicenseKeyVersion } from './LicenseKey.js';
  * @param version The CKEditor version (semantic version or testing version).
  * @returns The supported license version.
  */
-export function getLicenseVersionFromEditorVersion( version: CKCdnVersion ): LicenseKeyVersion {
+export function getLicenseVersionFromEditorVersion( version: CKVersion ): LicenseKeyVersion {
 	// Assume that the testing version is always the newest one
 	// so we can return the highest supported license version.
-	if ( isCKCdnTestingVersion( version ) ) {
+	if ( isCKTestingVersion( version ) ) {
 		return 3;
 	}
 

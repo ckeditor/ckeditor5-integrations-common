@@ -27,6 +27,12 @@ export { filterBlankObjectValues } from './utils/filterBlankObjectValues.js';
 export { mapObjectValues } from './utils/mapObjectValues.js';
 export { without } from './utils/without.js';
 export { isSemanticVersion, type SemanticVersion } from './utils/version/isSemanticVersion.js';
+export {
+	isCKVersion,
+	isCKTestingVersion,
+	type CKVersion,
+	type CKTestingVersion
+} from './utils/version/isCKVersion.js';
 export { destructureSemanticVersion } from './utils/version/destructureSemanticVersion.js';
 
 export { appendExtraPluginsToEditorConfig } from './plugins/appendExtraPluginsToEditorConfig.js';
