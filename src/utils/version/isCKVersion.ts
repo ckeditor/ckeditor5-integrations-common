@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-import { isSemanticVersion, type SemanticVersion } from '../../utils/version/isSemanticVersion.js';
+import { isSemanticVersion, type SemanticVersion } from './isSemanticVersion.js';
 
 /**
  * A version of the CKEditor that is used for testing purposes.
