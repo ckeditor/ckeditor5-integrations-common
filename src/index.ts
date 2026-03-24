@@ -33,7 +33,9 @@ export {
 	type CKVersion,
 	type CKTestingVersion
 } from './utils/version/isCKVersion.js';
-export { destructureSemanticVersion } from './utils/version/destructureSemanticVersion.js';
+
+export { compareSemanticVersions, type VersionCompareResult } from './utils/version/compareSemanticVersions.js';
+export { destructureSemanticVersion, type DestructuredSemanticVersion } from './utils/version/destructureSemanticVersion.js';
 
 export { appendExtraPluginsToEditorConfig } from './plugins/appendExtraPluginsToEditorConfig.js';
 export {
@@ -60,6 +62,11 @@ export {
 	type CKEditorCloudResult
 } from './cdn/loadCKEditorCloud.js';
 
+export { compareInstalledCKBaseVersion } from './installation-info/compareInstalledCKBaseVersion.js';
+export {
+	getCKBaseFeaturesInstallationInfo,
+	type CKBaseFeaturesInstallationInfo
+} from './installation-info/getCKBaseFeaturesInstallationInfo.js';
 export { getCKBaseBundleInstallationInfo } from './installation-info/getCKBaseBundleInstallationInfo.js';
 export { getCKBoxInstallationInfo } from './installation-info/getCKBoxInstallationInfo.js';
 

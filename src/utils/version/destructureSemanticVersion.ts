@@ -5,12 +5,6 @@
 
 import { isSemanticVersion, type SemanticVersion } from './isSemanticVersion.js';
 
-type DestructuredSemanticVersion = {
-	major: number;
-	minor: number;
-	patch: number;
-};
-
 /**
  * Destructure a semantic version string into its major, minor, and patch components.
  *
@@ -31,3 +25,12 @@ export function destructureSemanticVersion( version: SemanticVersion ): Destruct
 		patch: Number.parseInt( patch, 10 )
 	};
 }
+
+/**
+ * Result of parsing the semantic version.
+ */
+export type DestructuredSemanticVersion = {
+	major: number;
+	minor: number;
+	patch: number;
+};
