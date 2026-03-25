@@ -64,9 +64,9 @@ export {
 
 export { compareInstalledCKBaseVersion } from './installation-info/compareInstalledCKBaseVersion.js';
 export {
-	getCKBaseFeaturesInstallationInfo,
-	type CKBaseFeaturesInstallationInfo
-} from './installation-info/getCKBaseFeaturesInstallationInfo.js';
+	getSupportedCKBaseFeatures,
+	type SupportedCKBaseFeatures
+} from './installation-info/getSupportedCKBaseFeatures.js';
 export { getCKBaseBundleInstallationInfo } from './installation-info/getCKBaseBundleInstallationInfo.js';
 export { getCKBoxInstallationInfo } from './installation-info/getCKBoxInstallationInfo.js';
 

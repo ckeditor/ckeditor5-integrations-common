@@ -10,17 +10,17 @@ import { compareInstalledCKBaseVersion } from './compareInstalledCKBaseVersion.j
  *
  * @returns Object containing flags that indicate which features are supported.
  */
-export function getCKBaseFeaturesInstallationInfo(): CKBaseFeaturesInstallationInfo {
+export function getSupportedCKBaseFeatures(): SupportedCKBaseFeatures {
 	const installedVersion = compareInstalledCKBaseVersion( '48.0.0' );
 	const isV48OrNewer = installedVersion !== null && installedVersion >= 0;
 
 	return {
-		rootsMap: isV48OrNewer,
-		elementAttachment: isV48OrNewer
+		rootsConfigEntry: isV48OrNewer,
+		elementConfigAttachment: isV48OrNewer
 	};
 }
 
-export type CKBaseFeaturesInstallationInfo = {
+export type SupportedCKBaseFeatures = {
 
 	/**
 	 * Flag that indicates if editor supports `roots` / `root` config entries.
@@ -49,7 +49,7 @@ export type CKBaseFeaturesInstallationInfo = {
 	 *
 	 * See more: https://github.com/ckeditor/ckeditor5/issues/19885
 	 */
-	rootsMap: boolean;
+	rootsConfigEntry: boolean;
 
 	/**
 	 * Flag that indicates if editor no longer supports `sourceElementOrData` as first parameter
@@ -70,5 +70,5 @@ export type CKBaseFeaturesInstallationInfo = {
 	 * } )
 	 * ```
 	 */
-	elementAttachment: boolean;
+	elementConfigAttachment: boolean;
 };
