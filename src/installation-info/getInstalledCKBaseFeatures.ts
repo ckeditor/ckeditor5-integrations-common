@@ -10,7 +10,7 @@ import { compareInstalledCKBaseVersion } from './compareInstalledCKBaseVersion.j
  *
  * @returns Object containing flags that indicate which features are supported.
  */
-export function getSupportedCKBaseFeatures(): SupportedCKBaseFeatures {
+export function getInstalledCKBaseFeatures(): SupportedCKBaseFeatures {
 	const installedVersion = compareInstalledCKBaseVersion( '48.0.0' );
 	const isV48OrNewer = installedVersion !== null && installedVersion >= 0;
 

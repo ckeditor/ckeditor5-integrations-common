@@ -5,7 +5,7 @@
 
 import { beforeEach, it, describe, expect } from 'vitest';
 import { removeAllCkCdnResources } from '@/src/test-utils/index.js';
-import { getSupportedCKBaseFeatures } from '@/src/installation-info/getSupportedCKBaseFeatures.js';
+import { getInstalledCKBaseFeatures } from '@/src/installation-info/getInstalledCKBaseFeatures.js';
 
 describe( 'getCKBaseFeaturesInstallationInfo', () => {
 	beforeEach( () => {
@@ -13,7 +13,7 @@ describe( 'getCKBaseFeaturesInstallationInfo', () => {
 	} );
 
 	it( 'should not crash if editor is not installed', () => {
-		expect( getSupportedCKBaseFeatures() ).toMatchObject( {
+		expect( getInstalledCKBaseFeatures() ).toMatchObject( {
 			rootsConfigEntry: false,
 			elementConfigAttachment: false
 		} );
@@ -22,52 +22,52 @@ describe( 'getCKBaseFeaturesInstallationInfo', () => {
 	describe( '`rootsMap` flag', () => {
 		it( 'should be `false` on CKEditor <= 47', () => {
 			window.CKEDITOR_VERSION = '47.0.0';
-			expect( getSupportedCKBaseFeatures().rootsConfigEntry ).to.be.false;
+			expect( getInstalledCKBaseFeatures().rootsConfigEntry ).to.be.false;
 
 			window.CKEDITOR_VERSION = '46.0.0';
-			expect( getSupportedCKBaseFeatures().rootsConfigEntry ).to.be.false;
+			expect( getInstalledCKBaseFeatures().rootsConfigEntry ).to.be.false;
 		} );
 
 		it( 'should be `true` on CKEditor >= 48', () => {
 			window.CKEDITOR_VERSION = '48.0.0';
-			expect( getSupportedCKBaseFeatures().rootsConfigEntry ).to.be.true;
+			expect( getInstalledCKBaseFeatures().rootsConfigEntry ).to.be.true;
 
 			window.CKEDITOR_VERSION = '49.0.0';
-			expect( getSupportedCKBaseFeatures().rootsConfigEntry ).to.be.true;
+			expect( getInstalledCKBaseFeatures().rootsConfigEntry ).to.be.true;
 		} );
 
 		it( 'should be `true` on CKEditor nightly version', () => {
 			window.CKEDITOR_VERSION = '0.0.0-nightly-20260324.0';
-			expect( getSupportedCKBaseFeatures().rootsConfigEntry ).to.be.true;
+			expect( getInstalledCKBaseFeatures().rootsConfigEntry ).to.be.true;
 
 			window.CKEDITOR_VERSION = '0.0.0-nightly-next-20260310.0';
-			expect( getSupportedCKBaseFeatures().rootsConfigEntry ).to.be.true;
+			expect( getInstalledCKBaseFeatures().rootsConfigEntry ).to.be.true;
 		} );
 	} );
 
 	describe( '`elementAttachment` flag', () => {
 		it( 'should be `false` on CKEditor <= 47', () => {
 			window.CKEDITOR_VERSION = '47.0.0';
-			expect( getSupportedCKBaseFeatures().elementConfigAttachment ).to.be.false;
+			expect( getInstalledCKBaseFeatures().elementConfigAttachment ).to.be.false;
 
 			window.CKEDITOR_VERSION = '46.0.0';
-			expect( getSupportedCKBaseFeatures().elementConfigAttachment ).to.be.false;
+			expect( getInstalledCKBaseFeatures().elementConfigAttachment ).to.be.false;
 		} );
 
 		it( 'should be `true` on CKEditor >= 48', () => {
 			window.CKEDITOR_VERSION = '48.0.0';
-			expect( getSupportedCKBaseFeatures().elementConfigAttachment ).to.be.true;
+			expect( getInstalledCKBaseFeatures().elementConfigAttachment ).to.be.true;
 
 			window.CKEDITOR_VERSION = '49.0.0';
-			expect( getSupportedCKBaseFeatures().elementConfigAttachment ).to.be.true;
+			expect( getInstalledCKBaseFeatures().elementConfigAttachment ).to.be.true;
 		} );
 
 		it( 'should be `true` on CKEditor nightly version', () => {
 			window.CKEDITOR_VERSION = '0.0.0-nightly-20260324.0';
-			expect( getSupportedCKBaseFeatures().elementConfigAttachment ).to.be.true;
+			expect( getInstalledCKBaseFeatures().elementConfigAttachment ).to.be.true;
 
 			window.CKEDITOR_VERSION = '0.0.0-nightly-next-20260310.0';
-			expect( getSupportedCKBaseFeatures().elementConfigAttachment ).to.be.true;
+			expect( getInstalledCKBaseFeatures().elementConfigAttachment ).to.be.true;
 		} );
 	} );
 } );
