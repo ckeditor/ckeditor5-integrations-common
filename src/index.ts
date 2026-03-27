@@ -14,6 +14,7 @@ export { waitFor, type WaitForConfig } from './utils/waitFor.js';
 export { injectScript, injectScriptsInParallel, INJECTED_SCRIPTS } from './utils/injectScript.js';
 export { injectStylesheet, INJECTED_STYLESHEETS } from './utils/injectStylesheet.js';
 export { isSSR } from './utils/isSSR.js';
+export { omit } from './utils/omit.js';
 export { once } from './utils/once.js';
 export { overwriteArray } from './utils/overwriteArray.js';
 export { overwriteObject } from './utils/overwriteObject.js';
