@@ -26,7 +26,8 @@ export function assignInitialDataToMultirootEditorConfig(
 	if ( supports.rootsConfigEntry ) {
 		const knownRootsKeys = uniq( [
 			...Object.keys( data || {} ),
-			...Object.keys( config.roots || {} )
+			...Object.keys( config.roots || {} ),
+			...typeof config.initialData === 'string' ? [] : Object.keys( config.initialData || {} )
 		] );
 
 		const roots = knownRootsKeys.reduce( ( acc, rootName ) => {

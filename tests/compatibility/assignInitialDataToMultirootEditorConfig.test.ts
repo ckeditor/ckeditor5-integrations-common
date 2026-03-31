@@ -47,6 +47,40 @@ describe( 'assignInitialDataToMultirootEditorConfig', () => {
 			} );
 		} );
 
+		it( 'should extract root names from config.initialData when it is an object', () => {
+			const config = assignInitialDataToMultirootEditorConfig(
+				undefined,
+				{
+					initialData: {
+						header: 'Header content',
+						footer: 'Footer content'
+					}
+				}
+			);
+
+			expect( config.roots ).toEqual( {
+				header: { initialData: 'Header content' },
+				footer: { initialData: 'Footer content' }
+			} );
+
+			expect( config.initialData ).toBeUndefined();
+		} );
+
+		it( 'should handle config.initialData as a string by ignoring it in root key extraction', () => {
+			const config = assignInitialDataToMultirootEditorConfig(
+				{ main: 'Main content' },
+				{
+					initialData: 'invalid string data'
+				}
+			);
+
+			expect( config.roots ).toEqual( {
+				main: { initialData: 'Main content' }
+			} );
+
+			expect( config.initialData ).toBeUndefined();
+		} );
+
 		it( 'should fallback to config.initialData if passed for roots without data', () => {
 			const config = assignInitialDataToMultirootEditorConfig(
 				{ intro: '' },
