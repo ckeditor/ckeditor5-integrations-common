@@ -89,6 +89,12 @@ describe( 'assignInitialDataToEditorConfig', () => {
 			expect( result.roots?.main?.initialData ).toBe( 'hello' );
 		} );
 
+		it( 'should assign data if roots.main.initialData is blank string', () => {
+			const result = assignInitialDataToEditorConfig( { initialData: '' }, 'hello' ) as any;
+
+			expect( result.roots?.main?.initialData ).toBe( 'hello' );
+		} );
+
 		it( 'should preserve existing config.root properties under roots.main', () => {
 			const result = assignInitialDataToEditorConfig(
 				{ root: { someRootOption: true } },
