@@ -9,10 +9,6 @@ import { getInitialDataFromEditorConfig } from '@/compatibility/getInitialDataFr
 
 describe( 'getInitialDataFromEditorConfig', () => {
 	afterEach( () => {
-		vi.stubGlobal( 'CKEDITOR_VERSION', undefined );
-	} );
-
-	afterEach( () => {
 		vi.unstubAllGlobals();
 	} );
 
