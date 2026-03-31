@@ -69,7 +69,7 @@ export { getCKBoxInstallationInfo } from './installation-info/getCKBoxInstallati
 export type { BundleInstallationInfo } from './installation-info/types.js';
 
 export { assignAttributesPropToMultiRootEditorConfig } from './compatibility/assignAttributesPropToMultiRootEditorConfig.js';
-export { assignDataPropToMultiRootEditorConfig } from './compatibility/assignDataPropToMultirootEditorConfig.js';
+export { assignInitialDataToMultirootEditorConfig } from './compatibility/assignInitialDataToMultirootEditorConfig.js';
 export { assignElementToEditorConfig } from './compatibility/assignElementToEditorConfig.js';
 export { assignInitialDataToEditorConfig } from './compatibility/assignInitialDataToEditorConfig.js';
 export { getInitialDataFromEditorConfig } from './compatibility/getInitialDataFromEditorConfig.js';

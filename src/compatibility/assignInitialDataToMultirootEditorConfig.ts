@@ -16,7 +16,7 @@ import { uniq } from '../utils/uniq.js';
  * @param config The editor configuration.
  * @returns The editor configuration with assigned `initialData` property.
  */
-export function assignDataPropToMultiRootEditorConfig(
+export function assignInitialDataToMultirootEditorConfig(
 	data: Record<string, string> | undefined,
 	config: EditorRelaxedConfig
 ): EditorRelaxedConfig {

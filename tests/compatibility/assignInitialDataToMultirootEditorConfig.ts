@@ -5,9 +5,9 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { assignDataPropToMultiRootEditorConfig } from '../../src/compatibility/assignDataPropToMultirootEditorConfig.js';
+import { assignInitialDataToMultirootEditorConfig } from '../../src/compatibility/assignInitialDataToMultirootEditorConfig.js';
 
-describe( 'assignDataPropToMultiRootEditorConfig', () => {
+describe( 'assignInitialDataToMultirootEditorConfig', () => {
 	afterEach( () => {
 		vi.unstubAllGlobals();
 	} );
@@ -18,7 +18,7 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 		} );
 
 		it( 'should assign data to roots[rootName].initialData', () => {
-			const config = assignDataPropToMultiRootEditorConfig(
+			const config = assignInitialDataToMultirootEditorConfig(
 				{ intro: 'hello', outro: 'world' },
 				{}
 			);
@@ -32,7 +32,7 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 		} );
 
 		it( 'should fallback to empty string for roots without data', () => {
-			const config = assignDataPropToMultiRootEditorConfig(
+			const config = assignInitialDataToMultirootEditorConfig(
 				{ intro: 'hello' },
 				{
 					roots: { intro: {}, outro: {} }
@@ -48,7 +48,7 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 		} );
 
 		it( 'should handle undefined data and fallback to empty string for all config roots', () => {
-			const config = assignDataPropToMultiRootEditorConfig( undefined, {
+			const config = assignInitialDataToMultirootEditorConfig( undefined, {
 				roots: { intro: {}, outro: {} }
 			} );
 
@@ -63,7 +63,7 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 		it( 'should prefer config.roots[rootName].initialData over data and show a warning', () => {
 			const warnSpy = vi.spyOn( console, 'warn' ).mockImplementation( () => {} );
 
-			const config = assignDataPropToMultiRootEditorConfig(
+			const config = assignInitialDataToMultirootEditorConfig(
 				{ intro: 'data-value' },
 				{ roots: { intro: { initialData: 'config-value' } } }
 			);
@@ -80,7 +80,7 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 		it( 'should warn once per conflicting root, not once globally', () => {
 			const warnSpy = vi.spyOn( console, 'warn' ).mockImplementation( () => {} );
 
-			assignDataPropToMultiRootEditorConfig(
+			assignInitialDataToMultirootEditorConfig(
 				{ intro: 'a', outro: 'b' },
 				{
 					roots: {
@@ -96,7 +96,7 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 		it( 'should not warn when only data is provided (no conflict)', () => {
 			const warnSpy = vi.spyOn( console, 'warn' ).mockImplementation( () => {} );
 
-			assignDataPropToMultiRootEditorConfig( { intro: 'hello' }, {} );
+			assignInitialDataToMultirootEditorConfig( { intro: 'hello' }, {} );
 
 			expect( warnSpy ).not.toHaveBeenCalled();
 		} );
@@ -104,7 +104,7 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 		it( 'should not warn when only config.roots[rootName].initialData is provided (no conflict)', () => {
 			const warnSpy = vi.spyOn( console, 'warn' ).mockImplementation( () => {} );
 
-			assignDataPropToMultiRootEditorConfig( undefined, {
+			assignInitialDataToMultirootEditorConfig( undefined, {
 				roots: { intro: { initialData: 'config-value' } }
 			} );
 
@@ -112,7 +112,7 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 		} );
 
 		it( 'should merge roots from data and config.roots', () => {
-			const config = assignDataPropToMultiRootEditorConfig(
+			const config = assignInitialDataToMultirootEditorConfig(
 				{ intro: 'hello' },
 				{ roots: { outro: {} } }
 			) as any;
@@ -122,7 +122,7 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 		} );
 
 		it( 'should preserve existing config.roots properties alongside initialData', () => {
-			const config = assignDataPropToMultiRootEditorConfig(
+			const config = assignInitialDataToMultirootEditorConfig(
 				{ intro: 'hello' },
 				{ roots: { intro: { modelAttributes: { order: 1 } } } }
 			);
@@ -135,7 +135,7 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 		} );
 
 		it( 'should preserve other top-level config properties', () => {
-			const config = assignDataPropToMultiRootEditorConfig(
+			const config = assignInitialDataToMultirootEditorConfig(
 				{ intro: 'hello' },
 				{ language: 'pl', roots: { intro: {} } }
 			) as any;
@@ -144,7 +144,7 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 		} );
 
 		it( 'should return empty roots when both data and config are empty', () => {
-			const config = assignDataPropToMultiRootEditorConfig( undefined, {} );
+			const config = assignInitialDataToMultirootEditorConfig( undefined, {} );
 
 			expect( config ).toEqual( { roots: {} } );
 		} );
@@ -158,13 +158,13 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 		it( 'should assign data to initialData', () => {
 			const data = { intro: 'hello', outro: 'world' };
 
-			expect( assignDataPropToMultiRootEditorConfig( data, {} ) ).toEqual( {
+			expect( assignInitialDataToMultirootEditorConfig( data, {} ) ).toEqual( {
 				initialData: data
 			} );
 		} );
 
 		it( 'should assign undefined to initialData when no data is provided', () => {
-			expect( assignDataPropToMultiRootEditorConfig( undefined, {} ) ).toEqual( {
+			expect( assignInitialDataToMultirootEditorConfig( undefined, {} ) ).toEqual( {
 				initialData: undefined
 			} );
 		} );
@@ -173,7 +173,7 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 			const warnSpy = vi.spyOn( console, 'warn' ).mockImplementation( () => {} );
 
 			const existingInitialData = { intro: 'config-data' };
-			const config = assignDataPropToMultiRootEditorConfig(
+			const config = assignInitialDataToMultirootEditorConfig(
 				{ intro: 'data-value' },
 				{ initialData: existingInitialData as any }
 			);
@@ -188,13 +188,13 @@ describe( 'assignDataPropToMultiRootEditorConfig', () => {
 		it( 'should not warn when only data is provided (no conflict)', () => {
 			const warnSpy = vi.spyOn( console, 'warn' ).mockImplementation( () => {} );
 
-			assignDataPropToMultiRootEditorConfig( { intro: 'hello' }, {} );
+			assignInitialDataToMultirootEditorConfig( { intro: 'hello' }, {} );
 
 			expect( warnSpy ).not.toHaveBeenCalled();
 		} );
 
 		it( 'should preserve other config properties alongside initialData', () => {
-			const config = assignDataPropToMultiRootEditorConfig(
+			const config = assignInitialDataToMultirootEditorConfig(
 				{ intro: 'hello' },
 				{ language: 'pl' }
 			) as any;
