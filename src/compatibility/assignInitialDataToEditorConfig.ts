@@ -24,7 +24,7 @@ import type { EditorRelaxedConfig } from '../types/EditorRelaxedConfig.js';
  */
 export function assignInitialDataToEditorConfig(
 	config: EditorRelaxedConfig,
-	data: string,
+	data?: string | undefined,
 	ignoreConfigInitialData?: boolean
 ): EditorConfig {
 	const supports = getInstalledCKBaseFeatures();
