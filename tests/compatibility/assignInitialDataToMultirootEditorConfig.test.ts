@@ -5,7 +5,7 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { assignInitialDataToMultirootEditorConfig } from '../../src/compatibility/assignInitialDataToMultirootEditorConfig.js';
+import { assignInitialDataToMultirootEditorConfig } from '@/compatibility/assignInitialDataToMultirootEditorConfig.js';
 
 describe( 'assignInitialDataToMultirootEditorConfig', () => {
 	afterEach( () => {
