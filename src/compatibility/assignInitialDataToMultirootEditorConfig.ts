@@ -12,7 +12,7 @@ import { uniq } from '../utils/uniq.js';
 /**
  * Assigns the `initialData` property to multiroot configuration.
  *
- * @param data The editor data to be assigned.
+ * @param data The editor data from the bound component property to be assigned.
  * @param config The editor configuration.
  * @returns The editor configuration with assigned `initialData` property.
  */
@@ -35,8 +35,9 @@ export function assignInitialDataToMultirootEditorConfig(
 
 			if ( rootInitialData && data?.[ rootName ] ) {
 				console.warn(
-					`Editor data should be provided either using \`config.roots['${ rootName }'].initialData\` or \`data\` property. ` +
-					'The config value takes precedence over `data` property and will be used when both are specified.'
+					`Editor data should be provided either using \`config.roots['${ rootName }'].initialData\` ` +
+                    'or the bound component property. The config value takes precedence ' +
+                    'over the bound component property and will be used when both are specified.'
 				);
 			}
 
@@ -57,8 +58,9 @@ export function assignInitialDataToMultirootEditorConfig(
 	// Fallback for <= 47.x versions which uses `initialData` field in the configuration object.
 	if ( data && config?.initialData ) {
 		console.warn(
-			'Editor data should be provided either using `config.initialData` or `data` property. ' +
-			'The config value takes precedence over `data` property and will be used when both are specified.'
+			'Editor data should be provided either using `config.initialData` ' +
+            'or the bound component property. The config value takes precedence ' +
+            'over the bound component property and will be used when both are specified.'
 		);
 	}
 

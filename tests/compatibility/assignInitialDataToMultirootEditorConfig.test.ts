@@ -75,6 +75,11 @@ describe( 'assignInitialDataToMultirootEditorConfig', () => {
 			} );
 
 			expect( warnSpy ).toHaveBeenCalledOnce();
+			expect( warnSpy ).toHaveBeenCalledWith(
+				'Editor data should be provided either using `config.roots[\'intro\'].initialData` ' +
+				'or the bound component property. The config value takes precedence ' +
+				'over the bound component property and will be used when both are specified.'
+			);
 		} );
 
 		it( 'should warn once per conflicting root, not once globally', () => {
@@ -91,6 +96,16 @@ describe( 'assignInitialDataToMultirootEditorConfig', () => {
 			);
 
 			expect( warnSpy ).toHaveBeenCalledTimes( 2 );
+			expect( warnSpy ).toHaveBeenNthCalledWith( 1,
+				'Editor data should be provided either using `config.roots[\'intro\'].initialData` ' +
+				'or the bound component property. The config value takes precedence ' +
+				'over the bound component property and will be used when both are specified.'
+			);
+			expect( warnSpy ).toHaveBeenNthCalledWith( 2,
+				'Editor data should be provided either using `config.roots[\'outro\'].initialData` ' +
+				'or the bound component property. The config value takes precedence ' +
+				'over the bound component property and will be used when both are specified.'
+			);
 		} );
 
 		it( 'should not warn when only data is provided (no conflict)', () => {
@@ -183,6 +198,11 @@ describe( 'assignInitialDataToMultirootEditorConfig', () => {
 			} );
 
 			expect( warnSpy ).toHaveBeenCalledOnce();
+			expect( warnSpy ).toHaveBeenCalledWith(
+				'Editor data should be provided either using `config.initialData` ' +
+				'or the bound component property. The config value takes precedence ' +
+				'over the bound component property and will be used when both are specified.'
+			);
 		} );
 
 		it( 'should not warn when only data is provided (no conflict)', () => {
