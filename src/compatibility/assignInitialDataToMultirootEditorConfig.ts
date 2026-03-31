@@ -43,16 +43,20 @@ export function assignInitialDataToMultirootEditorConfig(
 
 			acc[ rootName ] = {
 				...rootConfig,
-				initialData: rootInitialData || data?.[ rootName ] || ''
+				initialData: rootInitialData || data?.[ rootName ] || config.initialData?.[ rootName ] || ''
 			};
 
 			return acc;
 		}, Object.create( null ) );
 
-		return {
+		const normalizedConfig: EditorRelaxedConfig = {
 			...config,
 			roots
-		} as unknown as EditorConfig;
+		};
+
+		delete normalizedConfig.initialData;
+
+		return normalizedConfig as unknown as EditorConfig;
 	}
 
 	// Fallback for <= 47.x versions which uses `initialData` field in the configuration object.

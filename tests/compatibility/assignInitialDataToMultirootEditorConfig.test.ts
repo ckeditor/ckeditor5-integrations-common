@@ -47,6 +47,26 @@ describe( 'assignInitialDataToMultirootEditorConfig', () => {
 			} );
 		} );
 
+		it( 'should fallback to config.initialData if passed for roots without data', () => {
+			const config = assignInitialDataToMultirootEditorConfig(
+				{ intro: '' },
+				{
+					roots: { intro: {}, outro: {} },
+					initialData: {
+						intro: 'hello',
+						outro: 'world'
+					}
+				}
+			);
+
+			expect( config ).toEqual( {
+				roots: {
+					intro: { initialData: 'hello' },
+					outro: { initialData: 'world' }
+				}
+			} );
+		} );
+
 		it( 'should handle undefined data and fallback to empty string for all config roots', () => {
 			const config = assignInitialDataToMultirootEditorConfig( undefined, {
 				roots: { intro: {}, outro: {} }
