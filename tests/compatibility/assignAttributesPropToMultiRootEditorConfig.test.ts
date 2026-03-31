@@ -30,6 +30,44 @@ describe( 'assignAttributesPropToMultiRootEditorConfig', () => {
 			} );
 		} );
 
+		it( 'should merge legacy rootsAttributes into roots[rootName].modelAttributes', () => {
+			const config = assignAttributesPropToMultiRootEditorConfig(
+				undefined,
+				{
+					rootsAttributes: { intro: { legacyOrder: 99 } },
+					roots: { intro: { initialData: 'hello' } }
+				} as any
+			) as any;
+
+			expect( config.roots ).toEqual( {
+				intro: { initialData: 'hello', modelAttributes: { legacyOrder: 99 } }
+			} );
+		} );
+
+		it( 'should not prefer passed attributes over legacy config.rootsAttributes', () => {
+			const config = assignAttributesPropToMultiRootEditorConfig(
+				{ intro: { order: 1 } },
+				{
+					rootsAttributes: { intro: { order: 99, legacyKey: true } },
+					roots: { intro: { initialData: 'hello' } }
+				} as any
+			) as any;
+
+			expect( config.roots.intro.modelAttributes ).toHaveProperty( 'order', 1 );
+			expect( config.roots.intro.modelAttributes ).not.toHaveProperty( 'legacyKey', true );
+		} );
+
+		it( 'should remove rootsAttributes key from result in >=48 path', () => {
+			const config = assignAttributesPropToMultiRootEditorConfig(
+				{ intro: { order: 1 } },
+				{
+					rootsAttributes: { intro: { legacyOrder: 99 } }
+				} as any
+			);
+
+			expect( config ).not.toHaveProperty( 'rootsAttributes' );
+		} );
+
 		it( 'should set modelAttributes to empty object when no attributes are provided', () => {
 			const config = assignAttributesPropToMultiRootEditorConfig( undefined, {
 				roots: { intro: { initialData: 'hello' } }

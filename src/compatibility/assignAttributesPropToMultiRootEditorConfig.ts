@@ -38,7 +38,6 @@ export function assignAttributesPropToMultiRootEditorConfig(
 			const configRootValue = ( config as any ).roots?.[ rootName ];
 
 			acc[ rootName ] = {
-				...legacyRootAttributes,
 				...configRootValue,
 				modelAttributes: attributes?.[ rootName ] ?? {
 					...legacyRootAttributes,
