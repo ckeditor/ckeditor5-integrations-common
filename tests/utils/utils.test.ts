@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { omit } from '../../src/utils/omit.js';
+import { omit } from '@/src/utils/omit.js';
 
 describe( 'omit', () => {
 	it( 'should remove a single key from an object', () => {
