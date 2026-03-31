@@ -27,9 +27,7 @@ export function compareInstalledCKBaseVersion( version: SemanticVersion ): Versi
 		return null;
 	}
 
-	// If it's testing or any other non-semantic version then assume
-	// If it's a non-semantic version (for example nightly/testing),
-	// assume that it's newer than the passed semantic version.
+	// If it's a non-semantic version (for example nightly/testing), assume that it's newer than the passed semantic version.
 	if ( !isSemanticVersion( installedVersion ) || isCKTestingVersion( installedVersion ) ) {
 		return 1;
 	}
