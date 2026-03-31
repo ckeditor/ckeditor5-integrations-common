@@ -7,8 +7,6 @@ import './globals.d';
 import './cdn/ck/globals.js';
 import './cdn/ckbox/globals.js';
 
-export type { Awaitable } from './types/Awaitable.js';
-
 export { createDefer, type Defer } from './utils/defer.js';
 export { waitFor, type WaitForConfig } from './utils/waitFor.js';
 export { injectScript, injectScriptsInParallel, INJECTED_SCRIPTS } from './utils/injectScript.js';
@@ -28,15 +26,14 @@ export { filterBlankObjectValues } from './utils/filterBlankObjectValues.js';
 export { mapObjectValues } from './utils/mapObjectValues.js';
 export { without } from './utils/without.js';
 export { isSemanticVersion, type SemanticVersion } from './utils/version/isSemanticVersion.js';
+export { compareSemanticVersions, type VersionCompareResult } from './utils/version/compareSemanticVersions.js';
+export { destructureSemanticVersion, type DestructuredSemanticVersion } from './utils/version/destructureSemanticVersion.js';
 export {
 	isCKVersion,
 	isCKTestingVersion,
 	type CKVersion,
 	type CKTestingVersion
 } from './utils/version/isCKVersion.js';
-
-export { compareSemanticVersions, type VersionCompareResult } from './utils/version/compareSemanticVersions.js';
-export { destructureSemanticVersion, type DestructuredSemanticVersion } from './utils/version/destructureSemanticVersion.js';
 
 export { appendExtraPluginsToEditorConfig } from './plugins/appendExtraPluginsToEditorConfig.js';
 export {
@@ -63,16 +60,21 @@ export {
 	type CKEditorCloudResult
 } from './cdn/loadCKEditorCloud.js';
 
+export type { CdnPluginsPacks } from './cdn/plugins/combineCdnPluginsPacks.js';
+
 export { compareInstalledCKBaseVersion } from './installation-info/compareInstalledCKBaseVersion.js';
-export {
-	getInstalledCKBaseFeatures,
-	type SupportedCKBaseFeatures
-} from './installation-info/getInstalledCKBaseFeatures.js';
+export { getInstalledCKBaseFeatures, type SupportedCKBaseFeatures } from './installation-info/getInstalledCKBaseFeatures.js';
 export { getCKBaseBundleInstallationInfo } from './installation-info/getCKBaseBundleInstallationInfo.js';
 export { getCKBoxInstallationInfo } from './installation-info/getCKBoxInstallationInfo.js';
-
 export type { BundleInstallationInfo } from './installation-info/types.js';
 
-export type {
-	CdnPluginsPacks
-} from './cdn/plugins/combineCdnPluginsPacks.js';
+export { assignAttributesPropToMultiRootEditorConfig } from './compatibility/assignAttributesPropToMultiRootEditorConfig.js';
+export { assignDataPropToMultiRootEditorConfig } from './compatibility/assignDataPropToMultirootEditorConfig.js';
+export { assignElementToEditorConfig } from './compatibility/assignElementToEditorConfig.js';
+export { assignInitialDataToEditorConfig } from './compatibility/assignInitialDataToEditorConfig.js';
+export { getInitialDataFromEditorConfig } from './compatibility/getInitialDataFromEditorConfig.js';
+
+export type { Awaitable } from './types/Awaitable.js';
+export type { EditorRelaxedConfig } from './types/EditorRelaxedConfig.js';
+export type { EditorRelaxedConstructor } from './types/EditorRelaxedConstructor.js';
+export type { ExtractEditorType } from './types/ExtractEditorType.js';
