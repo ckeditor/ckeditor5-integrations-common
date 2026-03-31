@@ -39,7 +39,7 @@ export type SupportedCKBaseFeatures = {
 	 * Newer versions:
 	 *
 	 * ```ts
-	 * MultirootEditor.create( sourceElementOrData, {
+	 * MultirootEditor.create( {
 	 * 	roots: {
 	 * 		"custom-root": { modelAttributes: { ... } }
 	 * 	}
