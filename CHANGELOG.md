@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## [2.3.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.2.5...v2.3.0) (April 1, 2026)
+
+### Features
+
+* Add utilities that make it easier to detect the availability of features on certain versions of CKEditor. See [ckeditor/ckeditor5-react#658](https://github.com/ckeditor/ckeditor5-react/issues/658), [ckeditor/ckeditor5-vue#400](https://github.com/ckeditor/ckeditor5-vue/issues/400), [ckeditor/ckeditor5-angular#550](https://github.com/ckeditor/ckeditor5-angular/issues/550).
+
+
 ## [2.2.5](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.2.4...v2.2.5) (March 19, 2026)
 
 ### Other changes
@@ -32,13 +39,6 @@ Changelog
 ### Features
 
 * Improved error messages in `loadCKEditorCloud` when using editor version not supporting CDN distribution. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/390bac703e2a72cd8dcac5681a8998507d3bf63a))
-
-
-## [2.2.1](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.2.0...v2.2.1) (2024-11-04)
-
-### Features
-
-* Add testing versions support to injector. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/518448b1e7e9e8b8866592ff2b7daca3869f73b3))
 
 ---
 
