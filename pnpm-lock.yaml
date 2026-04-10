@@ -7,9 +7,9 @@ settings:
 overrides:
   ajv@^8: ^8.18.0
   diff@^7: ^8.0.3
-  lodash: ^4.18.1
+  lodash@^4: ^4.18.1
   minimatch@^10: ^10.2.3
-  serialize-javascript: ^7.0.5
+  serialize-javascript@^6: ^7.0.5
 
 importers:
 
@@ -5677,8 +5677,6 @@ snapshots:
       '@ckeditor/ckeditor5-widget': 47.6.2
       ckeditor5: 47.6.2
       es-toolkit: 1.39.5
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-import-word@47.6.2':
     dependencies:
@@ -5702,8 +5700,6 @@ snapshots:
       '@ckeditor/ckeditor5-ui': 47.6.2
       '@ckeditor/ckeditor5-utils': 47.6.2
       ckeditor5: 47.6.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-language@47.6.2':
     dependencies:
@@ -5712,8 +5708,6 @@ snapshots:
       '@ckeditor/ckeditor5-ui': 47.6.2
       '@ckeditor/ckeditor5-utils': 47.6.2
       ckeditor5: 47.6.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-line-height@47.6.2':
     dependencies:
@@ -5738,8 +5732,6 @@ snapshots:
       '@ckeditor/ckeditor5-widget': 47.6.2
       ckeditor5: 47.6.2
       es-toolkit: 1.39.5
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-list-multi-level@47.6.2':
     dependencies:
@@ -5764,8 +5756,6 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.6.2
       ckeditor5: 47.6.2
       es-toolkit: 1.39.5
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-markdown-gfm@47.6.2':
     dependencies:
@@ -5803,8 +5793,6 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.6.2
       '@ckeditor/ckeditor5-widget': 47.6.2
       ckeditor5: 47.6.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@ckeditor/ckeditor5-mention@47.6.2':
     dependencies:
@@ -5814,6 +5802,8 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.6.2
       ckeditor5: 47.6.2
       es-toolkit: 1.39.5
+    transitivePeerDependencies:
+      - supports-color
 
   '@ckeditor/ckeditor5-merge-fields@47.6.2':
     dependencies:
@@ -7955,8 +7945,6 @@ snapshots:
   ckeditor5-collaboration@47.6.2:
     dependencies:
       '@ckeditor/ckeditor5-collaboration-core': 47.6.2
-    transitivePeerDependencies:
-      - supports-color
 
   ckeditor5-premium-features@47.6.2(ckeditor5@47.6.2):
     dependencies:
