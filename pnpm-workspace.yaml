@@ -8,8 +8,9 @@ onlyBuiltDependencies:
 overrides:
   'ajv@^8': '^8.18.0'
   'diff@^7': '^8.0.3'
+  'lodash@^4': '^4.18.1'
   'minimatch@^10': '^10.2.3'
-  'serialize-javascript@^6': '^7.0.3'
+  'serialize-javascript@^6': '^7.0.5'
 
 minimumReleaseAge: 4320 # 3 days
 minimumReleaseAgeExclude:
@@ -17,6 +18,9 @@ minimumReleaseAgeExclude:
   - '@ckeditor/*'
   - '@cksource/*'
   - '*ckeditor5*'
+  - vite # Remove after 2026-04-10.
+  - vitest # Remove after 2026-04-10.
+  - '@vitest/*' # Remove after 2026-04-10.
 
 shellEmulator: true
 shamefullyHoist: true
