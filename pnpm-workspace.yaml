@@ -18,9 +18,6 @@ minimumReleaseAgeExclude:
   - '@ckeditor/*'
   - '@cksource/*'
   - '*ckeditor5*'
-  - vite # Remove after 2026-04-10.
-  - vitest # Remove after 2026-04-10.
-  - '@vitest/*' # Remove after 2026-04-10.
 
 shellEmulator: true
 shamefullyHoist: true
