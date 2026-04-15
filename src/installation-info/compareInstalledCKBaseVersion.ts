@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-import { isCKTestingVersion } from '../utils/version/isCKVersion.js';
+import { isCKRollingVersion } from '../utils/version/isCKVersion.js';
 import { isSemanticVersion, type SemanticVersion } from '../utils/version/isSemanticVersion.js';
 import { compareSemanticVersions, type VersionCompareResult } from '../utils/version/compareSemanticVersions.js';
 
@@ -27,8 +27,11 @@ export function compareInstalledCKBaseVersion( version: SemanticVersion ): Versi
 		return null;
 	}
 
-	// If it's a non-semantic version (for example nightly/testing), assume that it's newer than the passed semantic version.
-	if ( !isSemanticVersion( installedVersion ) || isCKTestingVersion( installedVersion ) ) {
+	if ( isCKRollingVersion( version ) ) {
+		return -1;
+	}
+
+	if ( !isSemanticVersion( installedVersion ) || isCKRollingVersion( installedVersion ) ) {
 		return 1;
 	}
 
