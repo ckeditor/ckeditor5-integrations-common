@@ -44,7 +44,9 @@ describe( 'compareInstalledCKBaseVersion', () => {
 		[ '47.7.0-alpha.2', '48.1.2-alpha.3', -1 ],
 		[ '49.7.0-alpha.2', '48.1.2-alpha.3', 1 ],
 		[ '0.0.0-internal-20260224.0', '48.0.0', 1 ],
-		[ '48.0.0', '0.0.0-internal-20260224.0', -1 ]
+		[ '48.0.0', '0.0.0-internal-20260224.0', -1 ],
+		[ '0.0.0-nightly-20260224.0', '48.0.0', 1 ],
+		[ '48.0.0', '0.0.0-nightly-20260224.0', -1 ]
 	] )( 'should properly compare installed %s version with %s', ( installedVersion, comparedVersion, result ) => {
 		window.CKEDITOR_VERSION = installedVersion;
 

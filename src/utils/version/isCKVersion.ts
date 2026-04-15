@@ -50,10 +50,10 @@ export function isCKTestingVersion( version: string | undefined ): version is CK
  * Checks if given version is nightly like version with `0.0.0` versioning.
  *
  * @param version - The version to check.
- * @param `true` if it's nightly-like version.
+ * @returns `true` if it's nightly-like version.
  */
-export function isCKRollingVersion( version: string | undefined ): version is SemanticVersion {
-	return !!version?.includes( '0.0.0' );
+export function isCKZeroBaseVersion( version: string | undefined ): version is SemanticVersion {
+	return !!version?.startsWith( '0.0.0-' );
 }
 
 /**

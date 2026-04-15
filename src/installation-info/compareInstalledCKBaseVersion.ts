@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-import { isCKRollingVersion } from '../utils/version/isCKVersion.js';
+import { isCKZeroBaseVersion } from '../utils/version/isCKVersion.js';
 import { isSemanticVersion, type SemanticVersion } from '../utils/version/isSemanticVersion.js';
 import { compareSemanticVersions, type VersionCompareResult } from '../utils/version/compareSemanticVersions.js';
 
@@ -27,11 +27,11 @@ export function compareInstalledCKBaseVersion( version: SemanticVersion ): Versi
 		return null;
 	}
 
-	if ( isCKRollingVersion( version ) ) {
+	if ( isCKZeroBaseVersion( version ) ) {
 		return -1;
 	}
 
-	if ( !isSemanticVersion( installedVersion ) || isCKRollingVersion( installedVersion ) ) {
+	if ( !isSemanticVersion( installedVersion ) || isCKZeroBaseVersion( installedVersion ) ) {
 		return 1;
 	}
 
