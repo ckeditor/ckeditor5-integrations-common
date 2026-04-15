@@ -47,6 +47,16 @@ export function isCKTestingVersion( version: string | undefined ): version is CK
 }
 
 /**
+ * Checks if given version is nightly like version with `0.0.0` versioning.
+ *
+ * @param version - The version to check.
+ * @returns `true` if it's nightly-like version.
+ */
+export function isCKZeroBaseVersion( version: string | undefined ): version is SemanticVersion {
+	return !!version?.startsWith( '0.0.0-' );
+}
+
+/**
  * Checks if the given string is a version of a file on the CKEditor CDN.
  *
  * @param version - The string to check.

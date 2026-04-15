@@ -31,6 +31,7 @@ export { destructureSemanticVersion, type DestructuredSemanticVersion } from './
 export {
 	isCKVersion,
 	isCKTestingVersion,
+	isCKZeroBaseVersion,
 	type CKVersion,
 	type CKTestingVersion
 } from './utils/version/isCKVersion.js';
