@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## [2.3.1](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.3.0...v2.3.1) (April 15, 2026)
+
+### Bug fixes
+
+* Fixed an issue where the editor's alpha version was being compared incorrectly.
+
+
 ## [2.3.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.2.5...v2.3.0) (April 1, 2026)
 
 ### Features
@@ -32,13 +39,6 @@ Changelog
 ### Features
 
 * Added support for loading more testing versions in CDN loader. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/af0384bdd76b49c91852cf98174a2ed76e6fd06a))
-
-
-## [2.2.2](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.2.1...v2.2.2) (2024-11-19)
-
-### Features
-
-* Improved error messages in `loadCKEditorCloud` when using editor version not supporting CDN distribution. ([commit](https://github.com/ckeditor/ckeditor5-integrations-common/commit/390bac703e2a72cd8dcac5681a8998507d3bf63a))
 
 ---
 
