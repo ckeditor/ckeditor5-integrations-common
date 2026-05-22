@@ -13,9 +13,7 @@ export function mapObjectKeys<T>(
 	obj: Record<string, T>,
 	fn: ( key: string ) => string
 ): Record<string, T> {
-	return Object.keys( obj ).reduce( ( acc: Record<string, T>, key: string ) => {
-		const newKey = fn( key );
-		acc[ newKey ] = obj[ key ];
-		return acc;
-	}, Object.create( null ) );
+	return Object.fromEntries(
+		Object.entries( obj ).map( ( [ key, value ] ) => [ fn( key ), value ] )
+	);
 }
