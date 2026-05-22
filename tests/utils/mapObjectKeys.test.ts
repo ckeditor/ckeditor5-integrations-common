@@ -9,9 +9,7 @@ import { mapObjectKeys } from '../../src/utils/mapObjectKeys.js';
 describe( 'mapObjectKeys', () => {
 	it( 'should correctly map keys using a simple uppercase function', () => {
 		const obj: Record<string, number> = { a: 1, b: 2 };
-		const result = mapObjectKeys( obj, function( key: string ) {
-			return key.toUpperCase();
-		} );
+		const result = mapObjectKeys( obj, key => key.toUpperCase() );
 
 		expect( result ).toEqual( { A: 1, B: 2 } );
 	} );
@@ -22,9 +20,7 @@ describe( 'mapObjectKeys', () => {
 			role: 'Admin'
 		};
 
-		const prefixedData = mapObjectKeys( data, function( key: string ) {
-			return 'user_' + key;
-		} );
+		const prefixedData = mapObjectKeys( data, key => `user_${ key }` );
 
 		expect( prefixedData ).toEqual( {
 			user_name: 'Alice',
@@ -35,9 +31,7 @@ describe( 'mapObjectKeys', () => {
 	it( 'should not mutate the original object', () => {
 		const obj: Record<string, string> = { originalKey: 'value' };
 
-		mapObjectKeys( obj, function( key: string ) {
-			return 'new_' + key;
-		} );
+		mapObjectKeys( obj, key => `new_${ key }` );
 
 		expect( obj ).toEqual( { originalKey: 'value' } );
 	} );
