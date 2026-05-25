@@ -5,8 +5,10 @@
 
 /**
  * Creates a new object with keys mapped using the provided function.
+ *
  * @param obj - The input object.
  * @param fn - The mapping function (takes the original key, returns the new one).
+ * If produces the same key for multiple inputs, later entries override earlier ones.
  * @returns A new object with the mapped keys.
  */
 export function mapObjectKeys<T>(
