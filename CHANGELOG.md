@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## [2.4.1](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.4.0...v2.4.1) (June 15, 2026)
+
+### Other changes
+
+* Readme simplification.
+
+
 ## [2.4.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.3.1...v2.4.0) (May 25, 2026)
 
 ### Features
@@ -27,18 +34,6 @@ Changelog
 ### Other changes
 
 * Re-export utilities related to CKEditor version checking. See [ckeditor/ckeditor5-react#659](https://github.com/ckeditor/ckeditor5-react/issues/659).
-
-
-## [2.2.4](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.2.3...v2.2.4) (March 12, 2026)
-
-### Bug fixes
-
-* Updated migration link for Vanilla JS when the editor is installed via NPM but loaded via CDN. See [ckeditor/ckeditor5#18510](https://github.com/ckeditor/ckeditor5/issues/18510).
-
-### Other changes
-
-* Upgrade to Node v24.11.
-* Re-export helpers related to installation info and semantic versioning. See [ckeditor/ckeditor5-react#653](https://github.com/ckeditor/ckeditor5-react/issues/653).
 
 ---
 
