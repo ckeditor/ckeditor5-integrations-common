@@ -5,7 +5,7 @@
 
 import { defineConfig } from 'vitest/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import { webdriverio } from '@vitest/browser-webdriverio';
+import { playwright } from '@vitest/browser-playwright';
 
 export default defineConfig( {
 	plugins: [ tsconfigPaths() ],
@@ -30,8 +30,12 @@ export default defineConfig( {
 				include: [ 'tests/**/*.test.ts' ],
 				name: 'browser',
 				browser: {
-					provider: webdriverio(),
-					instances: [ { browser: 'chrome' } ],
+					provider: playwright( {
+						launchOptions: {
+							channel: 'chrome'
+						}
+					} ),
+					instances: [ { browser: 'chromium' } ],
 					screenshotFailures: false,
 					headless: true,
 					enabled: true
