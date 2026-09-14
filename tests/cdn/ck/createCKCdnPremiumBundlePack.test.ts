@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import type { CKVersion } from '@/utils/version/isCKVersion.js';
 
@@ -14,7 +14,7 @@ import { createCKCdnPremiumBundlePack } from '@/cdn/ck/createCKCdnPremiumBundleP
 import { createCKCdnBaseBundlePack } from '@/cdn/ck/createCKCdnBaseBundlePack.js';
 
 describe( 'createCKCdnPremiumBundlePack', () => {
-	beforeEach( () => {
+	afterEach( () => {
 		removeAllCkCdnResources();
 	} );
 

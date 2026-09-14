@@ -13,13 +13,12 @@ import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResource
 
 describe( 'waitForWindowEntry', () => {
 	beforeEach( () => {
-		removeAllCkCdnResources();
-
 		vi.spyOn( console, 'error' ).mockImplementation( () => undefined );
 	} );
 
 	afterEach( () => {
 		vi.restoreAllMocks();
+		removeAllCkCdnResources();
 	} );
 
 	it( 'should wait for the window entry to be available', async () => {

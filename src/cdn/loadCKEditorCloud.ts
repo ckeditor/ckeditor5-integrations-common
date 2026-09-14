@@ -14,6 +14,7 @@ import {
 
 import type { CKCdnUrlCreator } from './ck/createCKCdnUrl.js';
 import type { ConditionalBlank } from '../types/ConditionalBlank.js';
+import type { InjectStylesheetLocation } from '../utils/injectStylesheet.js';
 
 import { isCKCdnSupportedByEditorVersion } from '../license/isCKCdnSupportedByEditorVersion.js';
 
@@ -81,6 +82,7 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 	const {
 		version, translations, plugins,
 		premium, ckbox, createCustomCdnUrl,
+		injectedStylesheetsLocation,
 		injectedHtmlElementsAttributes = {
 			crossorigin: 'anonymous'
 		}
@@ -113,6 +115,7 @@ export function loadCKEditorCloud<Config extends CKEditorCloudConfig>(
 	return loadCKCdnResourcesPack(
 		{
 			...pack,
+			stylesheetsLocation: injectedStylesheetsLocation,
 			htmlAttributes: injectedHtmlElementsAttributes
 		}
 	) as Promise<CKEditorCloudResult<Config>>;
@@ -208,6 +211,11 @@ export type CKEditorCloudConfig<Plugins extends CdnPluginsPacks = CdnPluginsPack
 	 * Map of attributes to add to the script, stylesheet and link tags that are injected by the loader.
 	 */
 	injectedHtmlElementsAttributes?: Record<string, any>;
+
+	/**
+	 * The location where the stylesheets are to be injected. By default, this is at the beginning of `document.head`.
+	 */
+	injectedStylesheetsLocation?: InjectStylesheetLocation;
 
 	/**
 	 * The function that creates custom CDN URLs.

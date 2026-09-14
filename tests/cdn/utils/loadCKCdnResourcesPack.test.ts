@@ -172,4 +172,76 @@ describe( 'loadCKCdnResourcesPack', () => {
 			createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.0' )
 		] );
 	} );
+
+	describe( '`stylesheetsLocation`', () => {
+		let targetNode: HTMLDivElement;
+
+		beforeEach( () => {
+			targetNode = document.body.appendChild( document.createElement( 'div' ) );
+		} );
+
+		afterEach( () => {
+			targetNode.remove();
+		} );
+
+		it( 'should inject the stylesheet into the target node instead of the head', async () => {
+			await loadCKCdnResourcesPack( {
+				stylesheets: [ CDN_MOCK_STYLESHEET_URL ],
+				stylesheetsLocation: { targetNode }
+			} );
+
+			expect( targetNode.querySelector( `link[href="${ CDN_MOCK_STYLESHEET_URL }"]` ) ).not.toBeNull();
+			expect( queryStylesheet( CDN_MOCK_STYLESHEET_URL ) ).toBeNull();
+
+			// Preload tags are always injected into the head.
+			expect( queryPreload( CDN_MOCK_STYLESHEET_URL ) ).not.toBeNull();
+		} );
+
+		it( 'should inject the stylesheet at the start of the target node by default', async () => {
+			const otherChild = targetNode.appendChild( document.createElement( 'span' ) );
+
+			await loadCKCdnResourcesPack( {
+				stylesheets: [ CDN_MOCK_STYLESHEET_URL ],
+				stylesheetsLocation: { targetNode }
+			} );
+
+			expect( targetNode.firstChild ).toBeInstanceOf( HTMLLinkElement );
+			expect( targetNode.lastChild ).toBe( otherChild );
+		} );
+
+		it( 'should inject the stylesheet at the end of the target node if placement = \'end\'', async () => {
+			const otherChild = targetNode.appendChild( document.createElement( 'span' ) );
+
+			await loadCKCdnResourcesPack( {
+				stylesheets: [ CDN_MOCK_STYLESHEET_URL ],
+				stylesheetsLocation: { targetNode, placement: 'end' }
+			} );
+
+			expect( targetNode.firstChild ).toBe( otherChild );
+			expect( targetNode.lastChild ).toBeInstanceOf( HTMLLinkElement );
+		} );
+
+		it( 'should inject the stylesheet into the shadow root', async () => {
+			const shadowRoot = targetNode.attachShadow( { mode: 'open' } );
+
+			await loadCKCdnResourcesPack( {
+				stylesheets: [ CDN_MOCK_STYLESHEET_URL ],
+				stylesheetsLocation: { targetNode: shadowRoot }
+			} );
+
+			expect( shadowRoot.querySelector( `link[href="${ CDN_MOCK_STYLESHEET_URL }"]` ) ).not.toBeNull();
+			expect( queryStylesheet( CDN_MOCK_STYLESHEET_URL ) ).toBeNull();
+		} );
+
+		it( 'should inject the script into the head even if the stylesheets are injected elsewhere', async () => {
+			await loadCKCdnResourcesPack( {
+				scripts: [ CDN_MOCK_SCRIPT_URL ],
+				stylesheets: [ CDN_MOCK_STYLESHEET_URL ],
+				stylesheetsLocation: { targetNode }
+			} );
+
+			expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
+			expect( targetNode.querySelector( 'script' ) ).toBeNull();
+		} );
+	} );
 } );

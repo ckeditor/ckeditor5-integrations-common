@@ -3,12 +3,12 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-import { beforeEach, it, describe, expect } from 'vitest';
+import { afterEach, it, describe, expect } from 'vitest';
 import { removeAllCkCdnResources } from '@/src/test-utils/index.js';
 import { getInstalledCKBaseFeatures } from '@/src/installation-info/getInstalledCKBaseFeatures.js';
 
 describe( 'getCKBaseFeaturesInstallationInfo', () => {
-	beforeEach( () => {
+	afterEach( () => {
 		removeAllCkCdnResources();
 	} );
 

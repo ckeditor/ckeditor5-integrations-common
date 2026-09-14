@@ -14,14 +14,13 @@ import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResource
 
 describe( 'injectScript', () => {
 	beforeEach( () => {
-		removeAllCkCdnResources();
-
 		vi.spyOn( console, 'warn' ).mockImplementation( () => undefined );
 		vi.spyOn( console, 'error' ).mockImplementation( () => undefined );
 	} );
 
 	afterEach( () => {
 		vi.restoreAllMocks();
+		removeAllCkCdnResources();
 	} );
 
 	it( 'should inject a script into the document', async () => {

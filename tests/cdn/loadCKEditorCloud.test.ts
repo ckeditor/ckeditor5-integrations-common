@@ -24,8 +24,6 @@ import {
 
 describe( 'loadCKEditorCloud', () => {
 	beforeEach( () => {
-		removeAllCkCdnResources();
-
 		vi.spyOn( console, 'error' ).mockImplementation( () => undefined );
 		vi.spyOn( console, 'warn' ).mockImplementation( () => undefined );
 
@@ -34,6 +32,7 @@ describe( 'loadCKEditorCloud', () => {
 
 	afterEach( () => {
 		vi.restoreAllMocks();
+		removeAllCkCdnResources();
 	} );
 
 	for ( const version of [ 'alpha', 'internal' ] as const ) {
@@ -131,6 +130,86 @@ describe( 'loadCKEditorCloud', () => {
 			expect( queryScript( `${ createCKCdnUrl( bundleName, `${ bundleName }.umd.js`, '44.3.0' ) }?testParam=123` ) ).not.toBeNull();
 			expect( queryStylesheet( `${ createCKCdnUrl( bundleName, `${ bundleName }.css`, '44.3.0' ) }?testParam=123` ) ).not.toBeNull();
 		}
+	} );
+
+	describe( '`injectedStylesheetsLocation`', () => {
+		const CK_STYLESHEET_URL = createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '44.3.0' );
+		const CK_SCRIPT_URL = createCKCdnUrl( 'ckeditor5', 'ckeditor5.umd.js', '44.3.0' );
+
+		let targetNode: HTMLDivElement;
+
+		beforeEach( () => {
+			targetNode = document.body.appendChild( document.createElement( 'div' ) );
+		} );
+
+		afterEach( () => {
+			targetNode.remove();
+		} );
+
+		it( 'should inject the stylesheets into the target node instead of the head', async () => {
+			const { CKEditor } = await loadCKEditorCloud( {
+				version: '44.3.0',
+				injectedStylesheetsLocation: { targetNode }
+			} );
+
+			expect( CKEditor.ClassicEditor ).toBeDefined();
+
+			expect( targetNode.querySelector( `link[href="${ CK_STYLESHEET_URL }"]` ) ).not.toBeNull();
+			expect( queryStylesheet( CK_STYLESHEET_URL ) ).toBeNull();
+
+			// Scripts and preload tags are still injected into the head.
+			expect( queryScript( CK_SCRIPT_URL ) ).not.toBeNull();
+			expect( queryPreload( CK_STYLESHEET_URL ) ).not.toBeNull();
+		} );
+
+		it( 'should inject the stylesheets at the end of the target node if placement = \'end\'', async () => {
+			const otherChild = targetNode.appendChild( document.createElement( 'span' ) );
+
+			await loadCKEditorCloud( {
+				version: '44.3.0',
+				injectedStylesheetsLocation: { targetNode, placement: 'end' }
+			} );
+
+			expect( targetNode.firstChild ).toBe( otherChild );
+			expect( targetNode.lastChild ).toBeInstanceOf( HTMLLinkElement );
+		} );
+
+		it( 'should inject the stylesheets into the shadow root', async () => {
+			const shadowRoot = targetNode.attachShadow( { mode: 'open' } );
+
+			const { CKEditor } = await loadCKEditorCloud( {
+				version: '44.3.0',
+				injectedStylesheetsLocation: { targetNode: shadowRoot }
+			} );
+
+			expect( CKEditor.ClassicEditor ).toBeDefined();
+
+			expect( shadowRoot.querySelector( `link[href="${ CK_STYLESHEET_URL }"]` ) ).not.toBeNull();
+			expect( queryStylesheet( CK_STYLESHEET_URL ) ).toBeNull();
+		} );
+
+		it( 'should inject the premium features stylesheet into the shadow root as well', async () => {
+			const shadowRoot = targetNode.attachShadow( { mode: 'open' } );
+			const premiumStylesheetUrl = createCKCdnUrl(
+				'ckeditor5-premium-features', 'ckeditor5-premium-features.css', '44.3.0'
+			);
+
+			await loadCKEditorCloud( {
+				version: '44.3.0',
+				premium: true,
+				injectedStylesheetsLocation: { targetNode: shadowRoot }
+			} );
+
+			const injectedStylesheets = [ ...shadowRoot.querySelectorAll( 'link[rel="stylesheet"]' ) ].map(
+				link => link.getAttribute( 'href' )!
+			);
+
+			expect( injectedStylesheets ).toContain( CK_STYLESHEET_URL );
+			expect( injectedStylesheets ).toContain( premiumStylesheetUrl );
+
+			expect( queryStylesheet( CK_STYLESHEET_URL ) ).toBeNull();
+			expect( queryStylesheet( premiumStylesheetUrl ) ).toBeNull();
+		} );
 	} );
 
 	describe( 'CSP', () => {
