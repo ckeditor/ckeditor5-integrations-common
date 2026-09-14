@@ -8,7 +8,7 @@
  * injecting the same stylesheet into the same node multiple times. It happens quite often in React
  * Strict mode when the component is rendered twice.
  */
-export const INJECTED_STYLESHEETS = new WeakMap<InjectStylesheetTargetNode, Map<string, Promise<void>>>();
+export const INJECTED_STYLESHEETS = new WeakMap<Node, Map<string, Promise<void>>>();
 
 /**
  * Injects a stylesheet into the document.
@@ -121,7 +121,7 @@ export function injectStylesheet(
  * @param targetNode The node to get the injected stylesheets for.
  * @returns The map of promises of the stylesheets injected into the given node.
  */
-function getInjectedStylesheets( targetNode: InjectStylesheetTargetNode ): Map<string, Promise<void>> {
+function getInjectedStylesheets( targetNode: Node ): Map<string, Promise<void>> {
 	let injectedStylesheets = INJECTED_STYLESHEETS.get( targetNode );
 
 	if ( !injectedStylesheets ) {
@@ -178,7 +178,7 @@ type InjectStylesheetCustomLocation = {
 	 * The node to which the stylesheet element should be added. Besides regular elements, it accepts
 	 * shadow roots, so the stylesheet can be scoped to a web component.
 	 */
-	targetNode: InjectStylesheetTargetNode;
+	targetNode: HTMLElement | ShadowRoot;
 
 	/**
 	 * The placement of the stylesheet in the target node. It can be either at the start or at the end
@@ -188,10 +188,5 @@ type InjectStylesheetCustomLocation = {
 	 */
 	placement?: InjectStylesheetPlacement;
 };
-
-/**
- * The node that can host injected stylesheets.
- */
-type InjectStylesheetTargetNode = HTMLElement | ShadowRoot;
 
 type InjectStylesheetPlacement = 'start' | 'end';

@@ -36,7 +36,7 @@ function removeCkBoxCdnLinks(): void {
 	[ ...document.querySelectorAll( 'link' ) ]
 		.filter( link => link.href.startsWith( CKBOX_CDN_URL ) )
 		.forEach( link => {
-			INJECTED_STYLESHEETS.delete( link.href );
+			INJECTED_STYLESHEETS.get( link.parentNode! )?.delete( link.href );
 			link.remove();
 		} );
 }
