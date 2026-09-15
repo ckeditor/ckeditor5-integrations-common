@@ -42,11 +42,5 @@ export default defineConfig( {
 				};
 			}
 		} )
-	],
-	preview: {
-		port: 8080,
-		strictPort: true,
-		cors: true,
-		host: true
-	}
+	]
 } );
