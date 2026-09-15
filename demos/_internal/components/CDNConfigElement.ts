@@ -26,19 +26,24 @@ export class CdnConfigElement extends HTMLElement {
 			<form>
 				<fieldset>
 					<legend>CDN</legend>
-					<label>Editor <input type="text" name="version" value="${ version }"></label>
-					<label>CKBox <input type="text" name="ckboxVersion" value="${ ckboxVersion }"></label>
-					<label><input type="checkbox" name="premium" ${ premium ? 'checked' : '' }> Premium</label>
-					<label><input type="checkbox" name="ckbox" ${ ckbox ? 'checked' : '' }> CKBox</label>
+					<label>Editor <input type="text" name="version"></label>
+					<label>CKBox <input type="text" name="ckboxVersion"></label>
+					<label><input type="checkbox" name="premium"> Premium</label>
+					<label><input type="checkbox" name="ckbox"> CKBox</label>
 					<button type="submit">Refresh</button>
 				</fieldset>
 			</form>
 		`;
 
+		const field = ( name: string ) => root.querySelector<HTMLInputElement>( `[name="${ name }"]` )!;
+
+		field( 'version' ).value = version;
+		field( 'ckboxVersion' ).value = ckboxVersion;
+		field( 'premium' ).checked = premium;
+		field( 'ckbox' ).checked = ckbox;
+
 		root.querySelector( 'form' )!.addEventListener( 'submit', event => {
 			event.preventDefault();
-
-			const field = ( name: string ) => root.querySelector<HTMLInputElement>( `[name="${ name }"]` )!;
 
 			writeCdnConfig( {
 				version: field( 'version' ).value as CKVersion,
