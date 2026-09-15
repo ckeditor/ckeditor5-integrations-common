@@ -5,12 +5,14 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { injectScript, INJECTED_SCRIPTS } from '@/utils/injectScript.js';
+import { injectScript } from '@/utils/injectScript.js';
 import { queryScript } from '@/utils/queryHeadElement.js';
 import { createDefer } from '@/utils/defer.js';
 
 import { CDN_MOCK_SCRIPT_URL } from '@/test-utils/cdn/mocks.js';
 import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
+
+const BROKEN_SCRIPT_URL = 'https://localhost/broken-script.js';
 
 describe( 'injectScript', () => {
 	beforeEach( () => {
@@ -72,21 +74,60 @@ describe( 'injectScript', () => {
 		await onLoadOriginalScript.promise;
 		await waitForExecuteMockScript();
 
-		// Spy on appendChild to make sure that the script is not appended again.
-		const appendChildSpy = vi
-			.spyOn( document.head, 'appendChild' )
-			.mockImplementation( () => document.createElement( 'script' ) );
+		// The manually added script carries no load promise, so it is dropped and injected again.
+		await expect( injectScript( CDN_MOCK_SCRIPT_URL ) ).resolves.toBeUndefined();
 
-		injectScript( CDN_MOCK_SCRIPT_URL );
-
-		// Verify that the warning was shown
 		expect( console.warn ).toHaveBeenCalledWith(
 			`Script with "${ CDN_MOCK_SCRIPT_URL }" src is already present in DOM!`
 		);
 
-		appendChildSpy.mockRestore();
-		script.remove();
-		INJECTED_SCRIPTS.clear();
+		// The original script is replaced rather than duplicated.
+		expect( document.head.querySelectorAll( `script[src="${ CDN_MOCK_SCRIPT_URL }"]` ) ).toHaveLength( 1 );
+		expect( script.isConnected ).toBe( false );
+	} );
+
+	it( 'should inject the script again if the previously injected one was removed', async () => {
+		const promise1 = injectScript( CDN_MOCK_SCRIPT_URL );
+
+		await promise1;
+		await waitForExecuteMockScript();
+
+		// Removing the element drops the cached promise along with it, synchronously.
+		queryScript( CDN_MOCK_SCRIPT_URL )!.remove();
+
+		const promise2 = injectScript( CDN_MOCK_SCRIPT_URL );
+
+		expect( promise2 ).not.toBe( promise1 );
+		await expect( promise2 ).resolves.toBeUndefined();
+
+		expect( console.warn ).not.toHaveBeenCalled();
+		expect( document.head.querySelectorAll( `script[src="${ CDN_MOCK_SCRIPT_URL }"]` ) ).toHaveLength( 1 );
+	} );
+
+	it( 'should not cache a failed injection, so the next call retries', async () => {
+		const promise1 = injectScript( BROKEN_SCRIPT_URL );
+		const firstScript = document.querySelector( `script[src="${ BROKEN_SCRIPT_URL }"]` )!;
+
+		firstScript.dispatchEvent( new Event( 'error' ) );
+
+		// The promise is rejected with the original `error` event, not with a synthetic `Error`.
+		const reason = await promise1.catch( error => error );
+
+		expect( reason ).toBeInstanceOf( Event );
+		expect( reason.type ).toBe( 'error' );
+
+		// The broken script is removed from the DOM, so nothing stale is left behind.
+		expect( document.querySelector( `script[src="${ BROKEN_SCRIPT_URL }"]` ) ).toBeNull();
+
+		const promise2 = injectScript( BROKEN_SCRIPT_URL );
+		const secondScript = document.querySelector( `script[src="${ BROKEN_SCRIPT_URL }"]` )!;
+
+		expect( promise2 ).not.toBe( promise1 );
+		expect( secondScript ).not.toBe( firstScript );
+		expect( console.warn ).not.toHaveBeenCalled();
+
+		secondScript.dispatchEvent( new Event( 'error' ) );
+		await expect( promise2 ).rejects.toBeInstanceOf( Event );
 	} );
 
 	it( 'should be possible to define custom attributes for the script element', async () => {

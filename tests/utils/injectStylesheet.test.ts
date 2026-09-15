@@ -5,13 +5,15 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { INJECTED_STYLESHEETS, injectStylesheet } from '@/utils/injectStylesheet.js';
+import { injectStylesheet } from '@/utils/injectStylesheet.js';
 import { preloadResource } from '@/utils/preloadResource.js';
 import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl.js';
 import { queryStylesheet } from '@/utils/queryHeadElement.js';
 
 import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
 import { CDN_MOCK_STYLESHEET_URL } from '@/test-utils/cdn/mocks.js';
+
+const BROKEN_STYLESHEET_URL = 'https://localhost/broken-stylesheet.css';
 
 describe( 'injectStylesheet', () => {
 	beforeEach( () => {
@@ -24,23 +26,17 @@ describe( 'injectStylesheet', () => {
 		removeAllCkCdnResources();
 	} );
 
-	it( 'should inject a stylesheet into the document', async () => {
-		// Mock the document and stylesheet element
+	it( 'should inject a stylesheet into the head by default', async () => {
 		const createElementSpy = vi.spyOn( document, 'createElement' );
-		const insertBeforeSpy = vi.spyOn( document.head, 'insertBefore' );
-
-		// Call the injectStylesheet function
 		const firstHeadChild = document.head.firstChild;
+
 		const promise = injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL } );
 
-		// Verify that the stylesheet element is created and appended to the document
+		// Verify that the stylesheet element is created and placed at the start of the head.
 		expect( createElementSpy ).toHaveBeenCalledWith( 'link' );
-		expect( insertBeforeSpy ).toHaveBeenCalledWith(
-			expect.any( HTMLLinkElement ),
-			firstHeadChild
-		);
+		expect( document.head.firstChild ).toBeInstanceOf( HTMLLinkElement );
+		expect( document.head.firstChild ).not.toBe( firstHeadChild );
 
-		// Wait for the promise to resolve
 		await expect( promise ).resolves.toBeUndefined();
 	} );
 
@@ -65,16 +61,58 @@ describe( 'injectStylesheet', () => {
 
 		document.head.appendChild( stylesheet );
 
-		// Call the injectStylesheet function
-		const promise = injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL } );
+		// The manually added link carries no load promise, so it is dropped and injected again.
+		await expect( injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL } ) ).resolves.toBeUndefined();
 
-		// Wait for the promise to resolve
-		await expect( promise ).resolves.toBeUndefined();
-
-		// Verify that the warning was shown
 		expect( console.warn ).toHaveBeenCalledWith(
 			`Stylesheet with "${ CDN_MOCK_STYLESHEET_URL }" href is already present in DOM!`
 		);
+
+		expect( document.head.querySelectorAll( `link[href="${ CDN_MOCK_STYLESHEET_URL }"]` ) ).toHaveLength( 1 );
+		expect( stylesheet.isConnected ).toBe( false );
+	} );
+
+	it( 'should inject the stylesheet again if the previously injected one was removed', async () => {
+		const promise1 = injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL } );
+
+		await promise1;
+
+		// Removing the element drops the cached promise along with it, synchronously.
+		queryStylesheet( CDN_MOCK_STYLESHEET_URL )!.remove();
+
+		const promise2 = injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL } );
+
+		expect( promise2 ).not.toBe( promise1 );
+		await expect( promise2 ).resolves.toBeUndefined();
+
+		expect( console.warn ).not.toHaveBeenCalled();
+		expect( document.head.querySelectorAll( `link[href="${ CDN_MOCK_STYLESHEET_URL }"]` ) ).toHaveLength( 1 );
+	} );
+
+	it( 'should not cache a failed injection, so the next call retries', async () => {
+		const promise1 = injectStylesheet( { href: BROKEN_STYLESHEET_URL } );
+		const firstLink = document.querySelector( `link[href="${ BROKEN_STYLESHEET_URL }"]` )!;
+
+		firstLink.dispatchEvent( new Event( 'error' ) );
+
+		// The promise is rejected with the original `error` event, not with a synthetic `Error`.
+		const reason = await promise1.catch( error => error );
+
+		expect( reason ).toBeInstanceOf( Event );
+		expect( reason.type ).toBe( 'error' );
+
+		// The broken link is removed from the DOM, so nothing stale is left behind.
+		expect( document.querySelector( `link[href="${ BROKEN_STYLESHEET_URL }"]` ) ).toBeNull();
+
+		const promise2 = injectStylesheet( { href: BROKEN_STYLESHEET_URL } );
+		const secondLink = document.querySelector( `link[href="${ BROKEN_STYLESHEET_URL }"]` )!;
+
+		expect( promise2 ).not.toBe( promise1 );
+		expect( secondLink ).not.toBe( firstLink );
+		expect( console.warn ).not.toHaveBeenCalled();
+
+		secondLink.dispatchEvent( new Event( 'error' ) );
+		await expect( promise2 ).rejects.toBeInstanceOf( Event );
 	} );
 
 	it( 'should be possible to define custom attributes for the stylesheet element', async () => {
@@ -103,6 +141,66 @@ describe( 'injectStylesheet', () => {
 		} );
 
 		expect( queryStylesheet( CDN_MOCK_STYLESHEET_URL ) ).not.toBeNull();
+	} );
+
+	describe( 'placement in the head', () => {
+		it( 'should inject the stylesheet at the end of the head if placement = \'end\'', async () => {
+			const appendChildSpy = vi.spyOn( document.head, 'appendChild' );
+
+			const promise = injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL, placement: 'end' } );
+
+			expect( appendChildSpy ).toHaveBeenCalledWith( expect.any( HTMLLinkElement ) );
+			expect( document.head.lastChild ).toBeInstanceOf( HTMLLinkElement );
+
+			await expect( promise ).resolves.toBeUndefined();
+		} );
+
+		it( 'should inject the stylesheet after previously injected stylesheets if placement = \'start\'', async () => {
+			// Manually inject the stylesheet into the document.
+			const stylesheet1 = document.createElement( 'link' );
+			stylesheet1.rel = 'stylesheet';
+			stylesheet1.href = createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.0' );
+			document.head.appendChild( stylesheet1 );
+
+			await injectStylesheet( {
+				href: CDN_MOCK_STYLESHEET_URL,
+				placement: 'start'
+			} );
+
+			await injectStylesheet( {
+				href: createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.1' ),
+				placement: 'start'
+			} );
+
+			// Verify that the stylesheet is injected after the previously injected stylesheet
+			const injectedStylesheets = [ ...document.head.querySelectorAll( 'link[rel="stylesheet"]' ) ].map(
+				link => link.getAttribute( 'href' )!
+			);
+
+			expect( injectedStylesheets ).toEqual( [
+				CDN_MOCK_STYLESHEET_URL,
+				createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.1' ),
+				createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.0' )
+			] );
+		} );
+
+		it( 'should inject the stylesheet after preload tags', async () => {
+			preloadResource( CDN_MOCK_STYLESHEET_URL );
+
+			await injectStylesheet( {
+				href: CDN_MOCK_STYLESHEET_URL,
+				placement: 'start'
+			} );
+
+			const injectedLinks = [ ...document.head.querySelectorAll( 'link[rel="stylesheet"], link[rel="preload"]' ) ].map(
+				link => [ link.getAttribute( 'rel' ), link.getAttribute( 'href' ) ]
+			);
+
+			expect( injectedLinks ).toEqual( [
+				[ 'preload', CDN_MOCK_STYLESHEET_URL ],
+				[ 'stylesheet', CDN_MOCK_STYLESHEET_URL ]
+			] );
+		} );
 	} );
 
 	describe( '`targetNode` and `placement`', () => {
@@ -185,15 +283,20 @@ describe( 'injectStylesheet', () => {
 		} );
 
 		it( 'should forget the stylesheet if the injected link is removed from the target node', async () => {
-			await injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL, targetNode } );
+			const promise1 = injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL, targetNode } );
 
-			expect( INJECTED_STYLESHEETS.get( targetNode )?.has( CDN_MOCK_STYLESHEET_URL ) ).toBe( true );
+			await promise1;
 
 			targetNode.querySelector( 'link[rel="stylesheet"]' )!.remove();
 
-			await vi.waitFor( () => {
-				expect( INJECTED_STYLESHEETS.get( targetNode )?.has( CDN_MOCK_STYLESHEET_URL ) ).toBe( false );
-			} );
+			// The promise lives on the element, so removing it forgets the stylesheet immediately.
+			const promise2 = injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL, targetNode } );
+
+			expect( promise2 ).not.toBe( promise1 );
+			await expect( promise2 ).resolves.toBeUndefined();
+
+			expect( targetNode.querySelectorAll( 'link[rel="stylesheet"]' ) ).toHaveLength( 1 );
+			expect( console.warn ).not.toHaveBeenCalled();
 		} );
 
 		it( 'should inject the stylesheet into the shadow root', async () => {
@@ -235,88 +338,6 @@ describe( 'injectStylesheet', () => {
 			expect( promise2 ).toBe( promise1 );
 			expect( shadowRoot.querySelectorAll( 'link[rel="stylesheet"]' ) ).toHaveLength( 1 );
 			expect( console.warn ).not.toHaveBeenCalled();
-		} );
-	} );
-
-	describe( '`placementInHead` (deprecated)', () => {
-		it( 'should inject the stylesheet at the end of the head if headPlacement = \'end\'', async () => {
-			// Mock the document and stylesheet element
-			const createElementSpy = vi.spyOn( document, 'createElement' );
-			const appendChildSpy = vi.spyOn( document.head, 'appendChild' );
-
-			// Call the injectStylesheet function with headPlacement = 'end'
-			const promise = injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL, placementInHead: 'end' } );
-
-			// Verify that the stylesheet element is created and appended to the document
-			expect( createElementSpy ).toHaveBeenCalledWith( 'link' );
-			expect( appendChildSpy ).toHaveBeenCalled();
-
-			// Wait for the promise to resolve
-			await expect( promise ).resolves.toBeUndefined();
-		} );
-
-		it( 'should inject the stylesheet at the start of the head if headPlacement = \'start\'', async () => {
-			// Mock the document and stylesheet element
-			const createElementSpy = vi.spyOn( document, 'createElement' );
-			const insertBeforeSpy = vi.spyOn( document.head, 'insertBefore' );
-
-			// Call the injectStylesheet function with headPlacement = 'start'
-			const promise = injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL, placementInHead: 'start' } );
-
-			// Verify that the stylesheet element is created and appended to the document
-			expect( createElementSpy ).toHaveBeenCalledWith( 'link' );
-			expect( insertBeforeSpy ).toHaveBeenCalled();
-
-			// Wait for the promise to resolve
-			await expect( promise ).resolves.toBeUndefined();
-		} );
-
-		it( 'should inject the stylesheet after previously injected stylesheets if headPlacement = \'start\'', async () => {
-			// Manually inject the stylesheet into the document.
-			const stylesheet1 = document.createElement( 'link' );
-			stylesheet1.rel = 'stylesheet';
-			stylesheet1.href = createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.0' );
-			document.head.appendChild( stylesheet1 );
-
-			// Call the injectStylesheet function with headPlacement = 'start'
-			await injectStylesheet( {
-				href: CDN_MOCK_STYLESHEET_URL,
-				placementInHead: 'start'
-			} );
-
-			await injectStylesheet( {
-				href: createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.1' ),
-				placementInHead: 'start'
-			} );
-
-			// Verify that the stylesheet is injected after the previously injected stylesheet
-			const injectedStylesheets = [ ...document.head.querySelectorAll( 'link[rel="stylesheet"]' ) ].map(
-				link => link.getAttribute( 'href' )!
-			);
-
-			expect( injectedStylesheets ).toEqual( [
-				CDN_MOCK_STYLESHEET_URL,
-				createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.1' ),
-				createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.0' )
-			] );
-		} );
-
-		it( 'should inject the stylesheet after preload tags', async () => {
-			preloadResource( CDN_MOCK_STYLESHEET_URL );
-
-			await injectStylesheet( {
-				href: CDN_MOCK_STYLESHEET_URL,
-				placementInHead: 'start'
-			} );
-
-			const injectedLinks = [ ...document.head.querySelectorAll( 'link[rel="stylesheet"], link[rel="preload"]' ) ].map(
-				link => [ link.getAttribute( 'rel' ), link.getAttribute( 'href' ) ]
-			);
-
-			expect( injectedLinks ).toEqual( [
-				[ 'preload', CDN_MOCK_STYLESHEET_URL ],
-				[ 'stylesheet', CDN_MOCK_STYLESHEET_URL ]
-			] );
 		} );
 	} );
 } );

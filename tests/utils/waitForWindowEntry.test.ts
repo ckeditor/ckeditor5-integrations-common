@@ -29,7 +29,7 @@ describe( 'waitForWindowEntry', () => {
 	} );
 
 	it( 'should throw an error if the window entry is not found', async () => {
-		await expect( waitForWindowEntry( [ 'CKEDITOR' ] ) ).rejects.toThrowError(
+		await expect( waitForWindowEntry( [ 'CKEDITOR' ] ) ).rejects.toThrow(
 			'Window entry "CKEDITOR" not found.'
 		);
 	} );

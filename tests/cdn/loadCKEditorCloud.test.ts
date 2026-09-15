@@ -251,7 +251,7 @@ describe( 'loadCKEditorCloud', () => {
 			expect( setAttributeSpy ).toBeCalledTimes( 6 );
 
 			// It's fine because `use-credentials` throws an error in the vitest browser.
-			expect( promise ).rejects.toThrowError();
+			await expect( promise ).rejects.toThrow();
 		} );
 
 		it( 'should set nonce attribute on injected elements if attributes are specified', async () => {

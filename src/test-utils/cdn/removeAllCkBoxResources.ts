@@ -3,8 +3,6 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-import { INJECTED_SCRIPTS } from '../../utils/injectScript.js';
-import { INJECTED_STYLESHEETS } from '../../utils/injectStylesheet.js';
 import { CKBOX_CDN_URL } from '../../cdn/ckbox/createCKBoxCdnUrl.js';
 
 /**
@@ -21,10 +19,7 @@ export function removeCkBoxResources(): void {
 function removeCkBoxCdnScripts(): void {
 	[ ...document.querySelectorAll( 'script' ) ]
 		.filter( script => script.src.startsWith( CKBOX_CDN_URL ) )
-		.forEach( script => {
-			INJECTED_SCRIPTS.delete( script.src );
-			script.remove();
-		} );
+		.forEach( script => script.remove() );
 
 	delete ( window as any ).CKBox;
 }
@@ -35,8 +30,5 @@ function removeCkBoxCdnScripts(): void {
 function removeCkBoxCdnLinks(): void {
 	[ ...document.querySelectorAll( 'link' ) ]
 		.filter( link => link.href.startsWith( CKBOX_CDN_URL ) )
-		.forEach( link => {
-			INJECTED_STYLESHEETS.get( link.parentNode! )?.delete( link.href );
-			link.remove();
-		} );
+		.forEach( link => link.remove() );
 }
