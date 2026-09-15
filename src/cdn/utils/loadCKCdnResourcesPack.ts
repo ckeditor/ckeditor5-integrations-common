@@ -29,13 +29,18 @@ import { uniq } from '../../utils/uniq.js';
 export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>( pack: P ): Promise<InferCKCdnResourcesPackExportsType<P>> {
 	let {
 		htmlAttributes = {},
-		stylesheetsLocation,
+		stylesheetsLocation = {},
 		scripts = [],
 		stylesheets = [],
 		preload,
 		beforeInject,
 		checkPluginLoaded
 	} = normalizeCKCdnResourcesPack( pack );
+
+	stylesheetsLocation = {
+		targetNode: document.head,
+		...stylesheetsLocation
+	};
 
 	// Execute the `beforeInject` callback if defined. It checks if the resources are already loaded.
 	beforeInject?.();
@@ -56,13 +61,19 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 	}
 
 	// Load stylesheet tags before scripts to avoid a flash of unstyled content.
-	await Promise.all(
+	const stylesheetsPromise = Promise.all(
 		uniq( stylesheets ).map( href => injectStylesheet( {
 			href,
 			attributes: htmlAttributes,
 			...stylesheetsLocation
 		} ) )
 	);
+
+	if ( stylesheetsLocation.targetNode!.isConnected ) {
+		await stylesheetsPromise;
+	} else {
+		stylesheetsPromise.catch( error => console.error( error ) );
+	}
 
 	// Load script tags.
 	for ( const script of uniq( scripts ) ) {

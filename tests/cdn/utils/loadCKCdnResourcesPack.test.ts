@@ -243,5 +243,72 @@ describe( 'loadCKCdnResourcesPack', () => {
 			expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
 			expect( targetNode.querySelector( 'script' ) ).toBeNull();
 		} );
+
+		describe( 'disconnected target node', () => {
+			let detachedNode: HTMLDivElement;
+
+			beforeEach( () => {
+				detachedNode = document.createElement( 'div' );
+			} );
+
+			it( 'should not wait for the stylesheets if the target node is not connected', async () => {
+				await loadCKCdnResourcesPack( {
+					stylesheets: [ CDN_MOCK_STYLESHEET_URL ],
+					stylesheetsLocation: { targetNode: detachedNode }
+				} );
+
+				expect( detachedNode.querySelector( `link[href="${ CDN_MOCK_STYLESHEET_URL }"]` ) ).not.toBeNull();
+			} );
+
+			it( 'should not wait for the stylesheets injected into the shadow root of a detached host', async () => {
+				const shadowRoot = detachedNode.attachShadow( { mode: 'open' } );
+
+				await loadCKCdnResourcesPack( {
+					stylesheets: [ CDN_MOCK_STYLESHEET_URL ],
+					stylesheetsLocation: { targetNode: shadowRoot }
+				} );
+
+				expect( shadowRoot.querySelector( `link[href="${ CDN_MOCK_STYLESHEET_URL }"]` ) ).not.toBeNull();
+			} );
+
+			it( 'should still load the scripts if the target node is not connected', async () => {
+				const loaded = await loadCKCdnResourcesPack( {
+					scripts: [ CDN_MOCK_SCRIPT_URL ],
+					stylesheets: [ CDN_MOCK_STYLESHEET_URL ],
+					stylesheetsLocation: { targetNode: detachedNode },
+					checkPluginLoaded: () => window.CKEDITOR!
+				} );
+
+				expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
+				expect( loaded ).toEqual( window.CKEDITOR );
+			} );
+
+			it( 'should report a stylesheet failure even though nothing waits for it', async () => {
+				await loadCKCdnResourcesPack( {
+					stylesheets: [ CDN_MOCK_STYLESHEET_URL ],
+					stylesheetsLocation: { targetNode: detachedNode }
+				} );
+
+				detachedNode.querySelector( 'link' )!.dispatchEvent( new Event( 'error' ) );
+
+				await vi.waitFor( () => {
+					expect( console.error ).toHaveBeenCalled();
+				} );
+			} );
+
+			it( 'should wait for the stylesheets once the target node is connected', async () => {
+				document.body.appendChild( detachedNode );
+
+				await loadCKCdnResourcesPack( {
+					stylesheets: [ CDN_MOCK_STYLESHEET_URL ],
+					stylesheetsLocation: { targetNode: detachedNode }
+				} );
+
+				expect( detachedNode.querySelector( `link[href="${ CDN_MOCK_STYLESHEET_URL }"]` ) ).not.toBeNull();
+				expect( console.error ).not.toHaveBeenCalled();
+
+				detachedNode.remove();
+			} );
+		} );
 	} );
 } );

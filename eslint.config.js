@@ -65,13 +65,6 @@ export default defineConfig( [
 		}
 	},
 	{
-		files: [ 'demo*/**/*.{ts,tsx}' ],
-
-		rules: {
-			'ckeditor5-rules/license-header': 'off'
-		}
-	},
-	{
 		files: [ 'scripts/**/*' ],
 
 		languageOptions: {

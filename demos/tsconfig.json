@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+	"rootDir": "../",
+    "types": [
+      "../vite-env.d.ts"
+    ],
+	"paths": {
+		"@/*": ["./*", "../src/*"]
+	}
+  },
+  "include": [
+    "**/*"
+  ]
+}
