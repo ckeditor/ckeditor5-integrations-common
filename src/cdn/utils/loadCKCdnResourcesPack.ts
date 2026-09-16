@@ -37,9 +37,11 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 		checkPluginLoaded
 	} = normalizeCKCdnResourcesPack( pack );
 
+	const stylesheetsTargetNode = stylesheetsLocation.targetNode ?? document.head;
+
 	stylesheetsLocation = {
-		targetNode: document.head,
-		...stylesheetsLocation
+		...stylesheetsLocation,
+		targetNode: stylesheetsTargetNode
 	};
 
 	// Execute the `beforeInject` callback if defined. It checks if the resources are already loaded.
