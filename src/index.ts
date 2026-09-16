@@ -10,7 +10,7 @@ import './cdn/ckbox/globals.js';
 export { createDefer, type Defer } from './utils/defer.js';
 export { waitFor, type WaitForConfig } from './utils/waitFor.js';
 export { injectScript, injectScriptsInParallel } from './utils/injectScript.js';
-export { injectStylesheet } from './utils/injectStylesheet.js';
+export { injectStylesheet, type InjectStylesheetLocation } from './utils/injectStylesheet.js';
 export { isSSR } from './utils/isSSR.js';
 export { omit } from './utils/omit.js';
 export { once } from './utils/once.js';
