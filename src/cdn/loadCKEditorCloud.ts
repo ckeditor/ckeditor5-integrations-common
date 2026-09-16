@@ -214,6 +214,10 @@ export type CKEditorCloudConfig<Plugins extends CdnPluginsPacks = CdnPluginsPack
 
 	/**
 	 * The location where the stylesheets are to be injected. By default, this is at the beginning of `document.head`.
+	 *
+	 * If the target node is not connected to the document, the returned promise does not wait for the
+	 * stylesheets, because a detached `<link>` never starts loading. They are still injected and load once
+	 * the node is attached, but a load failure is only logged instead of rejecting.
 	 */
 	injectedStylesheetsLocation?: InjectStylesheetLocation;
 
