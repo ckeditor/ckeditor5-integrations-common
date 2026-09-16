@@ -72,5 +72,14 @@ export default defineConfig( [
 				...globals.node
 			}
 		}
+	},
+	{
+		files: [ '.changelog/**/*.md' ],
+
+		rules: {
+			'ckeditor5-rules/validate-changelog-entry': [ 'error', {
+				repositoryType: 'mono'
+			} ]
+		}
 	}
 ] );
