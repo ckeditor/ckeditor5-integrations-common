@@ -339,5 +339,26 @@ describe( 'injectStylesheet', () => {
 			expect( shadowRoot.querySelectorAll( 'link[rel="stylesheet"]' ) ).toHaveLength( 1 );
 			expect( console.warn ).not.toHaveBeenCalled();
 		} );
+
+		it( 'should ignore injected links nested deeper in the target node if placement = \'start\'', async () => {
+			const wrapper = targetNode.appendChild( document.createElement( 'div' ) );
+
+			await injectStylesheet( {
+				href: createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.0' ),
+				targetNode: wrapper
+			} );
+
+			await injectStylesheet( {
+				href: CDN_MOCK_STYLESHEET_URL,
+				targetNode,
+				placement: 'start'
+			} );
+
+			expect( targetNode.firstChild ).toBeInstanceOf( HTMLLinkElement );
+			expect( ( targetNode.firstChild as HTMLLinkElement ).href ).toBe( CDN_MOCK_STYLESHEET_URL );
+
+			expect( targetNode.firstChild!.nextSibling ).toBe( wrapper );
+			expect( wrapper.querySelectorAll( 'link' ) ).toHaveLength( 1 );
+		} );
 	} );
 } );
