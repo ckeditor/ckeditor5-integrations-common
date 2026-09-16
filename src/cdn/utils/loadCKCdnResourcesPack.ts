@@ -71,6 +71,8 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 		} ) )
 	);
 
+	// If the target node is not attached to the document, the onload event may never be called and the promise may never resolve.
+	// Therefore, let's not wait for the loading of stylesheets if the target node is not attached to the document.
 	if ( stylesheetsLocation.targetNode!.isConnected ) {
 		await stylesheetsPromise;
 	} else {
