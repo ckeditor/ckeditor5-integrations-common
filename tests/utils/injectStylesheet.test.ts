@@ -360,5 +360,31 @@ describe( 'injectStylesheet', () => {
 			expect( targetNode.firstChild!.nextSibling ).toBe( wrapper );
 			expect( wrapper.querySelectorAll( 'link' ) ).toHaveLength( 1 );
 		} );
+
+		it( 'should inject the stylesheet after previously injected ones inside the shadow root', async () => {
+			const shadowRoot = targetNode.attachShadow( { mode: 'open' } );
+
+			const stylesheet1 = document.createElement( 'link' );
+			stylesheet1.rel = 'stylesheet';
+			stylesheet1.href = createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.0' );
+			shadowRoot.appendChild( stylesheet1 );
+
+			await injectStylesheet( { href: CDN_MOCK_STYLESHEET_URL, targetNode: shadowRoot, placement: 'start' } );
+			await injectStylesheet( {
+				href: createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.1' ),
+				targetNode: shadowRoot,
+				placement: 'start'
+			} );
+
+			const injectedStylesheets = [ ...shadowRoot.querySelectorAll( 'link[rel="stylesheet"]' ) ].map(
+				link => link.getAttribute( 'href' )!
+			);
+
+			expect( injectedStylesheets ).toEqual( [
+				CDN_MOCK_STYLESHEET_URL,
+				createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.1' ),
+				createCKCdnUrl( 'ckeditor5', 'ckeditor5.css', '42.0.0' )
+			] );
+		} );
 	} );
 } );

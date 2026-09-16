@@ -67,7 +67,10 @@ function appendLink(
 		return;
 	}
 
-	const injectedLinks = targetNode.querySelectorAll( ':scope > link[data-injected-by="ckeditor-integration"]' );
+	const injectedLinks = Array.from( targetNode.children ).filter(
+		child => child.matches( 'link[data-injected-by="ckeditor-integration"]' )
+	);
+
 	const lastInjectedLink = injectedLinks[ injectedLinks.length - 1 ];
 
 	if ( lastInjectedLink ) {
