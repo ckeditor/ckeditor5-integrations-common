@@ -122,6 +122,22 @@ describe( 'createCKCdnBaseBundlePack', () => {
 		await expect( loadCKEditor( '44.3.0' ) ).resolves.not.toThrow();
 	} );
 
+	it( 'should not throw an error if the same testing channel is requested twice', async () => {
+		await loadCKEditor( 'nightly' );
+		await expect( loadCKEditor( 'nightly' ) ).resolves.not.toThrow();
+	} );
+
+	it( 'should throw an error if the requested version differs from the installed testing channel', async () => {
+		await loadCKEditor( 'nightly' );
+
+		const installedVersion = window.CKEDITOR_VERSION;
+
+		await expect( async () => loadCKEditor( '44.3.0' ) ).rejects.toThrow(
+			`CKEditor 5 is already loaded from CDN in version ${ installedVersion }. ` +
+			'Remove the old <script> and <link> tags loading CKEditor 5 to allow loading the 44.3.0 version.'
+		);
+	} );
+
 	it( 'should throw an error if CKEditor 5 is loaded from NPM', async () => {
 		window.CKEDITOR_VERSION = '41.0.0';
 
