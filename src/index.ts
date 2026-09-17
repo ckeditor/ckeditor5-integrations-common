@@ -34,6 +34,7 @@ export {
 	isCKVersion,
 	isCKTestingVersion,
 	isCKZeroBaseVersion,
+	isCKTestingChannel,
 	extractCKTestingChannel,
 	type CKVersion,
 	type CKTestingVersion,

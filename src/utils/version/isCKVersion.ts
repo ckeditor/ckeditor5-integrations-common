@@ -18,7 +18,7 @@ export type CKTestingChannel = typeof CK_TESTING_CHANNELS[ number ];
 export type CKTestingVersion =
 	| CKTestingChannel
 	| `${ CKTestingChannel }-${ string }`
-	| `${ SemanticVersion }-${ CKTestingChannel }-${ string }`;
+	| `${ SemanticVersion }-${ CKTestingChannel }${ string }`;
 
 /**
  * A version of the CKEditor.
@@ -98,4 +98,29 @@ export function extractCKTestingChannel( version: string ): CKTestingChannel | n
 	return version.split( /[-.]/ ).find( ( segment ): segment is CKTestingChannel =>
 		( CK_TESTING_CHANNELS as unknown as Array<string> ).includes( segment )
 	) ?? null;
+}
+
+/**
+ * Checks if the given string is a testing channel alias, such as `nightly` or `nightly-next`.
+ *
+ * Aliases are resolved by the CDN to concrete semantic versions, so unlike them
+ * they cannot be compared by strict equality.
+ *
+ * @param version - The string to check.
+ * @returns `true` if the string is a channel alias, `false` for concrete versions.
+ * @example
+ * ```ts
+ * isCKTestingChannel( 'nightly' ); // -> true
+ * isCKTestingChannel( 'nightly-next' ); // -> true
+ * isCKTestingChannel( '0.0.0-nightly-20260917.0' ); // -> false
+ * isCKTestingChannel( '47.7.0-alpha.2' ); // -> false
+ * isCKTestingChannel( '47.7.0' ); // -> false
+ * ```
+ */
+export function isCKTestingChannel( version: string | undefined ): version is CKTestingChannel | `${ CKTestingChannel }-${ string }` {
+	if ( !version ) {
+		return false;
+	}
+
+	return ( CK_TESTING_CHANNELS as unknown as Array<string> ).includes( version.split( '-' )[ 0 ] );
 }

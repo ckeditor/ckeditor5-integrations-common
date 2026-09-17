@@ -4,7 +4,7 @@
  */
 
 import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack.js';
-import { extractCKTestingChannel, type CKVersion } from '../../utils/version/isCKVersion.js';
+import { extractCKTestingChannel, isCKTestingChannel, type CKVersion } from '../../utils/version/isCKVersion.js';
 
 import { waitForWindowEntry } from '../../utils/waitForWindowEntry.js';
 import { injectScriptsInParallel } from '../../utils/injectScript.js';
@@ -88,14 +88,12 @@ export function createCKCdnBaseBundlePack(
 					);
 
 				case 'cdn': {
-					// Channel aliases such as `nightly` are resolved by the CDN to concrete
-					// semantic versions, so they must be compared by channel, not by equality.
-					const requestedTestingChannel = extractCKTestingChannel( version );
-
+					// Channel aliases are resolved by the CDN to concrete semantic versions,
+					// so they are compared by channel. Concrete versions must match exactly.
 					let isMatchingVersion;
 
-					if ( requestedTestingChannel ) {
-						isMatchingVersion = requestedTestingChannel === extractCKTestingChannel( installationInfo.version );
+					if ( isCKTestingChannel( version ) ) {
+						isMatchingVersion = extractCKTestingChannel( version ) === extractCKTestingChannel( installationInfo.version );
 					} else {
 						isMatchingVersion = installationInfo.version === version;
 					}
