@@ -3,14 +3,13 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-/**
- * Map of injected scripts. It is used to prevent injecting the same script multiple times.
- * It happens quite often in React Strict mode when the component is rendered twice.
- */
-export const INJECTED_SCRIPTS = new Map<string, Promise<void>>();
+import { getLoadPromise, trackElementLoad } from './_internal/trackElementLoad.js';
 
 /**
  * Injects a script into the document.
+ *
+ * Injecting the same `src` twice is a no-op – the promise of the first injection is returned. This
+ * happens quite often in React Strict mode when the component is rendered twice.
  *
  * @param src The URL of the script to be injected.
  * @param props Additional properties used to decide how the script should be injected.
@@ -21,59 +20,33 @@ export function injectScript(
 	src: string,
 	{ attributes }: InjectScriptProps = {}
 ): Promise<void> {
-	// Return the promise if the script is already injected by this function.
-	if ( INJECTED_SCRIPTS.has( src ) ) {
-		return INJECTED_SCRIPTS.get( src )!;
+	const prevScript = document.querySelector( `script[src="${ src }"]` );
+	const prevPromise = getLoadPromise( prevScript );
+
+	if ( prevPromise ) {
+		return prevPromise;
 	}
 
-	// Return the promise if the script is already present in the document but not injected by this function.
-	// We are not sure if the script is loaded or not, so we have to show warning in this case.
-	const maybePrevScript = document.querySelector( `script[src="${ src }"]` );
-
-	if ( maybePrevScript ) {
+	if ( prevScript ) {
 		console.warn( `Script with "${ src }" src is already present in DOM!` );
-		maybePrevScript.remove();
+		prevScript.remove();
 	}
 
-	// Inject the script and return the promise.
-	const promise = new Promise<void>( ( resolve, reject ) => {
-		const script = document.createElement( 'script' );
+	const script = document.createElement( 'script' );
 
-		script.onerror = reject;
-		script.onload = () => {
-			resolve();
-		};
+	for ( const [ key, value ] of Object.entries( attributes || {} ) ) {
+		script.setAttribute( key, value );
+	}
 
-		// Set additional attributes if provided.
-		for ( const [ key, value ] of Object.entries( attributes || {} ) ) {
-			script.setAttribute( key, value );
-		}
+	script.setAttribute( 'data-injected-by', 'ckeditor-integration' );
 
-		script.setAttribute( 'data-injected-by', 'ckeditor-integration' );
+	script.type = 'text/javascript';
+	script.async = true;
 
-		script.type = 'text/javascript';
-		script.async = true;
-		script.src = src;
+	const promise = trackElementLoad( script );
 
-		document.head.appendChild( script );
-
-		// It should remove script if script is being removed from the DOM.
-		const observer = new MutationObserver( mutations => {
-			const removedNodes = mutations.flatMap( mutation => Array.from( mutation.removedNodes ) );
-
-			if ( removedNodes.includes( script ) ) {
-				INJECTED_SCRIPTS.delete( src );
-				observer.disconnect();
-			}
-		} );
-
-		observer.observe( document.head, {
-			childList: true,
-			subtree: true
-		} );
-	} );
-
-	INJECTED_SCRIPTS.set( src, promise );
+	script.src = src;
+	document.head.appendChild( script );
 
 	return promise;
 }

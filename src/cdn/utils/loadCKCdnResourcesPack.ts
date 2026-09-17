@@ -6,7 +6,7 @@
 import type { Awaitable } from '../../types/Awaitable.js';
 
 import { injectScript, type InjectScriptProps } from '../../utils/injectScript.js';
-import { injectStylesheet } from '../../utils/injectStylesheet.js';
+import { injectStylesheet, type InjectStylesheetLocation } from '../../utils/injectStylesheet.js';
 import { preloadResource } from '../../utils/preloadResource.js';
 import { uniq } from '../../utils/uniq.js';
 
@@ -29,12 +29,20 @@ import { uniq } from '../../utils/uniq.js';
 export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>( pack: P ): Promise<InferCKCdnResourcesPackExportsType<P>> {
 	let {
 		htmlAttributes = {},
+		stylesheetsLocation = {},
 		scripts = [],
 		stylesheets = [],
 		preload,
 		beforeInject,
 		checkPluginLoaded
 	} = normalizeCKCdnResourcesPack( pack );
+
+	const stylesheetsTargetNode = stylesheetsLocation.targetNode ?? document.head;
+
+	stylesheetsLocation = {
+		...stylesheetsLocation,
+		targetNode: stylesheetsTargetNode
+	};
 
 	// Execute the `beforeInject` callback if defined. It checks if the resources are already loaded.
 	beforeInject?.();
@@ -55,13 +63,21 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 	}
 
 	// Load stylesheet tags before scripts to avoid a flash of unstyled content.
-	await Promise.all(
+	const stylesheetsPromise = Promise.all(
 		uniq( stylesheets ).map( href => injectStylesheet( {
 			href,
 			attributes: htmlAttributes,
-			placementInHead: 'start'
+			...stylesheetsLocation
 		} ) )
 	);
+
+	// If the target node is not attached to the document, the onload event may never be called and the promise may never resolve.
+	// Therefore, let's not wait for the loading of stylesheets if the target node is not attached to the document.
+	if ( stylesheetsLocation.targetNode!.isConnected ) {
+		await stylesheetsPromise;
+	} else {
+		stylesheetsPromise.catch( error => console.error( error ) );
+	}
 
 	// Load script tags.
 	for ( const script of uniq( scripts ) ) {
@@ -177,6 +193,11 @@ export type CKCdnResourcesAdvancedPack<R> = {
 	 * It can be used to specify `crossorigin` or `nonce` attributes on the injected HTML elements.
 	 */
 	htmlAttributes?: Record<string, any>;
+
+	/**
+	 * The location where the stylesheets are to be injected. By default, this is at the beginning of `document.head`.
+	 */
+	stylesheetsLocation?: InjectStylesheetLocation;
 
 	/**
 	 * Callback that is executed before injecting the resources. It can be used to verify if the resources are already loaded.

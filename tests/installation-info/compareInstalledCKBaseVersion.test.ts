@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-import { describe, it, beforeEach, expect } from 'vitest';
+import { describe, it, afterEach, expect } from 'vitest';
 
 import { removeAllCkCdnResources } from '@/src/test-utils/index.js';
 import { compareInstalledCKBaseVersion } from '@/src/installation-info/compareInstalledCKBaseVersion.js';
@@ -12,7 +12,7 @@ import type { SemanticVersion } from '@/src/utils/version/isSemanticVersion.js';
 import type { VersionCompareResult } from '@/src/utils/version/compareSemanticVersions.js';
 
 describe( 'compareInstalledCKBaseVersion', () => {
-	beforeEach( () => {
+	afterEach( () => {
 		removeAllCkCdnResources();
 	} );
 

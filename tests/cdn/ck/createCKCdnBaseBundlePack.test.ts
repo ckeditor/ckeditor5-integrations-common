@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 
 import type { CKVersion } from '@/utils/version/isCKVersion.js';
 
@@ -17,7 +17,7 @@ import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack.js';
 import { createCKDocsUrl } from '@/docs/createCKDocsUrl.js';
 
 describe( 'createCKCdnBaseBundlePack', () => {
-	beforeEach( () => {
+	afterEach( () => {
 		removeAllCkCdnResources();
 	} );
 
@@ -111,7 +111,7 @@ describe( 'createCKCdnBaseBundlePack', () => {
 
 	it( 'should throw an error if the requested version differs from the installed one', async () => {
 		await loadCKEditor( '44.3.0' );
-		await expect( async () => loadCKEditor( '42.0.0' ) ).rejects.toThrowError(
+		await expect( async () => loadCKEditor( '42.0.0' ) ).rejects.toThrow(
 			'CKEditor 5 is already loaded from CDN in version 44.3.0. ' +
 			'Remove the old <script> and <link> tags loading CKEditor 5 to allow loading the 42.0.0 version.'
 		);
@@ -125,7 +125,7 @@ describe( 'createCKCdnBaseBundlePack', () => {
 	it( 'should throw an error if CKEditor 5 is loaded from NPM', async () => {
 		window.CKEDITOR_VERSION = '41.0.0';
 
-		await expect( async () => loadCKEditor( '44.3.0' ) ).rejects.toThrowError(
+		await expect( async () => loadCKEditor( '44.3.0' ) ).rejects.toThrow(
 			'CKEditor 5 is already loaded from npm. Check the migration guide for more details: ' +
 			createCKDocsUrl( 'updating/migrations/vanilla-js.html' )
 		);

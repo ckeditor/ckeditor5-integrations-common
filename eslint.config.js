@@ -65,19 +65,21 @@ export default defineConfig( [
 		}
 	},
 	{
-		files: [ 'demo*/**/*.{ts,tsx}' ],
-
-		rules: {
-			'ckeditor5-rules/license-header': 'off'
-		}
-	},
-	{
 		files: [ 'scripts/**/*' ],
 
 		languageOptions: {
 			globals: {
 				...globals.node
 			}
+		}
+	},
+	{
+		files: [ '.changelog/**/*.md' ],
+
+		rules: {
+			'ckeditor5-rules/validate-changelog-entry': [ 'error', {
+				repositoryType: 'mono'
+			} ]
 		}
 	}
 ] );
