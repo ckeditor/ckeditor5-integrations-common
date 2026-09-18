@@ -4,7 +4,7 @@
  */
 
 import type { CKCdnResourcesAdvancedPack } from '../../cdn/utils/loadCKCdnResourcesPack.js';
-import type { CKVersion } from '../../utils/version/isCKVersion.js';
+import { extractCKTestingChannel, isCKTestingChannel, type CKVersion } from '../../utils/version/isCKVersion.js';
 
 import { waitForWindowEntry } from '../../utils/waitForWindowEntry.js';
 import { injectScriptsInParallel } from '../../utils/injectScript.js';
@@ -87,8 +87,18 @@ export function createCKCdnBaseBundlePack(
 						createCKDocsUrl( 'updating/migrations/vanilla-js.html' )
 					);
 
-				case 'cdn':
-					if ( installationInfo.version !== version ) {
+				case 'cdn': {
+					// Channel aliases are resolved by the CDN to concrete semantic versions,
+					// so they are compared by channel. Concrete versions must match exactly.
+					let isMatchingVersion;
+
+					if ( isCKTestingChannel( version ) ) {
+						isMatchingVersion = extractCKTestingChannel( version ) === extractCKTestingChannel( installationInfo.version );
+					} else {
+						isMatchingVersion = installationInfo.version === version;
+					}
+
+					if ( !isMatchingVersion ) {
 						throw new Error(
 							`CKEditor 5 is already loaded from CDN in version ${ installationInfo.version }. ` +
 							`Remove the old <script> and <link> tags loading CKEditor 5 to allow loading the ${ version } version.`
@@ -96,6 +106,7 @@ export function createCKCdnBaseBundlePack(
 					}
 
 					break;
+				}
 			}
 		}
 	};

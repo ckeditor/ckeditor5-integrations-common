@@ -34,8 +34,11 @@ export {
 	isCKVersion,
 	isCKTestingVersion,
 	isCKZeroBaseVersion,
+	isCKTestingChannel,
+	extractCKTestingChannel,
 	type CKVersion,
-	type CKTestingVersion
+	type CKTestingVersion,
+	type CKTestingChannel
 } from './utils/version/isCKVersion.js';
 
 export { appendExtraPluginsToEditorConfig } from './plugins/appendExtraPluginsToEditorConfig.js';
