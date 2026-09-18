@@ -5,7 +5,7 @@
 
 import { isSemanticVersion, type SemanticVersion } from './isSemanticVersion.js';
 
-export const CK_TESTING_CHANNELS = [ 'nightly', 'alpha', 'staging', 'internal' ] as const;
+export const CK_TESTING_CHANNELS = [ 'nightly', 'nightly-next', 'alpha', 'staging', 'internal' ] as const;
 
 /**
  * A channel of testing version.

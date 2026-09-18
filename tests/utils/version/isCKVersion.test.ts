@@ -58,7 +58,7 @@ describe( 'isCKTestingChannel', () => {
 		'nightly': true,
 		'alpha': true,
 		'staging': true,
-		'nightly-next': false,
+		'nightly-next': true,
 		'nightly-abc': false,
 
 		'0.0.0-nightly-20241104.0': false,
