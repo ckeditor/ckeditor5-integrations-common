@@ -95,9 +95,7 @@ export function isCKVersion( version: string | undefined ): version is CKVersion
  * ```
  */
 export function extractCKTestingChannel( version: string ): CKTestingChannel | null {
-	return version.split( /[-.]/ ).find( ( segment ): segment is CKTestingChannel =>
-		( CK_TESTING_CHANNELS as unknown as Array<string> ).includes( segment )
-	) ?? null;
+	return version.split( /[-.]/ ).find( isCKTestingChannel ) ?? null;
 }
 
 /**
@@ -111,16 +109,15 @@ export function extractCKTestingChannel( version: string ): CKTestingChannel | n
  * @example
  * ```ts
  * isCKTestingChannel( 'nightly' ); // -> true
- * isCKTestingChannel( 'nightly-next' ); // -> true
  * isCKTestingChannel( '0.0.0-nightly-20260917.0' ); // -> false
  * isCKTestingChannel( '47.7.0-alpha.2' ); // -> false
  * isCKTestingChannel( '47.7.0' ); // -> false
  * ```
  */
-export function isCKTestingChannel( version: string | undefined ): version is CKTestingChannel | `${ CKTestingChannel }-${ string }` {
+export function isCKTestingChannel( version: string | undefined ): version is CKTestingChannel {
 	if ( !version ) {
 		return false;
 	}
 
-	return ( CK_TESTING_CHANNELS as unknown as Array<string> ).includes( version.split( '-' )[ 0 ] );
+	return ( CK_TESTING_CHANNELS as unknown as Array<string> ).includes( version );
 }
