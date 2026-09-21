@@ -1,6 +1,19 @@
 Changelog
 =========
 
+## [3.1.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v3.0.0...v3.1.0) (September 21, 2026)
+
+### Features
+
+* Added the `extractCKTestingChannel()` and `isCKTestingChannel()` helpers for working with CKEditor 5 testing channels.
+
+### Bug fixes
+
+* Requesting a testing channel such as `nightly` no longer throws an error when the same channel is already loaded from the CDN. Closes [#132](https://github.com/ckeditor/ckeditor5-integrations-common/issues/132).
+
+  Testing channels are aliases resolved by the CDN to concrete semantic versions, for example `nightly` resolves to `0.0.0-nightly-20260917.0`. The installation guard compared the requested alias to the resolved version by strict equality, so loading a pack twice in the same page reported a version conflict with itself. Aliases are now compared by channel, while exact versions still require an exact match.
+
+
 ## [3.0.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.4.1...v3.0.0) (September 17, 2026)
 
 ### BREAKING CHANGES
@@ -69,13 +82,6 @@ Changelog
 ### Bug fixes
 
 * Fixed an issue where the editor's alpha version was being compared incorrectly.
-
-
-## [2.3.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.2.5...v2.3.0) (April 1, 2026)
-
-### Features
-
-* Add utilities that make it easier to detect the availability of features on certain versions of CKEditor. See [ckeditor/ckeditor5-react#658](https://github.com/ckeditor/ckeditor5-react/issues/658), [ckeditor/ckeditor5-vue#400](https://github.com/ckeditor/ckeditor5-vue/issues/400), [ckeditor/ckeditor5-angular#550](https://github.com/ckeditor/ckeditor5-angular/issues/550).
 
 ---
 
