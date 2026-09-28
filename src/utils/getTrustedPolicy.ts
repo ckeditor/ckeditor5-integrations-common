@@ -51,11 +51,7 @@ export const getTrustedPolicy = once( (): TrustedTypePolicyLike | null => {
  * Signs provided url with provided policy. If no policy is provided (or it's null) then internal one will be used.
  */
 export function toTrustedScriptURL( url: string ): string {
-	try {
-		return ( getTrustedPolicy()?.createScriptURL( url ) ?? url ) as string;
-	} catch {
-		return url;
-	}
+	return ( getTrustedPolicy()?.createScriptURL( url ) ?? url ) as string;
 }
 
 type TrustedTypePolicyFactoryLike = {
