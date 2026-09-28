@@ -19,7 +19,7 @@ export function once<A extends Array<any>, R = void>( fn: ( ...args: A ) => R ):
 		return lastResult.current;
 	};
 
-	wrappedFn._reset = () => {
+	wrappedFn.reset = () => {
 		lastResult = null;
 	};
 

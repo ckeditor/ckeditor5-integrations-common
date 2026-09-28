@@ -30,4 +30,17 @@ describe( 'once', () => {
 		expect( result2 ).toBe( 'result' );
 		expect( result3 ).toBe( 'result' );
 	} );
+
+	it( 'should be possible to reset cache', () => {
+		const mockFn = vi.fn().mockReturnValueOnce( 1 ).mockReturnValueOnce( 2 );
+		const onceFn = once( mockFn );
+
+		expect( onceFn() ).toBe( 1 );
+		expect( onceFn() ).toBe( 1 );
+
+		onceFn.reset();
+
+		expect( onceFn() ).toBe( 2 );
+		expect( onceFn() ).toBe( 2 );
+	} );
 } );
