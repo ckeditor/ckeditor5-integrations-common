@@ -3,10 +3,6 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-/**
- * @module utils/dom/trustedtypes
- */
-
 import { once } from './once.js';
 
 /**
