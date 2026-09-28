@@ -63,7 +63,7 @@ function isTrustedTypesEnforced(): boolean {
 
 		return false;
 	} catch {
-		return typeof global.document.createElement === 'function';
+		return typeof document.createElement === 'function';
 	}
 }
 
