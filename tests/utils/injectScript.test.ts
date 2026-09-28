@@ -5,7 +5,8 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { injectScript } from '@/utils/injectScript.js';
+import { injectScript, injectScriptsInParallel } from '@/utils/injectScript.js';
+import { getTrustedPolicy } from '@/utils/getTrustedPolicy.js';
 import { queryScript } from '@/utils/queryHeadElement.js';
 import { createDefer } from '@/utils/defer.js';
 
@@ -153,6 +154,133 @@ describe( 'injectScript', () => {
 
 		expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
 		await waitForExecuteMockScript();
+	} );
+
+	it( 'should mark the script as injected by the integration', async () => {
+		await injectScript( CDN_MOCK_SCRIPT_URL );
+
+		expect( queryScript( CDN_MOCK_SCRIPT_URL )?.getAttribute( 'data-injected-by' ) ).toBe( 'ckeditor-integration' );
+		await waitForExecuteMockScript();
+	} );
+
+	describe( 'trusted types', () => {
+		beforeEach( () => {
+			getTrustedPolicy.reset();
+		} );
+
+		afterEach( () => {
+			vi.unstubAllGlobals();
+			getTrustedPolicy.reset();
+		} );
+
+		it( 'should sign the script URL with the provided trusted type policy', async () => {
+			const trustedTypePolicy = {
+				createScriptURL: vi.fn( ( url: string ) => url )
+			};
+
+			await injectScript( CDN_MOCK_SCRIPT_URL, { trustedTypePolicy } );
+
+			expect( trustedTypePolicy.createScriptURL ).toHaveBeenCalledOnce();
+			expect( trustedTypePolicy.createScriptURL ).toHaveBeenCalledWith( CDN_MOCK_SCRIPT_URL );
+			expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
+
+			await waitForExecuteMockScript();
+		} );
+
+		it( 'should not create the internal policy if a custom one is provided', async () => {
+			const createPolicy = vi.fn();
+
+			vi.stubGlobal( 'trustedTypes', { createPolicy } );
+
+			await injectScript( CDN_MOCK_SCRIPT_URL, {
+				trustedTypePolicy: { createScriptURL: url => url }
+			} );
+
+			expect( createPolicy ).not.toHaveBeenCalled();
+			await waitForExecuteMockScript();
+		} );
+
+		it( 'should use the internal policy if trusted types are available and no policy is provided', async () => {
+			const createPolicy = vi.fn( ( _name: string, options: unknown ) => options );
+
+			vi.stubGlobal( 'trustedTypes', { createPolicy } );
+
+			await injectScript( CDN_MOCK_SCRIPT_URL );
+
+			expect( createPolicy ).toHaveBeenCalledWith( 'ckeditor5-integrations', expect.any( Object ) );
+			expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
+
+			await waitForExecuteMockScript();
+		} );
+
+		it( 'should inject the script with a plain URL if trusted types are not available', async () => {
+			vi.stubGlobal( 'trustedTypes', undefined );
+
+			await injectScript( CDN_MOCK_SCRIPT_URL );
+
+			expect( queryScript( CDN_MOCK_SCRIPT_URL )?.src ).toBe( CDN_MOCK_SCRIPT_URL );
+			await waitForExecuteMockScript();
+		} );
+
+		it( 'should refuse to inject a non-http(s) script when the internal policy is used', () => {
+			const src = 'javascript:alert(1)';
+
+			vi.stubGlobal( 'trustedTypes', {
+				createPolicy: ( _name: string, options: unknown ) => options
+			} );
+
+			expect( () => injectScript( src ) ).toThrow( `CKEditor: refusing to load a script from "${ src }".` );
+			expect( document.querySelector( `script[src="${ src }"]` ) ).toBeNull();
+		} );
+
+		it( 'should not append the script if the provided policy throws', () => {
+			const error = new TypeError( 'Blocked by policy.' );
+			const appendChildSpy = vi.spyOn( document.head, 'appendChild' );
+
+			expect( () => injectScript( CDN_MOCK_SCRIPT_URL, {
+				trustedTypePolicy: {
+					createScriptURL: () => {
+						throw error;
+					}
+				}
+			} ) ).toThrow( error );
+
+			expect( appendChildSpy ).not.toHaveBeenCalled();
+			expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).toBeNull();
+		} );
+
+		it( 'should not call the policy again when the same script is injected twice', async () => {
+			const trustedTypePolicy = {
+				createScriptURL: vi.fn( ( url: string ) => url )
+			};
+
+			const promise1 = injectScript( CDN_MOCK_SCRIPT_URL, { trustedTypePolicy } );
+			const promise2 = injectScript( CDN_MOCK_SCRIPT_URL, { trustedTypePolicy } );
+
+			expect( promise1 ).toBe( promise2 );
+			expect( trustedTypePolicy.createScriptURL ).toHaveBeenCalledOnce();
+
+			await promise1;
+			await waitForExecuteMockScript();
+		} );
+
+		it( 'should pass the policy to every script injected in parallel', async () => {
+			const trustedTypePolicy = {
+				createScriptURL: vi.fn( ( url: string ) => url )
+			};
+
+			const promise = injectScriptsInParallel( [ CDN_MOCK_SCRIPT_URL, BROKEN_SCRIPT_URL ], { trustedTypePolicy } );
+
+			expect( trustedTypePolicy.createScriptURL ).toHaveBeenCalledTimes( 2 );
+			expect( trustedTypePolicy.createScriptURL ).toHaveBeenCalledWith( CDN_MOCK_SCRIPT_URL );
+			expect( trustedTypePolicy.createScriptURL ).toHaveBeenCalledWith( BROKEN_SCRIPT_URL );
+
+			// Settle the broken script manually so the test does not depend on the network.
+			document.querySelector( `script[src="${ BROKEN_SCRIPT_URL }"]` )!.dispatchEvent( new Event( 'error' ) );
+			await expect( promise ).rejects.toBeInstanceOf( Event );
+
+			await waitForExecuteMockScript();
+		} );
 	} );
 } );
 
