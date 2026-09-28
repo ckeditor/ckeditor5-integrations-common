@@ -12,6 +12,9 @@ import { toTrustedScriptURL } from './getTrustedPolicy.js';
  * Injecting the same `src` twice is a no-op – the promise of the first injection is returned. This
  * happens quite often in React Strict mode when the component is rendered twice.
  *
+ * The URL is passed through the Trusted Types policy without any checks, so pass only URLs
+ * from your own code or config, never ones that came from a user.
+ *
  * @param src The URL of the script to be injected.
  * @param props Additional properties used to decide how the script should be injected.
  * @param props.attributes Additional attributes to be set on the script element.
