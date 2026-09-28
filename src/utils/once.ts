@@ -6,10 +6,10 @@
 /**
  * Ensures that passed function will be executed only once.
  */
-export function once<A extends Array<any>, R = void>( fn: ( ...args: A ) => R ): ( ...args: A ) => R {
+export function once<A extends Array<any>, R = void>( fn: ( ...args: A ) => R ): OnceFn<( ...args: A ) => R> {
 	let lastResult: { current: R } | null = null;
 
-	return ( ...args: A ): R => {
+	const wrappedFn = ( ...args: A ): R => {
 		if ( !lastResult ) {
 			lastResult = {
 				current: fn( ...args )
@@ -18,4 +18,14 @@ export function once<A extends Array<any>, R = void>( fn: ( ...args: A ) => R ):
 
 		return lastResult.current;
 	};
+
+	wrappedFn._reset = () => {
+		lastResult = null;
+	};
+
+	return wrappedFn as unknown as OnceFn<typeof fn>;
 }
+
+type OnceFn<F extends Function> = F & {
+	reset: () => void;
+};
