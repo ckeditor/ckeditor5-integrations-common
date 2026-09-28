@@ -7,6 +7,7 @@ import { describe, it, vi, expect, vitest, beforeEach, afterEach } from 'vitest'
 
 import { loadCKCdnResourcesPack } from '@/cdn/utils/loadCKCdnResourcesPack.js';
 import { createCKCdnUrl } from '@/cdn/ck/createCKCdnUrl.js';
+import { getTrustedPolicy } from '@/utils/getTrustedPolicy.js';
 
 import { queryAllInjectedScripts } from '@/utils/queryAllInjectedElements.js';
 import {
@@ -309,6 +310,140 @@ describe( 'loadCKCdnResourcesPack', () => {
 
 				detachedNode.remove();
 			} );
+		} );
+	} );
+
+	describe( '`trustedTypePolicy`', () => {
+		beforeEach( () => {
+			getTrustedPolicy.reset();
+		} );
+
+		afterEach( () => {
+			vi.unstubAllGlobals();
+			getTrustedPolicy.reset();
+		} );
+
+		function createPolicy() {
+			return {
+				createScriptURL: vi.fn( ( url: string ) => url )
+			};
+		}
+
+		it( 'should sign the script URL with the provided policy', async () => {
+			const trustedTypePolicy = createPolicy();
+
+			const loaded = await loadCKCdnResourcesPack( {
+				scripts: [ CDN_MOCK_SCRIPT_URL ],
+				trustedTypePolicy,
+				checkPluginLoaded: () => window.CKEDITOR!
+			} );
+
+			expect( trustedTypePolicy.createScriptURL ).toHaveBeenCalledOnce();
+			expect( trustedTypePolicy.createScriptURL ).toHaveBeenCalledWith( CDN_MOCK_SCRIPT_URL );
+			expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
+			expect( loaded ).toEqual( window.CKEDITOR );
+		} );
+
+		it( 'should sign duplicated scripts only once', async () => {
+			const trustedTypePolicy = createPolicy();
+
+			await loadCKCdnResourcesPack( {
+				scripts: [ CDN_MOCK_SCRIPT_URL, CDN_MOCK_SCRIPT_URL ],
+				trustedTypePolicy
+			} );
+
+			expect( trustedTypePolicy.createScriptURL ).toHaveBeenCalledOnce();
+		} );
+
+		it( 'should not use the policy for stylesheets', async () => {
+			const trustedTypePolicy = createPolicy();
+
+			await loadCKCdnResourcesPack( {
+				stylesheets: [ CDN_MOCK_STYLESHEET_URL ],
+				trustedTypePolicy
+			} );
+
+			expect( trustedTypePolicy.createScriptURL ).not.toHaveBeenCalled();
+			expect( queryStylesheet( CDN_MOCK_STYLESHEET_URL ) ).not.toBeNull();
+		} );
+
+		it( 'should pass the policy and html attributes to the custom script injector', async () => {
+			const trustedTypePolicy = createPolicy();
+			const htmlAttributes = { nonce: 'abc123' };
+			const customInjector = vi.fn( () => Promise.resolve() );
+
+			await loadCKCdnResourcesPack( {
+				scripts: [ customInjector ],
+				htmlAttributes,
+				trustedTypePolicy
+			} );
+
+			expect( customInjector ).toHaveBeenCalledWith( {
+				attributes: htmlAttributes,
+				trustedTypePolicy
+			} );
+		} );
+
+		it( 'should pass undefined policy to the custom script injector if none is provided', async () => {
+			const customInjector = vi.fn( () => Promise.resolve() );
+
+			await loadCKCdnResourcesPack( {
+				scripts: [ customInjector ]
+			} );
+
+			expect( customInjector ).toHaveBeenCalledWith( expect.objectContaining( {
+				trustedTypePolicy: undefined
+			} ) );
+		} );
+
+		it( 'should use the internal policy if trusted types are available and no policy is provided', async () => {
+			const createPolicySpy = vi.fn( ( _name: string, options: unknown ) => options );
+
+			vi.stubGlobal( 'trustedTypes', { createPolicy: createPolicySpy } );
+
+			await loadCKCdnResourcesPack( {
+				scripts: [ CDN_MOCK_SCRIPT_URL ]
+			} );
+
+			expect( createPolicySpy ).toHaveBeenCalledWith( 'ckeditor5-integrations', expect.any( Object ) );
+			expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
+		} );
+
+		it( 'should reject and skip `checkPluginLoaded` if the internal policy refuses the script', async () => {
+			const src = 'javascript:alert(1)';
+			const checkPluginLoaded = vi.fn();
+
+			vi.stubGlobal( 'trustedTypes', {
+				createPolicy: ( _name: string, options: unknown ) => options
+			} );
+
+			await expect( loadCKCdnResourcesPack( {
+				scripts: [ src ],
+				checkPluginLoaded
+			} ) ).rejects.toThrow( `CKEditor: refusing to load a script from "${ src }".` );
+
+			expect( checkPluginLoaded ).not.toHaveBeenCalled();
+			expect( document.querySelector( `script[src="${ src }"]` ) ).toBeNull();
+		} );
+
+		it( 'should reject and stop loading next scripts if the provided policy throws', async () => {
+			const error = new TypeError( 'Blocked by policy.' );
+			const nextInjector = vi.fn( () => Promise.resolve() );
+			const checkPluginLoaded = vi.fn();
+
+			await expect( loadCKCdnResourcesPack( {
+				scripts: [ CDN_MOCK_SCRIPT_URL, nextInjector ],
+				trustedTypePolicy: {
+					createScriptURL: () => {
+						throw error;
+					}
+				},
+				checkPluginLoaded
+			} ) ).rejects.toBe( error );
+
+			expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).toBeNull();
+			expect( nextInjector ).not.toHaveBeenCalled();
+			expect( checkPluginLoaded ).not.toHaveBeenCalled();
 		} );
 	} );
 } );
