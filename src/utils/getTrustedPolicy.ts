@@ -16,17 +16,32 @@ export const TRUSTED_TYPES_POLICY_NAME = 'ckeditor5-integrations';
 export class TrustedTypesPolicyCreationError extends Error {
 	public constructor( cause: unknown ) {
 		super(
-			`CKEditor: could not create the "${ TRUSTED_TYPES_POLICY_NAME }" Trusted Types policy, so the script URL ` +
-			'was rejected by the browser. Add ' +
+			`CKEditor: could not create the "${ TRUSTED_TYPES_POLICY_NAME }" Trusted Types policy, which is required ` +
+			'to load scripts when Trusted Types are enforced. Add ' +
 			`"${ TRUSTED_TYPES_POLICY_NAME }" to the "trusted-types" directive of your Content Security Policy. ` +
 			'If more than one copy of this package is loaded, make sure only one is used, or add "\'allow-duplicates\'" ' +
-			'to that directive. You can also provide your own Trusted Types policy.',
+			'to that directive.',
 			{ cause }
 		);
 
 		this.name = 'TrustedTypesPolicyCreationError';
 	}
 }
+
+/**
+ * Checks if the application enforces trusted types (`require-trusted-types-for 'script'`). `window.trustedTypes`
+ * exists in every Chromium browser regardless of that, so the only reliable check is assigning a plain string
+ * to a sink. When enforced, the browser also logs a CSP violation for it, which is expected.
+ */
+const isTrustedTypesEnforced = once( (): boolean => {
+	try {
+		document.createElement( 'div' ).innerHTML = '';
+
+		return false;
+	} catch {
+		return typeof global.document.createElement === 'function';
+	}
+} );
 
 /**
  * Creates instance of trusted types policy and returns `null` if trusted types are not supported.
@@ -43,12 +58,17 @@ export const getTrustedPolicy = once( (): TrustedTypePolicyLike | null => {
 			createScriptURL: ( url: string ) => url
 		} );
 	} catch ( error ) {
+		// The CSP can limit policy names without enforcing trusted types. Plain strings still work then.
+		if ( !isTrustedTypesEnforced() ) {
+			return null;
+		}
+
 		throw new TrustedTypesPolicyCreationError( error );
 	}
 } );
 
 /**
- * Signs provided url with provided policy. If no policy is provided (or it's null) then internal one will be used.
+ * Signs the URL with the internal policy, or returns it unchanged if there is no policy.
  */
 export function toTrustedScriptURL( url: string ): string {
 	return ( getTrustedPolicy()?.createScriptURL( url ) ?? url ) as string;

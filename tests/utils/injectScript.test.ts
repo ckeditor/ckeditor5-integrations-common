@@ -10,6 +10,7 @@ import { queryScript } from '@/utils/queryHeadElement.js';
 import { createDefer } from '@/utils/defer.js';
 import {
 	getTrustedPolicy,
+	TrustedTypesPolicyCreationError,
 	TRUSTED_TYPES_POLICY_NAME,
 	type TrustedTypePolicyLike
 } from '@/utils/getTrustedPolicy.js';
@@ -208,6 +209,17 @@ describe( 'injectScript', () => {
 
 			expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).not.toBeNull();
 			await waitForExecuteMockScript();
+		} );
+
+		it( 'should throw TrustedTypesPolicyCreationError if the internal policy cannot be created ' +
+				'and trusted types are enforced', () => {
+			stubFailingTrustedTypes();
+			vi.spyOn( Element.prototype, 'innerHTML', 'set' ).mockImplementation( () => {
+				throw new TypeError( 'This document requires \'TrustedHTML\' assignment.' );
+			} );
+
+			expect( () => injectScript( CDN_MOCK_SCRIPT_URL ) ).toThrow( TrustedTypesPolicyCreationError );
+			expect( queryScript( CDN_MOCK_SCRIPT_URL ) ).toBeNull();
 		} );
 
 		it( 'should rethrow the error if the browser rejects the signed URL', () => {

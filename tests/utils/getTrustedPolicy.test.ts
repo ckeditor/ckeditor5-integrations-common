@@ -71,8 +71,16 @@ describe( 'getTrustedPolicy', () => {
 		expect( createPolicy ).toHaveBeenCalledTimes( 2 );
 	} );
 
-	it( 'should throw TrustedTypesPolicyCreationError if creating the policy throws (e.g. blocked by CSP)', () => {
+	it( 'should return null if creating the policy throws but trusted types are not enforced', () => {
+		stubFailingTrustedTypes();
+
+		expect( getTrustedPolicy() ).toBeNull();
+	} );
+
+	it( 'should throw TrustedTypesPolicyCreationError if creating the policy throws and trusted types are enforced', () => {
 		const cause = stubFailingTrustedTypes();
+
+		enforceTrustedTypes();
 
 		expect( () => getTrustedPolicy() ).toThrow( TrustedTypesPolicyCreationError );
 		expect( () => getTrustedPolicy() ).toThrow( expect.objectContaining( { cause } ) );
@@ -80,14 +88,25 @@ describe( 'getTrustedPolicy', () => {
 
 	it( 'should cache the creation error (no retries until reset)', () => {
 		stubFailingTrustedTypes();
+		enforceTrustedTypes();
 
 		expect( () => getTrustedPolicy() ).toThrow( TrustedTypesPolicyCreationError );
 		expect( () => getTrustedPolicy() ).toThrow( TrustedTypesPolicyCreationError );
 		expect( ( globalThis as any ).trustedTypes.createPolicy ).toHaveBeenCalledOnce();
 	} );
 
+	it( 'should not check if trusted types are enforced when the policy is created', () => {
+		stubTrustedTypes();
+		const innerHTMLSetter = vi.spyOn( Element.prototype, 'innerHTML', 'set' );
+
+		getTrustedPolicy();
+
+		expect( innerHTMLSetter ).not.toHaveBeenCalled();
+	} );
+
 	it( 'should retry creating the policy after reset', () => {
 		stubFailingTrustedTypes();
+		enforceTrustedTypes();
 		expect( () => getTrustedPolicy() ).toThrow( TrustedTypesPolicyCreationError );
 
 		getTrustedPolicy.reset();
@@ -135,10 +154,17 @@ describe( 'toTrustedScriptURL', () => {
 		expect( toTrustedScriptURL( 'https://example.com/script.js' ) ).toBe( 'https://example.com/script.js' );
 	} );
 
-	it( 'should return the URL unchanged if the internal policy cannot be created', () => {
+	it( 'should return the URL unchanged if the internal policy cannot be created but trusted types are not enforced', () => {
 		stubFailingTrustedTypes();
 
 		expect( toTrustedScriptURL( 'https://example.com/script.js' ) ).toBe( 'https://example.com/script.js' );
+	} );
+
+	it( 'should throw TrustedTypesPolicyCreationError if the internal policy cannot be created and trusted types are enforced', () => {
+		stubFailingTrustedTypes();
+		enforceTrustedTypes();
+
+		expect( () => toTrustedScriptURL( 'https://example.com/script.js' ) ).toThrow( TrustedTypesPolicyCreationError );
 	} );
 
 	it( 'should fall back to the internal policy if no policy is provided', () => {
@@ -169,4 +195,13 @@ function stubFailingTrustedTypes() {
 	} );
 
 	return error;
+}
+
+/**
+ * Simulates a browser that enforces trusted types (`require-trusted-types-for 'script'`).
+ */
+function enforceTrustedTypes() {
+	vi.spyOn( Element.prototype, 'innerHTML', 'set' ).mockImplementation( () => {
+		throw new TypeError( 'This document requires \'TrustedHTML\' assignment.' );
+	} );
 }
