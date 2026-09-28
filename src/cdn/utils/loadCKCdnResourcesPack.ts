@@ -4,7 +4,6 @@
  */
 
 import type { Awaitable } from '../../types/Awaitable.js';
-import type { TrustedTypePolicyLike } from '../../utils/getTrustedPolicy.js';
 
 import { injectScript, type InjectScriptProps } from '../../utils/injectScript.js';
 import { injectStylesheet, type InjectStylesheetLocation } from '../../utils/injectStylesheet.js';
@@ -34,7 +33,6 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 		scripts = [],
 		stylesheets = [],
 		preload,
-		trustedTypePolicy,
 		beforeInject,
 		checkPluginLoaded
 	} = normalizeCKCdnResourcesPack( pack );
@@ -84,8 +82,7 @@ export async function loadCKCdnResourcesPack<P extends CKCdnResourcesPack<any>>(
 	// Load script tags.
 	for ( const script of uniq( scripts ) ) {
 		const injectorProps: InjectScriptProps = {
-			attributes: htmlAttributes,
-			trustedTypePolicy
+			attributes: htmlAttributes
 		};
 
 		if ( typeof script === 'string' ) {
@@ -201,11 +198,6 @@ export type CKCdnResourcesAdvancedPack<R> = {
 	 * The location where the stylesheets are to be injected. By default, this is at the beginning of `document.head`.
 	 */
 	stylesheetsLocation?: InjectStylesheetLocation;
-
-	/**
-	 * Trusted policy used to sign injected script urls.
-	 */
-	trustedTypePolicy?: TrustedTypePolicyLike;
 
 	/**
 	 * Callback that is executed before injecting the resources. It can be used to verify if the resources are already loaded.

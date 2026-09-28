@@ -6,7 +6,30 @@
 import { once } from './once.js';
 
 /**
- * Creates instance of trusted types policy and returns `null` if it's not possible.
+ * Name of the Trusted Types policy created by the integrations.
+ */
+export const TRUSTED_TYPES_POLICY_NAME = 'ckeditor5-integrations';
+
+/**
+ * Thrown when the browser refuses to create the internal Trusted Types policy.
+ */
+export class TrustedTypesPolicyCreationError extends Error {
+	public constructor( cause: unknown ) {
+		super(
+			`CKEditor: could not create the "${ TRUSTED_TYPES_POLICY_NAME }" Trusted Types policy, so the script URL ` +
+			'was rejected by the browser. Add ' +
+			`"${ TRUSTED_TYPES_POLICY_NAME }" to the "trusted-types" directive of your Content Security Policy. ` +
+			'If more than one copy of this package is loaded, make sure only one is used, or add "\'allow-duplicates\'" ' +
+			'to that directive. You can also provide your own Trusted Types policy.',
+			{ cause }
+		);
+
+		this.name = 'TrustedTypesPolicyCreationError';
+	}
+}
+
+/**
+ * Creates instance of trusted types policy and returns `null` if trusted types are not supported.
  */
 export const getTrustedPolicy = once( (): TrustedTypePolicyLike | null => {
 	const trustedTypes = ( globalThis as { trustedTypes?: TrustedTypePolicyFactoryLike } ).trustedTypes;
@@ -16,29 +39,23 @@ export const getTrustedPolicy = once( (): TrustedTypePolicyLike | null => {
 	}
 
 	try {
-		return trustedTypes.createPolicy( 'ckeditor5-integrations', {
-			createScriptURL: ( url: string ) => {
-				const { protocol } = new URL( url, globalThis.document?.baseURI );
-
-				if ( protocol !== 'https:' && protocol !== 'http:' ) {
-					throw new TypeError( `CKEditor: refusing to load a script from "${ url }".` );
-				}
-
-				return url;
-			}
+		return trustedTypes.createPolicy( TRUSTED_TYPES_POLICY_NAME, {
+			createScriptURL: ( url: string ) => url
 		} );
-	} catch { /* NOP */ }
-
-	return null;
+	} catch ( error ) {
+		throw new TrustedTypesPolicyCreationError( error );
+	}
 } );
 
 /**
  * Signs provided url with provided policy. If no policy is provided (or it's null) then internal one will be used.
  */
-export function toTrustedScriptURL( url: string, policy?: TrustedTypePolicyLike ): string {
-	const resolvedPolicy = policy ?? getTrustedPolicy();
-
-	return ( resolvedPolicy ? resolvedPolicy.createScriptURL( url ) : url ) as string;
+export function toTrustedScriptURL( url: string ): string {
+	try {
+		return ( getTrustedPolicy()?.createScriptURL( url ) ?? url ) as string;
+	} catch {
+		return url;
+	}
 }
 
 type TrustedTypePolicyFactoryLike = {

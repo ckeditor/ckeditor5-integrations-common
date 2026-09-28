@@ -4,7 +4,7 @@
  */
 
 import { getLoadPromise, trackElementLoad } from './_internal/trackElementLoad.js';
-import { toTrustedScriptURL, type TrustedTypePolicyLike } from './getTrustedPolicy.js';
+import { toTrustedScriptURL } from './getTrustedPolicy.js';
 
 /**
  * Injects a script into the document.
@@ -15,14 +15,12 @@ import { toTrustedScriptURL, type TrustedTypePolicyLike } from './getTrustedPoli
  * @param src The URL of the script to be injected.
  * @param props Additional properties used to decide how the script should be injected.
  * @param props.attributes Additional attributes to be set on the script element.
- * @param props.trustedTypePolicy Trusted type policy that signs script url of injected script.
  * @returns A promise that resolves when the script is loaded.
  */
 export function injectScript(
 	src: string,
 	{
-		attributes,
-		trustedTypePolicy
+		attributes
 	}: InjectScriptProps = {}
 ): Promise<void> {
 	const prevScript = document.querySelector( `script[src="${ src }"]` );
@@ -50,7 +48,7 @@ export function injectScript(
 
 	const promise = trackElementLoad( script );
 
-	script.src = toTrustedScriptURL( src, trustedTypePolicy );
+	script.src = toTrustedScriptURL( src );
 	document.head.appendChild( script );
 
 	return promise;
@@ -61,7 +59,6 @@ export function injectScript(
  */
 export type InjectScriptProps = {
 	attributes?: Record<string, any>;
-	trustedTypePolicy?: TrustedTypePolicyLike;
 };
 
 /**

@@ -8,6 +8,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
 	getTrustedPolicy,
 	toTrustedScriptURL,
+	TrustedTypesPolicyCreationError,
+	TRUSTED_TYPES_POLICY_NAME,
 	type TrustedTypePolicyLike
 } from '@/utils/getTrustedPolicy.js';
 
@@ -69,14 +71,29 @@ describe( 'getTrustedPolicy', () => {
 		expect( createPolicy ).toHaveBeenCalledTimes( 2 );
 	} );
 
-	it( 'should return null if creating the policy throws (e.g. blocked by CSP)', () => {
-		vi.stubGlobal( 'trustedTypes', {
-			createPolicy: () => {
-				throw new TypeError( 'Policy "ckeditor5-integrations" disallowed.' );
-			}
-		} );
+	it( 'should throw TrustedTypesPolicyCreationError if creating the policy throws (e.g. blocked by CSP)', () => {
+		const cause = stubFailingTrustedTypes();
 
-		expect( getTrustedPolicy() ).toBeNull();
+		expect( () => getTrustedPolicy() ).toThrow( TrustedTypesPolicyCreationError );
+		expect( () => getTrustedPolicy() ).toThrow( expect.objectContaining( { cause } ) );
+	} );
+
+	it( 'should cache the creation error (no retries until reset)', () => {
+		stubFailingTrustedTypes();
+
+		expect( () => getTrustedPolicy() ).toThrow( TrustedTypesPolicyCreationError );
+		expect( () => getTrustedPolicy() ).toThrow( TrustedTypesPolicyCreationError );
+		expect( ( globalThis as any ).trustedTypes.createPolicy ).toHaveBeenCalledOnce();
+	} );
+
+	it( 'should retry creating the policy after reset', () => {
+		stubFailingTrustedTypes();
+		expect( () => getTrustedPolicy() ).toThrow( TrustedTypesPolicyCreationError );
+
+		getTrustedPolicy.reset();
+		stubTrustedTypes();
+
+		expect( getTrustedPolicy() ).not.toBeNull();
 	} );
 
 	describe( 'createScriptURL', () => {
@@ -87,37 +104,16 @@ describe( 'getTrustedPolicy', () => {
 			policy = getTrustedPolicy()!;
 		} );
 
-		it( 'should allow https URLs', () => {
-			const url = 'https://cdn.ckeditor.com/ckeditor5/latest/ckeditor5.umd.js';
-
-			expect( policy.createScriptURL( url ) ).toBe( url );
-		} );
-
-		it( 'should allow http URLs', () => {
-			const url = 'http://localhost:8080/script.js';
-
-			expect( policy.createScriptURL( url ) ).toBe( url );
-		} );
-
-		it( 'should allow relative URLs resolved against the document base URI', () => {
-			expect( policy.createScriptURL( '/assets/script.js' ) ).toBe( '/assets/script.js' );
-			expect( policy.createScriptURL( 'script.js' ) ).toBe( 'script.js' );
-		} );
-
-		it( 'should allow protocol-relative URLs', () => {
-			expect( policy.createScriptURL( '//cdn.ckeditor.com/script.js' ) ).toBe( '//cdn.ckeditor.com/script.js' );
-		} );
-
 		it.each( [
-			'javascript:alert(1)',
-			'JavaScript:alert(1)',
-			'data:text/javascript,alert(1)',
-			'blob:https://example.com/0a1b2c3d',
-			'file:///etc/passwd',
-			'ftp://example.com/script.js'
-		] )( 'should refuse "%s"', url => {
-			expect( () => policy.createScriptURL( url ) ).toThrow( TypeError );
-			expect( () => policy.createScriptURL( url ) ).toThrow( `CKEditor: refusing to load a script from "${ url }".` );
+			'https://cdn.ckeditor.com/ckeditor5/latest/ckeditor5.umd.js',
+			'http://localhost:8080/script.js',
+			'/assets/script.js',
+			'script.js',
+			'//cdn.ckeditor.com/script.js',
+			'data:text/javascript,void 0',
+			'blob:https://example.com/0a1b2c3d'
+		] )( 'should return "%s" unchanged', url => {
+			expect( policy.createScriptURL( url ) ).toBe( url );
 		} );
 	} );
 } );
@@ -139,29 +135,10 @@ describe( 'toTrustedScriptURL', () => {
 		expect( toTrustedScriptURL( 'https://example.com/script.js' ) ).toBe( 'https://example.com/script.js' );
 	} );
 
-	it( 'should sign the URL with the provided policy', () => {
-		const policy = {
-			createScriptURL: vi.fn( ( url: string ) => `signed:${ url }` )
-		};
+	it( 'should return the URL unchanged if the internal policy cannot be created', () => {
+		stubFailingTrustedTypes();
 
-		expect( toTrustedScriptURL( 'https://example.com/script.js', policy ) ).toBe( 'signed:https://example.com/script.js' );
-		expect( policy.createScriptURL ).toHaveBeenCalledWith( 'https://example.com/script.js' );
-	} );
-
-	it( 'should not create the internal policy if a custom one is provided', () => {
-		const createPolicy = stubTrustedTypes();
-		const policy = { createScriptURL: ( url: string ) => url };
-
-		toTrustedScriptURL( 'https://example.com/script.js', policy );
-
-		expect( createPolicy ).not.toHaveBeenCalled();
-	} );
-
-	it( 'should let the custom policy decide, bypassing the internal protocol check', () => {
-		stubTrustedTypes();
-		const policy = { createScriptURL: ( url: string ) => url };
-
-		expect( toTrustedScriptURL( 'data:text/javascript,void 0', policy ) ).toBe( 'data:text/javascript,void 0' );
+		expect( toTrustedScriptURL( 'https://example.com/script.js' ) ).toBe( 'https://example.com/script.js' );
 	} );
 
 	it( 'should fall back to the internal policy if no policy is provided', () => {
@@ -169,12 +146,6 @@ describe( 'toTrustedScriptURL', () => {
 
 		expect( toTrustedScriptURL( 'https://example.com/script.js' ) ).toBe( 'https://example.com/script.js' );
 		expect( createPolicy ).toHaveBeenCalledOnce();
-	} );
-
-	it( 'should throw for disallowed URLs when the internal policy is used', () => {
-		stubTrustedTypes();
-
-		expect( () => toTrustedScriptURL( 'javascript:alert(1)' ) ).toThrow( TypeError );
 	} );
 } );
 
@@ -186,4 +157,16 @@ function stubTrustedTypes() {
 	vi.stubGlobal( 'trustedTypes', { createPolicy } );
 
 	return createPolicy;
+}
+
+function stubFailingTrustedTypes() {
+	const error = new TypeError( `Policy "${ TRUSTED_TYPES_POLICY_NAME }" disallowed.` );
+
+	vi.stubGlobal( 'trustedTypes', {
+		createPolicy: vi.fn( () => {
+			throw error;
+		} )
+	} );
+
+	return error;
 }

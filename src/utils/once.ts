@@ -7,24 +7,32 @@
  * Ensures that passed function will be executed only once.
  */
 export function once<A extends Array<any>, R = void>( fn: ( ...args: A ) => R ): OnceFn<( ...args: A ) => R> {
-	let lastResult: { current: R } | null = null;
+	let outcome: OnceOutcome<R> | null = null;
 
 	const wrappedFn = ( ...args: A ): R => {
-		if ( !lastResult ) {
-			lastResult = {
-				current: fn( ...args )
-			};
+		if ( !outcome ) {
+			try {
+				outcome = { value: fn( ...args ) };
+			} catch ( error ) {
+				outcome = { error };
+			}
 		}
 
-		return lastResult.current;
+		if ( 'error' in outcome ) {
+			throw outcome.error;
+		}
+
+		return outcome.value;
 	};
 
 	wrappedFn.reset = () => {
-		lastResult = null;
+		outcome = null;
 	};
 
 	return wrappedFn as unknown as OnceFn<typeof fn>;
 }
+
+type OnceOutcome<R> = { value: R } | { error: unknown };
 
 type OnceFn<F extends Function> = F & {
 	reset: () => void;
