@@ -14,7 +14,7 @@ export const TRUSTED_TYPES_POLICY_NAME = 'ckeditor5-integrations';
  * Creates instance of trusted types policy and returns `null` if trusted types are not supported.
  */
 export const getTrustedPolicy = once( (): TrustedTypePolicyLike | null => {
-	const trustedTypes = ( globalThis as { trustedTypes?: TrustedTypePolicyFactoryLike } ).trustedTypes;
+	const { trustedTypes } = ( globalThis as { trustedTypes?: TrustedTypePolicyFactoryLike } );
 
 	if ( !trustedTypes ) {
 		return null;
