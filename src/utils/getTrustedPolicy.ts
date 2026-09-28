@@ -12,7 +12,7 @@ import { once } from './once.js';
 /**
  * Creates instance of trusted types policy and returns `null` if it's not possible.
  */
-const getTrustedPolicy = once( (): TrustedTypePolicyLike | null => {
+export const getTrustedPolicy = once( (): TrustedTypePolicyLike | null => {
 	const trustedTypes = ( globalThis as { trustedTypes?: TrustedTypePolicyFactoryLike } ).trustedTypes;
 
 	if ( !trustedTypes ) {

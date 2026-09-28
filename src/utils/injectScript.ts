@@ -4,7 +4,7 @@
  */
 
 import { getLoadPromise, trackElementLoad } from './_internal/trackElementLoad.js';
-import { toTrustedScriptURL, type TrustedTypePolicyLike } from './trustedTypes.js';
+import { toTrustedScriptURL, type TrustedTypePolicyLike } from './getTrustedPolicy.js';
 
 /**
  * Injects a script into the document.

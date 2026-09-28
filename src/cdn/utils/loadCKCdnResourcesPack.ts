@@ -4,7 +4,7 @@
  */
 
 import type { Awaitable } from '../../types/Awaitable.js';
-import type { TrustedTypePolicyLike } from '../../utils/trustedTypes.js';
+import type { TrustedTypePolicyLike } from '../../utils/getTrustedPolicy.js';
 
 import { injectScript, type InjectScriptProps } from '../../utils/injectScript.js';
 import { injectStylesheet, type InjectStylesheetLocation } from '../../utils/injectStylesheet.js';
