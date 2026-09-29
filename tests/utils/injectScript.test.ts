@@ -178,7 +178,7 @@ describe( 'injectScript', () => {
 			getTrustedPolicy.reset();
 		} );
 
-		it( 'should sign the script URL with the internal policy', async () => {
+		it( 'should pass through the script URL with the internal policy', async () => {
 			const createScriptURL = vi.fn( ( url: string ) => url );
 			const createPolicy = stubTrustedTypes( { createScriptURL } );
 

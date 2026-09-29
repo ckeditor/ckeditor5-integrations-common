@@ -41,12 +41,12 @@ function showTrustedTypesStatus(): void {
 	const status = document.getElementById( 'tt-status' )!;
 
 	status.textContent = 'trustedTypes' in window ?
-		'✅ Trusted Types are enforced. Only the "ckeditor5" and "ckeditor5-integrations" policies are allowed.' :
+		'✅ Trusted Types are enforced. Only the "ckeditor5", "lit-html" and "ckeditor5-integrations" policies are allowed.' :
 		'⚠️ This browser does not support Trusted Types – the CSP is ignored. Open the demo in Chromium.';
 }
 
 /**
- * Lists every Trusted Types violation on the page, so a missing signature is visible without opening the console.
+ * Lists every Trusted Types violation on the page, so it's visible without opening the console.
  */
 function watchViolations(): void {
 	const details = document.getElementById( 'tt-violations' ) as HTMLDetailsElement;

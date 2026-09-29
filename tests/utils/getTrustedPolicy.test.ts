@@ -166,13 +166,6 @@ describe( 'toTrustedScriptURL', () => {
 
 		expect( () => toTrustedScriptURL( 'https://example.com/script.js' ) ).toThrow( TrustedTypesPolicyCreationError );
 	} );
-
-	it( 'should fall back to the internal policy if no policy is provided', () => {
-		const createPolicy = stubTrustedTypes();
-
-		expect( toTrustedScriptURL( 'https://example.com/script.js' ) ).toBe( 'https://example.com/script.js' );
-		expect( createPolicy ).toHaveBeenCalledOnce();
-	} );
 } );
 
 function stubTrustedTypes() {

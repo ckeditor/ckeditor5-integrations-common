@@ -68,7 +68,7 @@ function isTrustedTypesEnforced(): boolean {
 }
 
 /**
- * Signs the URL with the internal policy, or returns it unchanged if there is no policy.
+ * Passes the URL through the internal policy, or returns it unchanged if there is no policy.
  */
 export function toTrustedScriptURL( url: string ): string {
 	return ( getTrustedPolicy()?.createScriptURL( url ) ?? url ) as string;
