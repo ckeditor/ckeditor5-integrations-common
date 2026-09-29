@@ -30,6 +30,7 @@ export { kebabToCamelCase } from './utils/kebabToCamelCase.js';
 export { isSemanticVersion, type SemanticVersion } from './utils/version/isSemanticVersion.js';
 export { compareSemanticVersions, type VersionCompareResult } from './utils/version/compareSemanticVersions.js';
 export { destructureSemanticVersion, type DestructuredSemanticVersion } from './utils/version/destructureSemanticVersion.js';
+export { TrustedTypesPolicyCreationError } from './utils/getTrustedPolicy.js';
 export {
 	isCKVersion,
 	isCKTestingVersion,

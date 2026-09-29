@@ -4,12 +4,16 @@
  */
 
 import { getLoadPromise, trackElementLoad } from './_internal/trackElementLoad.js';
+import { toTrustedScriptURL } from './getTrustedPolicy.js';
 
 /**
  * Injects a script into the document.
  *
  * Injecting the same `src` twice is a no-op – the promise of the first injection is returned. This
  * happens quite often in React Strict mode when the component is rendered twice.
+ *
+ * The URL is passed through the Trusted Types policy without any checks, so pass only URLs
+ * from your own code or config, never ones that came from a user.
  *
  * @param src The URL of the script to be injected.
  * @param props Additional properties used to decide how the script should be injected.
@@ -18,7 +22,9 @@ import { getLoadPromise, trackElementLoad } from './_internal/trackElementLoad.j
  */
 export function injectScript(
 	src: string,
-	{ attributes }: InjectScriptProps = {}
+	{
+		attributes
+	}: InjectScriptProps = {}
 ): Promise<void> {
 	const prevScript = document.querySelector( `script[src="${ src }"]` );
 	const prevPromise = getLoadPromise( prevScript );
@@ -45,7 +51,7 @@ export function injectScript(
 
 	const promise = trackElementLoad( script );
 
-	script.src = src;
+	script.src = toTrustedScriptURL( src );
 	document.head.appendChild( script );
 
 	return promise;

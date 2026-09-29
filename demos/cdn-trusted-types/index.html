@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Security-Policy" content="require-trusted-types-for 'script'; trusted-types lit-html ckeditor5 ckeditor5-integrations">
+	<title>CKEditor 5 via CDN - Trusted Types demo</title>
+</head>
+
+<body>
+	<div id="root">
+		<demo-layout>
+			<h1>CKEditor 5 via CDN – Trusted Types</h1>
+			<p id="tt-status"></p>
+			<cdn-config></cdn-config>
+			<details id="tt-violations" hidden>
+				<summary>Trusted Types violations: <strong>0</strong></summary>
+				<ul></ul>
+			</details>
+		</demo-layout>
+	</div>
+
+	<script type="module" src="/demos/cdn-trusted-types/index.ts"></script>
+</body>
+</html>

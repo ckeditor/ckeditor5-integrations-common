@@ -8,6 +8,11 @@ import type { CKBoxCdnVersion } from '@/cdn/ckbox/createCKBoxCdnUrl.js';
 
 import { readCdnConfig, writeCdnConfig } from '../cdnConfig.js';
 
+const STYLES = `
+	fieldset { display: flex; flex-wrap: wrap; gap: 1em; align-items: center; border-radius: 6px; }
+	input[type="text"] { width: 7em; }
+`;
+
 /**
  * ```html
  * <cdn-config></cdn-config>
@@ -18,39 +23,62 @@ export class CdnConfigElement extends HTMLElement {
 		const root = this.shadowRoot ?? this.attachShadow( { mode: 'open' } );
 		const { version, ckboxVersion, premium, ckbox } = readCdnConfig();
 
-		root.innerHTML = `
-			<style>
-				fieldset { display: flex; flex-wrap: wrap; gap: 1em; align-items: center; border-radius: 6px; }
-				input[type="text"] { width: 7em; }
-			</style>
-			<form>
-				<fieldset>
-					<legend>CDN</legend>
-					<label>Editor <input type="text" name="version"></label>
-					<label>CKBox <input type="text" name="ckboxVersion"></label>
-					<label><input type="checkbox" name="premium"> Premium</label>
-					<label><input type="checkbox" name="ckbox"> CKBox</label>
-					<button type="submit">Refresh</button>
-				</fieldset>
-			</form>
-		`;
+		const fields = {
+			version: createInput( 'text', 'version' ),
+			ckboxVersion: createInput( 'text', 'ckboxVersion' ),
+			premium: createInput( 'checkbox', 'premium' ),
+			ckbox: createInput( 'checkbox', 'ckbox' )
+		};
 
-		const field = ( name: string ) => root.querySelector<HTMLInputElement>( `[name="${ name }"]` )!;
+		fields.version.value = version;
+		fields.ckboxVersion.value = ckboxVersion;
+		fields.premium.checked = premium;
+		fields.ckbox.checked = ckbox;
 
-		field( 'version' ).value = version;
-		field( 'ckboxVersion' ).value = ckboxVersion;
-		field( 'premium' ).checked = premium;
-		field( 'ckbox' ).checked = ckbox;
+		const style = document.createElement( 'style' );
+		const form = document.createElement( 'form' );
+		const fieldset = document.createElement( 'fieldset' );
+		const legend = document.createElement( 'legend' );
+		const submit = document.createElement( 'button' );
 
-		root.querySelector( 'form' )!.addEventListener( 'submit', event => {
+		style.textContent = STYLES;
+		legend.textContent = 'CDN';
+		submit.type = 'submit';
+		submit.textContent = 'Refresh';
+
+		fieldset.append(
+			legend,
+			createLabel( 'Editor ', fields.version ),
+			createLabel( 'CKBox ', fields.ckboxVersion ),
+			createLabel( fields.premium, ' Premium' ),
+			createLabel( fields.ckbox, ' CKBox' ),
+			submit
+		);
+
+		form.append( fieldset );
+		root.replaceChildren( style, form );
+
+		form.addEventListener( 'submit', event => {
 			event.preventDefault();
 
 			writeCdnConfig( {
-				version: field( 'version' ).value as CKVersion,
-				ckboxVersion: field( 'ckboxVersion' ).value as CKBoxCdnVersion,
-				premium: field( 'premium' ).checked,
-				ckbox: field( 'ckbox' ).checked
+				version: fields.version.value as CKVersion,
+				ckboxVersion: fields.ckboxVersion.value as CKBoxCdnVersion,
+				premium: fields.premium.checked,
+				ckbox: fields.ckbox.checked
 			} );
 		} );
 	}
+}
+
+function createInput( type: string, name: string ): HTMLInputElement {
+	return Object.assign( document.createElement( 'input' ), { type, name } );
+}
+
+function createLabel( ...children: Array<Node | string> ): HTMLLabelElement {
+	const label = document.createElement( 'label' );
+
+	label.append( ...children );
+
+	return label;
 }
