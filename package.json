@@ -87,11 +87,11 @@
     "@ckeditor/ckeditor5-dev-ci": "^58.0.0",
     "@ckeditor/ckeditor5-dev-release-tools": "^58.0.0",
     "@ckeditor/ckeditor5-dev-utils": "^58.0.0",
-    "@vitest/browser": "^4.1.10",
-    "@vitest/browser-playwright": "^4.1.10",
-    "@vitest/coverage-istanbul": "^4.1.10",
-    "@vitest/coverage-v8": "^4.1.10",
-    "@vitest/ui": "^4.1.10",
+    "@vitest/browser": "^5.0.0",
+    "@vitest/browser-playwright": "^5.0.0",
+    "@vitest/coverage-istanbul": "^5.0.0",
+    "@vitest/coverage-v8": "^5.0.0",
+    "@vitest/ui": "^5.0.0",
     "ckeditor5": "^47.7.2",
     "ckeditor5-premium-features": "^47.7.2",
     "eslint": "^10.0.0",
@@ -109,6 +109,6 @@
     "vite": "^7.3.5",
     "vite-plugin-dts": "^4.5.4",
     "vite-tsconfig-paths": "^6.0.5",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.0"
   }
 }
