@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## [3.2.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v3.1.0...v3.2.0) (September 30, 2026)
+
+### Features
+
+* Added support for Trusted Types when loading CKEditor 5 from CDN. Script URLs injected by the integration are now passed through a Trusted Types policy, so the editor can be loaded on pages that enforce the `require-trusted-types-for 'script'` Content Security Policy directive.
+
+
 ## [3.1.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v3.0.0...v3.1.0) (September 21, 2026)
 
 ### Features
@@ -75,13 +82,6 @@ Changelog
 ### Features
 
 * Added `mapObjectKeys` helper for transforming object keys and `kebabToCamelCase` for converting strings from kebab-case to camelCase.
-
-
-## [2.3.1](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.3.0...v2.3.1) (April 15, 2026)
-
-### Bug fixes
-
-* Fixed an issue where the editor's alpha version was being compared incorrectly.
 
 ---
 
