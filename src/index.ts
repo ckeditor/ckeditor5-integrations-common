@@ -9,8 +9,8 @@ import './cdn/ckbox/globals.js';
 
 export { createDefer, type Defer } from './utils/defer.js';
 export { waitFor, type WaitForConfig } from './utils/waitFor.js';
-export { injectScript, injectScriptsInParallel, INJECTED_SCRIPTS } from './utils/injectScript.js';
-export { injectStylesheet, INJECTED_STYLESHEETS } from './utils/injectStylesheet.js';
+export { injectScript, injectScriptsInParallel } from './utils/injectScript.js';
+export { injectStylesheet, type InjectStylesheetLocation } from './utils/injectStylesheet.js';
 export { isSSR } from './utils/isSSR.js';
 export { omit } from './utils/omit.js';
 export { once } from './utils/once.js';
@@ -30,12 +30,16 @@ export { kebabToCamelCase } from './utils/kebabToCamelCase.js';
 export { isSemanticVersion, type SemanticVersion } from './utils/version/isSemanticVersion.js';
 export { compareSemanticVersions, type VersionCompareResult } from './utils/version/compareSemanticVersions.js';
 export { destructureSemanticVersion, type DestructuredSemanticVersion } from './utils/version/destructureSemanticVersion.js';
+export { TrustedTypesPolicyCreationError } from './utils/getTrustedPolicy.js';
 export {
 	isCKVersion,
 	isCKTestingVersion,
 	isCKZeroBaseVersion,
+	isCKTestingChannel,
+	extractCKTestingChannel,
 	type CKVersion,
-	type CKTestingVersion
+	type CKTestingVersion,
+	type CKTestingChannel
 } from './utils/version/isCKVersion.js';
 
 export { appendExtraPluginsToEditorConfig } from './plugins/appendExtraPluginsToEditorConfig.js';

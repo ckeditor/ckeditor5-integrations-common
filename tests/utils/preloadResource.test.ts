@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-import { describe, expect, it, beforeEach } from 'vitest';
+import { describe, expect, it, afterEach } from 'vitest';
 import { preloadResource } from '@/utils/preloadResource.js';
 import { queryPreload } from '@/utils/queryHeadElement.js';
 
@@ -11,7 +11,7 @@ import { CDN_MOCK_STYLESHEET_URL, CDN_MOCK_SCRIPT_URL } from '@/test-utils/cdn/m
 import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
 
 describe( 'preloadResource', () => {
-	beforeEach( () => {
+	afterEach( () => {
 		removeAllCkCdnResources();
 	} );
 

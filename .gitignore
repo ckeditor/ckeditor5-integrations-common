@@ -10,3 +10,4 @@ vite.config.ts.timestamp-*
 vite.test-utils.config.ts.timestamp-*
 vitest.config.ts.timestamp-*
 yarn.lock
+.env

@@ -13,13 +13,12 @@ import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResource
 
 describe( 'waitForWindowEntry', () => {
 	beforeEach( () => {
-		removeAllCkCdnResources();
-
 		vi.spyOn( console, 'error' ).mockImplementation( () => undefined );
 	} );
 
 	afterEach( () => {
 		vi.restoreAllMocks();
+		removeAllCkCdnResources();
 	} );
 
 	it( 'should wait for the window entry to be available', async () => {
@@ -30,7 +29,7 @@ describe( 'waitForWindowEntry', () => {
 	} );
 
 	it( 'should throw an error if the window entry is not found', async () => {
-		await expect( waitForWindowEntry( [ 'CKEDITOR' ] ) ).rejects.toThrowError(
+		await expect( waitForWindowEntry( [ 'CKEDITOR' ] ) ).rejects.toThrow(
 			'Window entry "CKEDITOR" not found.'
 		);
 	} );

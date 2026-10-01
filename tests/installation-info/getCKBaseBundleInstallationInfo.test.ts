@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-import { describe, it, beforeEach, expect } from 'vitest';
+import { describe, it, afterEach, expect } from 'vitest';
 
 import { removeAllCkCdnResources } from '@/test-utils/cdn/removeAllCkCdnResources.js';
 
@@ -11,7 +11,7 @@ import { getCKBaseBundleInstallationInfo } from '@/installation-info/getCKBaseBu
 import { loadCKEditorCloud } from '@/cdn/loadCKEditorCloud.js';
 
 describe( 'getCKBaseBundleInstallationInfo', () => {
-	beforeEach( () => {
+	afterEach( () => {
 		removeAllCkCdnResources();
 	} );
 

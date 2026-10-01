@@ -3,128 +3,121 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-licensing-options
  */
 
-/**
- * Map of injected stylesheets. It's used to prevent injecting the same stylesheet multiple times.
- * It happens quite often in React Strict mode when the component is rendered twice.
- */
-export const INJECTED_STYLESHEETS = new Map<string, Promise<void>>();
+import { getLoadPromise, trackElementLoad } from './_internal/trackElementLoad.js';
 
 /**
- * Injects a stylesheet into the document.
+ * Injects a stylesheet into the document. Injecting the same `href` into the same node twice is a no-op
+ * the promise of the first injection is returned.
  *
  * @param props.href The URL of the stylesheet to be injected.
- * @param props.placementInHead The placement of the stylesheet in the head.
  * @param props.attributes Additional attributes to be set on the link element.
+ * @param props.targetNode The node to which the stylesheet element should be added. It can be an element
+ * 	or a shadow root.
+ * @param props.placement The placement of the stylesheet in the target node.
  * @returns A promise that resolves when the stylesheet is loaded.
  */
 export function injectStylesheet(
 	{
 		href,
-		placementInHead = 'start',
+		targetNode = document.head,
+		placement = 'start',
 		attributes = {}
 	}: InjectStylesheetProps
 ): Promise<void> {
-	// Return the promise if the stylesheet is already injected by this function.
-	if ( INJECTED_STYLESHEETS.has( href ) ) {
-		return INJECTED_STYLESHEETS.get( href )!;
+	const prevLink = targetNode.querySelector( `link[href="${ href }"][rel="stylesheet"]` );
+	const prevPromise = getLoadPromise( prevLink );
+
+	if ( prevPromise ) {
+		return prevPromise;
 	}
 
-	// Return the promise if the stylesheet is already present in the document but not injected by this function.
-	// We are not sure if the stylesheet is loaded or not, so we have to show a warning in this case.
-	const maybePrevStylesheet = document.querySelector( `link[href="${ href }"][rel="stylesheet"]` );
-
-	if ( maybePrevStylesheet ) {
+	if ( prevLink ) {
 		console.warn( `Stylesheet with "${ href }" href is already present in DOM!` );
-		maybePrevStylesheet.remove();
+		prevLink.remove();
 	}
 
-	// Append the link tag to the head.
-	const appendLinkTagToHead = ( link: HTMLLinkElement ) => {
-		// Inject styles after the stylesheets that are already present in the head.
-		// Do not specify the `rel` attribute because we want to inject the stylesheet even after
-		// preloading link tags.
-		const previouslyInjectedLinks = Array.from(
-			document.head.querySelectorAll( 'link[data-injected-by="ckeditor-integration"]' )
-		);
+	const link = targetNode.ownerDocument!.createElement( 'link' );
 
-		switch ( placementInHead ) {
-			// It'll append styles *before* the stylesheets that are already present in the head
-			// but after the ones that are injected by this function.
-			case 'start':
-				if ( previouslyInjectedLinks.length ) {
-					previouslyInjectedLinks.slice( -1 )[ 0 ].after( link );
-				} else {
-					document.head.insertBefore( link, document.head.firstChild );
-				}
-				break;
+	for ( const [ key, value ] of Object.entries( attributes || {} ) ) {
+		link.setAttribute( key, value );
+	}
 
-			// It'll append styles *after* the stylesheets already in the head.
-			case 'end':
-				document.head.appendChild( link );
-				break;
-		}
-	};
+	link.setAttribute( 'data-injected-by', 'ckeditor-integration' );
+	link.rel = 'stylesheet';
 
-	// Inject the stylesheet and return the promise.
-	const promise = new Promise<void>( ( resolve, reject ) => {
-		const link = document.createElement( 'link' );
+	const promise = trackElementLoad( link );
 
-		// Set additional attributes if provided.
-		for ( const [ key, value ] of Object.entries( attributes || {} ) ) {
-			link.setAttribute( key, value );
-		}
-
-		link.setAttribute( 'data-injected-by', 'ckeditor-integration' );
-
-		link.rel = 'stylesheet';
-		link.href = href;
-
-		link.onerror = reject;
-		link.onload = () => {
-			resolve();
-		};
-
-		appendLinkTagToHead( link );
-
-		// It should remove stylesheet if stylesheet is being removed from the DOM.
-		const observer = new MutationObserver( mutations => {
-			const removedNodes = mutations.flatMap( mutation => Array.from( mutation.removedNodes ) );
-
-			if ( removedNodes.includes( link ) ) {
-				INJECTED_STYLESHEETS.delete( href );
-				observer.disconnect();
-			}
-		} );
-
-		observer.observe( document.head, {
-			childList: true,
-			subtree: true
-		} );
-	} );
-
-	INJECTED_STYLESHEETS.set( href, promise );
+	link.href = href;
+	appendLink( targetNode, link, placement );
 
 	return promise;
 }
 
 /**
+ * Appends the link tag to the target node at the requested placement.
+ */
+function appendLink(
+	targetNode: HTMLElement | ShadowRoot,
+	link: HTMLLinkElement,
+	placement: InjectStylesheetPlacement
+): void {
+	if ( placement === 'end' ) {
+		targetNode.appendChild( link );
+
+		return;
+	}
+
+	const injectedLinks = Array.from( targetNode.children ).filter(
+		child => child.matches( 'link[data-injected-by="ckeditor-integration"]' )
+	);
+
+	const lastInjectedLink = injectedLinks[ injectedLinks.length - 1 ];
+
+	if ( lastInjectedLink ) {
+		lastInjectedLink.after( link );
+	} else {
+		targetNode.prepend( link );
+	}
+}
+
+/**
  * Props for the `injectStylesheet` function.
  */
-type InjectStylesheetProps = {
+type InjectStylesheetProps =
+	& {
+
+		/**
+		 * The URL of the stylesheet to be injected.
+		 */
+		href: string;
+
+		/**
+		 * Additional attributes to set on the link tag.
+		 */
+		attributes?: Record<string, any>;
+	}
+	& InjectStylesheetLocation;
+
+/**
+ * The location where the stylesheet is to be injected.
+ */
+export type InjectStylesheetLocation = {
 
 	/**
-	 * The URL of the stylesheet to be injected.
+	 * The node to which the stylesheet element should be added. Besides regular elements, it accepts
+	 * shadow roots, so the stylesheet can be scoped to a web component.
+	 *
+	 * @default document.head
 	 */
-	href: string;
+	targetNode?: HTMLElement | ShadowRoot;
 
 	/**
-	 * The placement of the stylesheet in the head. It can be either at the start or at the end
-	 * of the head. Default is 'start' because it allows user to override the styles easily.
+	 * The placement of the stylesheet in the target node. It can be either at the start or at the end
+	 * of the target node.
+	 *
+	 * @default 'start'
 	 */
-	placementInHead?: 'start' | 'end';
-
-	/**
-	 * Additional attributes to set on the link tag.
-	 */
-	attributes?: Record<string, any>;
+	placement?: InjectStylesheetPlacement;
 };
+
+type InjectStylesheetPlacement = 'start' | 'end';
