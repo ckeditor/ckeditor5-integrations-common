@@ -44,7 +44,7 @@ export default defineConfig( {
 		} ],
 
 		coverage: {
-			provider: 'istanbul',
+			provider: 'v8',
 			include: [ 'src/**' ],
 			reporter: [
 				'text-summary',
