@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## [3.2.1](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v3.2.0...v3.2.1) (October 16, 2026)
+
+### Other changes
+
+* Upgraded Node.js to version 26.10.0.
+
+
 ## [3.2.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v3.1.0...v3.2.0) (September 30, 2026)
 
 ### Features
@@ -75,13 +82,6 @@ Changelog
 ### Other changes
 
 * Readme simplification.
-
-
-## [2.4.0](https://github.com/ckeditor/ckeditor5-integrations-common/compare/v2.3.1...v2.4.0) (May 25, 2026)
-
-### Features
-
-* Added `mapObjectKeys` helper for transforming object keys and `kebabToCamelCase` for converting strings from kebab-case to camelCase.
 
 ---
 
